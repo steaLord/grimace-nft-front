@@ -20,7 +20,7 @@ export default function Home() {
   return (
     <main className={styles.main}>
       <div className={styles.description}>
-        <ZoomableImageBox image="/NFT-1MAX.svg"/>
+        <ZoomableImageBox height={500} width={500} imageSrc="/NFT-1MAX.svg"/>
         {/*<Image src="/NFT-1MAX.svg" layout="fill" objectFit="contain" priority />*/}
         <p>
           Get started by editing&nbsp;
