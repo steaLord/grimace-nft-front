@@ -15,7 +15,7 @@ const StyledWrapper = styled.nav`
   background: #F5F5F5;
 `
 
-const StyledButton = styled.button`
+export const StyledButton = styled.button`
   padding: 8px 12px;
   background: #ff6a00;
   color: #ffffff;
