@@ -1,4 +1,5 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import styled from "@emotion/styled";
 
 interface ZoomableCanvasProps {
   width: number;
@@ -6,11 +7,16 @@ interface ZoomableCanvasProps {
   imageSrc: string;
 }
 
+const StyledCanvas = styled.canvas`
+  border: 1px solid #d1d1d1;
+  border-radius: 16px;
+`;
+
 const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
-                                                         width,
-                                                         height,
-                                                         imageSrc,
-                                                       }) => {
+  width,
+  height,
+  imageSrc,
+}) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [dragStart, setDragStart] = useState<{ x: number; y: number } | null>(
     null
@@ -21,7 +27,6 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
   });
   const [scale, setScale] = useState<number>(1);
   const [isDragging, setIsDragging] = useState<boolean>(false);
-  const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -53,6 +58,7 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
 
   const handleWheel = (event: React.WheelEvent<HTMLCanvasElement>) => {
     event.preventDefault();
+    event.stopPropagation();
 
     const canvas = canvasRef.current;
     const { clientX, clientY } = event;
@@ -72,6 +78,26 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
       setOffset({ x: newOffsetX, y: newOffsetY });
     }
   };
+  useEffect(() => {
+    const canvas = canvasRef.current;
+
+    if (canvas) {
+      canvas.addEventListener(
+        "wheel",
+        (e) => {
+          e.preventDefault();
+        },
+        {
+          passive: false,
+        }
+      );
+      return () => {
+        canvas.removeEventListener("wheel", (e) => {
+          e.preventDefault();
+        });
+      };
+    }
+  }, []);
 
   const handleMouseDown = (event: React.MouseEvent<HTMLCanvasElement>) => {
     event.preventDefault();
@@ -127,54 +153,8 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
     }
   };
 
-  const handleScroll = (event: React.WheelEvent<HTMLCanvasElement>) => {
-    event.preventDefault();
-
-    const canvas = canvasRef.current;
-    const { clientX, clientY } = event;
-
-    if (canvas) {
-      const rect = canvas.getBoundingClientRect();
-      const offsetX = clientX - rect.left;
-      const offsetY = clientY - rect.top;
-
-      const scaleFactor = event.deltaY > 0 ? 0.9 : 1.1;
-      const newScale = scale * scaleFactor;
-
-      const newOffsetX = offsetX - (offsetX - offset.x) * scaleFactor;
-      const newOffsetY = offsetY - (offsetY - offset.y) * scaleFactor;
-
-      setScale(newScale);
-      setOffset({ x: newOffsetX, y: newOffsetY });
-    }
-  };
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-
-    if (canvas) {
-      canvas.addEventListener("wheel", handleScroll, { passive: false });
-      return () => {
-        canvas.removeEventListener("wheel", handleScroll);
-      };
-    }
-  }, []);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-
-    if (canvas) {
-      const transitionEndHandler = () => {
-        canvas.style.transition = "";
-        canvas.removeEventListener("transitionend", transitionEndHandler);
-      };
-
-      canvas.addEventListener("transitionend", transitionEndHandler);
-    }
-  }, []);
-
   return (
-    <canvas
+    <StyledCanvas
       ref={canvasRef}
       width={width}
       height={height}
