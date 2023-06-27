@@ -5,8 +5,8 @@ import { useServerInsertedHTML } from "next/navigation";
 import { useState } from "react";
 
 export default function RootStyleRegistry({
-                                            children,
-                                          }: {
+  children,
+}: {
   children: JSX.Element;
 }) {
   const [cache] = useState(() => {
