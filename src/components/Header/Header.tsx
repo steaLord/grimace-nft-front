@@ -36,13 +36,14 @@ const StyledNavLink = styled(Link)`
 function Header(props: IHeaderProps) {
   const pathname = usePathname();
   const navLinks = [
-    { title: "Collection", href: "/collection" },
+    { title: "Collection", href: "/" },
     { title: "My NFTs", href: "/my-nfts" },
   ];
   return (
     <StyledWrapper>
       {navLinks.map(({ title, href }) => {
-        const isActive = pathname.startsWith(href);
+        console.log({ pathname });
+        const isActive = pathname === href;
         return (
           <StyledNavLink href={href} isActive={isActive}>
             {title}
