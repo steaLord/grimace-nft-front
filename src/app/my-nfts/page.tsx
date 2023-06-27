@@ -2,6 +2,7 @@
 import { useNFTMetadata } from "@/app/hooks/useNFTMetadata";
 import { contractAddress } from "@/app/page";
 import { useMetaMask } from "metamask-react";
+import Image from "next/image";
 
 export default function MyNFTsPage() {
   const { nftTokens } = useNFTMetadata(contractAddress);
@@ -12,10 +13,11 @@ export default function MyNFTsPage() {
     <main>
       Owned NFT's page:{" "}
       {!account && <div>Please connect metamask to use this page</div>}
-      {nftTokens.map(({ tokenURI, nftMetadata }) => {
+      {nftTokens.map(({ tokenURI, nftMetadata: { title, imageSrc } }) => {
         return (
           <div key={tokenURI}>
-            {tokenURI} - {nftMetadata.title}
+            {title}
+            <Image src={imageSrc} alt={title} />
           </div>
         );
       })}
