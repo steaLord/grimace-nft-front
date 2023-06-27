@@ -2,6 +2,8 @@ import React from "react";
 import styled from "@emotion/styled";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useMetaMask } from "metamask-react";
+import { useConnectMetamask } from "@/app/hooks/useConnectMetamask";
 
 export interface IHeaderProps {}
 
@@ -35,6 +37,10 @@ const StyledNavLink = styled(Link)`
  */
 function Header(props: IHeaderProps) {
   const pathname = usePathname();
+  const { handleConnect } = useConnectMetamask();
+  const { account } = useMetaMask();
+
+  // TODO: Remove it from here
   const navLinks = [
     { title: "Collection", href: "/collection" },
     { title: "My NFTs", href: "/my-nfts" },
@@ -42,14 +48,18 @@ function Header(props: IHeaderProps) {
   return (
     <StyledWrapper>
       {navLinks.map(({ title, href }) => {
-        const isActive = pathname.startsWith(href);  // Check if the current path starts with the href
+        const isActive = pathname.startsWith(href); // Check if the current path starts with the href
         return (
           <StyledNavLink key={href} href={href} isActive={isActive}>
             {title}
           </StyledNavLink>
         );
       })}
-      <StyledButton variant="ghost">Connect MetaMask</StyledButton>
+      {!account ? (
+        <StyledButton onClick={handleConnect}>Connect MetaMask</StyledButton>
+      ) : (
+        <div style={{ color: "black" }}>{account.substring(0, 8)}...</div>
+      )}
     </StyledWrapper>
   );
 }
