@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Web3 } from "web3";
 import GrimaceMandalasNFT from "../nftArtifacts/GrimaceMandalaNFT.json";
 
+// TODO: Move into hooks folder
 const useCheckNFTTokens = (contractAddress) => {
   const [web3, setWeb3] = useState(null);
   const [account, setAccount] = useState(null);

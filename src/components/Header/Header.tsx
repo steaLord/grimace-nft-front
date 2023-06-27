@@ -36,16 +36,15 @@ const StyledNavLink = styled(Link)`
 function Header(props: IHeaderProps) {
   const pathname = usePathname();
   const navLinks = [
-    { title: "Collection", href: "/" },
+    { title: "Collection", href: "/collection" },
     { title: "My NFTs", href: "/my-nfts" },
   ];
   return (
     <StyledWrapper>
       {navLinks.map(({ title, href }) => {
-        console.log({ pathname });
-        const isActive = pathname === href;
+        const isActive = pathname.startsWith(href);  // Check if the current path starts with the href
         return (
-          <StyledNavLink href={href} isActive={isActive}>
+          <StyledNavLink key={href} href={href} isActive={isActive}>
             {title}
           </StyledNavLink>
         );
