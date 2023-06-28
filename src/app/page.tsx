@@ -1,5 +1,4 @@
 "use client";
-import styles from "./page.module.css";
 import GrimaceMandalasNFT from "@/nftArtifacts/GrimaceMandalaNFT.json";
 import { useMetaMask } from "metamask-react";
 import { StyledButton } from "@/components/Header/Header";
@@ -22,7 +21,7 @@ const useMintNFT = (contractAddress) => {
       // Create an instance of the contract using the contract ABI and address
       const contract = new web3.eth.Contract(
         GrimaceMandalasNFT.abi,
-        contractAddress
+        contractAddress,
       );
 
       // Call the safeMint function to mint the NFT
@@ -43,10 +42,10 @@ const useMintNFT = (contractAddress) => {
 export default function Home() {
   const { handleMintNFT } = useMintNFT(contractAddress);
   return (
-    <main className={styles.main}>
+    <>
       <StyledButton onClick={() => handleMintNFT("ssoto")}>
         Mint NFT
       </StyledButton>
-    </main>
+    </>
   );
 }

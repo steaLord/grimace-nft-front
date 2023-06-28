@@ -1,12 +1,34 @@
 "use client";
 
+import React from "react";
 import "./globals.css";
-import { Inter } from "next/font/google";
+import { Fredoka } from "next/font/google";
 import RootStyleRegistry from "@/app/emotion";
-import Header from "@/components/Header";
+import styled from "@emotion/styled";
 import { MetaMaskProvider } from "metamask-react";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer/Footer";
 
-const inter = Inter({ subsets: ["latin"] });
+const fredoka = Fredoka({
+  subsets: ["latin"],
+  weight: ["400", "300"],
+});
+
+const BodyStyled = styled.body`
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+`;
+
+const MainStyled = styled.main`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6rem;
+  flex-grow: 1;
+`;
+
 
 export default function RootLayout({
   children,
@@ -15,14 +37,17 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <MetaMaskProvider>
-          <RootStyleRegistry>
-            <Header />
+    <BodyStyled className={fredoka.className}>
+      <MetaMaskProvider>
+        <RootStyleRegistry>
+          <Header/>
+          <MainStyled>
             {children}
-          </RootStyleRegistry>
-        </MetaMaskProvider>
-      </body>
+          </MainStyled>
+          <Footer/>
+        </RootStyleRegistry>
+      </MetaMaskProvider>
+    </BodyStyled>
     </html>
   );
 }
