@@ -22,15 +22,23 @@ const Wrapper = styled(Container)`
   width: 100%;
 `;
 
-export const StyledButton = styled.button`
+const OutlinedButton = styled.button`
+  font-size: 1.5rem;
+  border: 3px solid var(--color-orange);
+  background-color: rgba(0, 0, 0, 0%);
+  color: var(--color-white);
+  font-family: var(--font-family);
+  border-radius: 100px;
   padding: 8px 12px;
-  background: #ff6a00;
-  color: #ffffff;
-  font-weight: bold;
-  font-size: 14px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
+  transition-timing-function: ease;
+  transition-duration: 150ms;
+  transition-property: background-color, color;
+
+  &:hover {
+    color: var(--color-dark);
+    background-color: var(--color-orange);
+    cursor: pointer;
+  }
 `;
 
 const ItemsLeft = styled.div``;
@@ -98,7 +106,7 @@ function Header() {
           <NavLink href="/my-nfts">My NFTs</NavLink>
           <NavLink href="/collection">Collection</NavLink>
           {!account ? (
-            <StyledButton onClick={handleConnect}>Connect MetaMask</StyledButton>
+            <OutlinedButton onClick={handleConnect}>Connect MetaMask</OutlinedButton>
           ) : (
             <div style={{ color: "black" }}>{account.substring(0, 8)}...</div>
           )}
