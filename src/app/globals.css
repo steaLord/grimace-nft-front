@@ -1,10 +1,13 @@
 :root {
   --color-dark: #1a1a1a;
   --color-white: #ffffff;
+  --color-purple: #9747ff;
+
   --container-width: 1100px;
 
   --color-bg: var(--color-dark);
   --color-text: var(--color-white);
+  --color-accent: var(--color-purple);
 }
 
 /* Portrait phones */

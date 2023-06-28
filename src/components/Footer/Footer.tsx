@@ -1,8 +1,14 @@
 import Link from "next/link";
+import { css } from "@emotion/css";
 import styled from "@emotion/styled";
 import DiscordIcon from "@/components/icons/DiscordIcon";
 import TelegramIcon from "@/components/icons/TelegramIcon";
 import TwitterIcon from "@/components/icons/TwitterIcon";
+
+const socialIconStyles = css`
+  width: 36px;
+  height: 36px;
+`;
 
 const FooterStyled = styled.footer`
   display: flex;
@@ -24,6 +30,14 @@ const LinkStyled = styled(Link)`
   text-transform: uppercase;
   font-weight: 300;
   font-size: 1.5rem;
+  color: var(--color-text);
+  transition-timing-function: ease;
+  transition-duration: 150ms;
+  transition-property: color;
+
+  &:hover {
+    color: var(--color-accent);
+  }
 `;
 
 const SocialsStyled = styled.div`
@@ -33,7 +47,16 @@ const SocialsStyled = styled.div`
   gap: 28px;
 `;
 
-const SocialLinkStyled = styled(Link)``;
+const SocialLinkStyled = styled(Link)`
+  fill: var(--color-text);
+  transition-timing-function: ease;
+  transition-duration: 150ms;
+  transition-property: fill;
+
+  &:hover {
+    fill: var(--color-accent);
+  }
+`;
 
 const CopyrightStyled = styled.span`
   font-size: 1.25rem;
@@ -50,19 +73,19 @@ function Footer() {
             href="https://discord.com/invite/grimacedoge"
             target="_blank"
           >
-            <DiscordIcon/>
+            <DiscordIcon className={socialIconStyles}/>
           </SocialLinkStyled>
           <SocialLinkStyled
             href="https://t.me/grimacecommunity"
             target="_blank"
           >
-            <TelegramIcon/>
+            <TelegramIcon className={socialIconStyles}/>
           </SocialLinkStyled>
           <SocialLinkStyled
             href="https://twitter.com/Grimacedogchain"
             target="_blank"
           >
-            <TwitterIcon/>
+            <TwitterIcon className={socialIconStyles}/>
           </SocialLinkStyled>
         </SocialsStyled>
         <LinkStyled href="#">Whitepaper</LinkStyled>
