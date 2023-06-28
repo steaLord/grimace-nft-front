@@ -12,6 +12,7 @@ import Footer from "@/components/Footer";
 const fredoka = Fredoka({
   subsets: ["latin"],
   weight: ["300", "400", "700"],
+  variable: "--font-fredoka",
 });
 
 const BodyStyled = styled.body`
@@ -35,8 +36,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-    <BodyStyled className={fredoka.className}>
+    <html lang="en" className={fredoka.variable}>
+    <BodyStyled>
       <MetaMaskProvider>
         <RootStyleRegistry>
           <Header/>

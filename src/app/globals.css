@@ -2,12 +2,14 @@
   --color-dark: #1a1a1a;
   --color-white: #ffffff;
   --color-purple: #9747ff;
+  --color-orange: #e68c36;
 
   --container-width: 1100px;
 
   --color-bg: var(--color-dark);
   --color-text: var(--color-white);
   --color-accent: var(--color-purple);
+  --font-family: var(--font-fredoka), Inter, sans-serif;
 }
 
 /* Portrait phones */
@@ -53,6 +55,7 @@ body {
   overflow-x: hidden;
   background-color: var(--color-bg);
   color: var(--color-text);
+  font-family: var(--font-family);
 }
 
 a {
