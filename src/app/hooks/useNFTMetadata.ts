@@ -5,21 +5,22 @@ import { Web3 } from "web3";
 
 interface ITokenMetadata {
   imageSrc: string;
-  ID: string;
-  title: string;
-  collectionName: string;
-  description: string;
+  urlSlug: string;
+  title?: string;
+  collectionName?: string;
+  description?: string;
 }
 
 // TODO: Set contract address from proccess.env.CONTRACT_ADDRESS
-export const useNFTMetadata = (contractAddress): ITokenMetadata[] => {
-  const [nftTokens, setNFTTokens] = useState([]);
+export const useNFTMetadata = (
+  contractAddress
+): { nftTokens: ITokenMetadata[]; checkTokens: () => void } => {
+  const [nftTokens, setNFTTokens] = useState<ITokenMetadata[]>([]);
   const { account } = useMetaMask();
 
   const checkTokens = async () => {
     try {
       if (!account) {
-        console.log({ account });
         alert("Please connect metamask to check your collection");
         return;
       }
@@ -35,7 +36,7 @@ export const useNFTMetadata = (contractAddress): ITokenMetadata[] => {
       const balance = await contract.methods.balanceOf(account).call();
 
       // Retrieve the metadata URI for each token
-      const tokens = [];
+      const tokens: ITokenMetadata[] = [];
 
       for (let i = 0; i < balance; i++) {
         const tokenId = await contract.methods
@@ -44,7 +45,7 @@ export const useNFTMetadata = (contractAddress): ITokenMetadata[] => {
         const tokenURI = await contract.methods.tokenURI(tokenId).call();
         const res = await fetch(`/api/metadata/${tokenURI}`);
         const nftMetadata = await res.json();
-        tokens.push({ tokenId, tokenURI, nftMetadata });
+        tokens.push({ ...nftMetadata });
       }
 
       setNFTTokens(tokens);
