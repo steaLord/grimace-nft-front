@@ -46,9 +46,24 @@ function Footer() {
       <LinksContainerStyled>
         <LinkStyled href="/">Homepage</LinkStyled>
         <SocialsStyled>
-          <SocialLinkStyled href="#discord"><DiscordIcon/></SocialLinkStyled>
-          <SocialLinkStyled href="#telegram"><TelegramIcon/></SocialLinkStyled>
-          <SocialLinkStyled href="#twitter"><TwitterIcon/></SocialLinkStyled>
+          <SocialLinkStyled
+            href="https://discord.com/invite/grimacedoge"
+            target="_blank"
+          >
+            <DiscordIcon/>
+          </SocialLinkStyled>
+          <SocialLinkStyled
+            href="https://t.me/grimacecommunity"
+            target="_blank"
+          >
+            <TelegramIcon/>
+          </SocialLinkStyled>
+          <SocialLinkStyled
+            href="https://twitter.com/Grimacedogchain"
+            target="_blank"
+          >
+            <TwitterIcon/>
+          </SocialLinkStyled>
         </SocialsStyled>
         <LinkStyled href="#">Whitepaper</LinkStyled>
       </LinksContainerStyled>
