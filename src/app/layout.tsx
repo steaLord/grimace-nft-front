@@ -11,7 +11,7 @@ import Footer from "@/components/Footer";
 
 const fredoka = Fredoka({
   subsets: ["latin"],
-  weight: ["400", "300"],
+  weight: ["300", "400", "700"],
 });
 
 const BodyStyled = styled.body`
