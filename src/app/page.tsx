@@ -67,3 +67,5 @@ export default function Home() {
     </Root>
   );
 }
+
+export const contractAddress = "0x1C5e8f0fa8B15E735dAd516146A56366c5469438";

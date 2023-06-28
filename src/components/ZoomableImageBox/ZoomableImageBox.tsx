@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
-import * as d3 from "d3";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
+import { UncontrolledReactSVGPanZoom } from "react-svg-pan-zoom";
+import panzoom from "panzoom";
 
 interface ZoomableCanvasProps {
   width: number;
@@ -22,16 +23,6 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
   imageSrc,
 }) => {
   const [svg, setSvg] = useState();
-  const wrapperRef = useRef<HTMLDivElement>();
-
-  useLayoutEffect(() => {
-    console.log("Current", wrapperRef.current);
-    if (wrapperRef.current && svg) {
-      const divElement = wrapperRef.current;
-      // divWrapper?.style.background = "#fff";
-      wrapperRef.current?.appendChild(svg);
-    }
-  }, [wrapperRef]);
 
   useEffect(() => {
     (async () => {
@@ -41,7 +32,25 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
     })();
   }, []);
 
-  return <div ref={wrapperRef} />;
+  useEffect(() => {
+    if (svg && svgRef.current) {
+      // set the innerHTML of the svg container to the fetched SVG text
+      svgRef.current.innerHTML = svg;
+      svgRef.current.firstChild.style.height = "100%";
+      svgRef.current.firstChild.style.width = "100%";
+      // apply panzoom
+      const instance = panzoom(svgRef.current.firstChild, {
+        maxZoom: 5000,
+        minZoom: 0.1,
+      });
+      instance.zoomAbs(0, 0, 1); // zoom to 100% at (0, 0)
+    }
+  }, [svg]);
+
+  const svgRef = useRef();
+  return (
+    <div style={{ width: 500, height: 500, overflow: "hidden" }} ref={svgRef} />
+  );
 };
 
 export default ZoomableCanvas;

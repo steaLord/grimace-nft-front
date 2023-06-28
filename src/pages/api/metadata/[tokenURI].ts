@@ -4,7 +4,7 @@ import nft2Src from ".././../../../public/nft2.jpeg";
 import nft3Src from ".././../../../public/nft3.jpeg";
 import nft4Src from ".././../../../public/nft4.jpeg";
 import nft5Src from ".././../../../public/nft5.jpeg";
-import nft6Src from ".././../../../public/nft5.jpeg";
+import nft6Src from ".././../../../public/nft6.jpeg";
 
 const metadata = {
   "SAFE4LIFE.COM": {

@@ -3,7 +3,7 @@ import { useParams } from "next/navigation";
 import ZoomableImageBox from "@/components/ZoomableImageBox";
 import styled from "@emotion/styled";
 
-const StyledWrapper = styled.main`
+const StyledWrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 !important;
