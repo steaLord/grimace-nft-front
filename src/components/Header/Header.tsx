@@ -1,11 +1,12 @@
 import React from "react";
-import styled from "@emotion/styled";
 import Link from "next/link";
+import styled from "@emotion/styled";
+import { css } from "@emotion/css";
+import classNames from "classnames";
 import { usePathname } from "next/navigation";
 import { useMetaMask } from "metamask-react";
 import { useConnectMetamask } from "@/app/hooks/useConnectMetamask";
 
-export interface IHeaderProps {}
 
 const StyledWrapper = styled.nav`
   display: flex;
@@ -27,34 +28,47 @@ export const StyledButton = styled.button`
   cursor: pointer;
 `;
 
-const StyledNavLink = styled(Link)`
-  //...
-  color: ${({ isActive }) => (isActive ? "#000" : "#c0c0c0")};
+const navLinkStyle = css`
+  color: #c0c0c0;
 `;
+
+const navLinkActiveStyle = css`
+  color: #000;
+`;
+
+export type NavLinkProps = React.ComponentProps<typeof Link>
+
+function NavLink(props: NavLinkProps) {
+  const {
+    className,
+    href,
+    ...rest
+  } = props;
+  const pathname = usePathname();
+  const isActive = pathname?.startsWith(href.toString()) ?? false;
+
+  return (
+    <Link
+      {...rest}
+      className={classNames(className, navLinkStyle, {
+        [navLinkActiveStyle]: isActive,
+      })}
+      href={href}
+    />
+  );
+}
 
 /**
  * Header
  */
-function Header(props: IHeaderProps) {
-  const pathname = usePathname();
+function Header() {
   const { handleConnect } = useConnectMetamask();
   const { account } = useMetaMask();
 
-  // TODO: Remove it from here
-  const navLinks = [
-    { title: "Collection", href: "/collection" },
-    { title: "My NFTs", href: "/my-nfts" },
-  ];
   return (
     <StyledWrapper>
-      {navLinks.map(({ title, href }) => {
-        const isActive = pathname.startsWith(href); // Check if the current path starts with the href
-        return (
-          <StyledNavLink key={href} href={href} isActive={isActive}>
-            {title}
-          </StyledNavLink>
-        );
-      })}
+      <NavLink href="/collection">Collection</NavLink>
+      <NavLink href="/my-nfts">My NFTs</NavLink>
       {!account ? (
         <StyledButton onClick={handleConnect}>Connect MetaMask</StyledButton>
       ) : (
