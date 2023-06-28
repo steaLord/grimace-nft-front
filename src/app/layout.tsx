@@ -25,7 +25,6 @@ const MainStyled = styled.main`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 6rem;
   flex-grow: 1;
 `;
 
