@@ -88,7 +88,7 @@ function Footer() {
             <TwitterIcon className={socialIconStyles}/>
           </SocialLinkStyled>
         </SocialsStyled>
-        <LinkStyled href="#">Whitepaper</LinkStyled>
+        <LinkStyled href="https://whitepaper.grimacedoge.com/">Whitepaper</LinkStyled>
       </LinksContainerStyled>
       <CopyrightStyled>&copy; Grimace Coin 2023</CopyrightStyled>
     </FooterStyled>

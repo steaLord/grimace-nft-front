@@ -37,7 +37,7 @@ export default function MyNFTPage(props) {
     return (
       <StyledWrapper>
         <StyledName>{nftID}</StyledName>
-        <ZoomableImageBox width={400} height={400} imageSrc="/NFT-1MAX.svg" />
+        <ZoomableImageBox width={600} height={600} imageSrc="/NFT-1MAX.svg" />
       </StyledWrapper>
     );
   }

@@ -191,7 +191,7 @@ export default function Home() {
             ? <ButtonFilled href={"#"}>Explore</ButtonFilled>
             : <ButtonFilled href={"#"} className={"disabled"}>Coming soon</ButtonFilled>
           }
-          <ButtonOutlined href={"#"}>Buy Grimace</ButtonOutlined>
+          <ButtonOutlined target="__blank" href="https://app.withmantra.com">Buy Grimace</ButtonOutlined>
         </Buttons>
       </Content>
       <NFT/>

@@ -1,9 +1,5 @@
-"use client";
-
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import styled from "@emotion/styled";
-import { UncontrolledReactSVGPanZoom } from "react-svg-pan-zoom";
-import panzoom from "panzoom";
 
 interface ZoomableCanvasProps {
   width: number;
@@ -11,10 +7,18 @@ interface ZoomableCanvasProps {
   imageSrc: string;
 }
 
+const StyledRoot = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const StyledCanvas = styled.canvas`
-  border: 1px solid #d1d1d1;
-  background: rgba(151, 71, 255, 0.55);
+  width: 100%;
+  height: 100%;
   border-radius: 16px;
+  background: #a9a9a9;
+  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.4);
 `;
 
 const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
@@ -22,34 +26,184 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
   height,
   imageSrc,
 }) => {
-  const [svg, setSvg] = useState();
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [dragStart, setDragStart] = useState<{ x: number; y: number } | null>(
+    null
+  );
+  const [offset, setOffset] = useState<{ x: number; y: number }>({
+    x: 0,
+    y: 0,
+  });
+  const [scale, setScale] = useState<number>(1);
+  const [isDragging, setIsDragging] = useState<boolean>(false);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
-    (async () => {
-      const res = await fetch("/api/getSVGFile");
-      const svgData = await res.text();
-      setSvg(svgData);
-    })();
+    const canvas = canvasRef.current;
+
+    if (canvas) {
+      const context = canvas.getContext("2d");
+
+      const image = new Image();
+      image.src = imageSrc;
+
+      image.onload = () => {
+        const canvasWidth = width;
+        const canvasHeight = height;
+
+        canvas.width = canvasWidth;
+        canvas.height = canvasHeight;
+
+        context?.clearRect(0, 0, canvasWidth, canvasHeight);
+        context?.drawImage(
+          image,
+          offset.x,
+          offset.y,
+          canvasWidth * scale,
+          canvasHeight * scale
+        );
+      };
+    }
+  }, [width, height, imageSrc, offset, scale]);
+
+  const handleWheel = (event: React.WheelEvent<HTMLCanvasElement>) => {
+    event.preventDefault();
+
+    const canvas = canvasRef.current;
+    const { clientX, clientY } = event;
+
+    if (canvas) {
+      const rect = canvas.getBoundingClientRect();
+      const offsetX = clientX - rect.left;
+      const offsetY = clientY - rect.top;
+
+      const scaleFactor = event.deltaY > 0 ? 0.9 : 1.1;
+      const newScale = scale * scaleFactor;
+
+      const newOffsetX = offsetX - (offsetX - offset.x) * scaleFactor;
+      const newOffsetY = offsetY - (offsetY - offset.y) * scaleFactor;
+
+      setScale(newScale);
+      setOffset({ x: newOffsetX, y: newOffsetY });
+    }
+  };
+
+  const handleMouseDown = (event: React.MouseEvent<HTMLCanvasElement>) => {
+    event.preventDefault();
+
+    const canvas = canvasRef.current;
+
+    if (canvas) {
+      setDragStart({ x: event.clientX, y: event.clientY });
+      setIsDragging(true);
+      canvas.style.cursor = "grabbing";
+    }
+  };
+
+  const handleMouseUp = () => {
+    setDragStart(null);
+    setIsDragging(false);
+    const canvas = canvasRef.current;
+    if (canvas) {
+      canvas.style.cursor = "grab";
+    }
+  };
+
+  const handleMouseMove = (event: React.MouseEvent<HTMLCanvasElement>) => {
+    if (dragStart && isDragging) {
+      const offsetX = event.clientX - dragStart.x;
+      const offsetY = event.clientY - dragStart.y;
+
+      const newOffsetX = offset.x + offsetX;
+      const newOffsetY = offset.y + offsetY;
+
+      setOffset({ x: newOffsetX, y: newOffsetY });
+      setDragStart({ x: event.clientX, y: event.clientY });
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (isDragging) {
+      setDragStart(null);
+      setIsDragging(false);
+      const canvas = canvasRef.current;
+      if (canvas) {
+        canvas.style.cursor = "grab";
+      }
+    }
+  };
+
+  const handleMouseEnter = () => {
+    if (!isDragging) {
+      const canvas = canvasRef.current;
+      if (canvas) {
+        canvas.style.cursor = "grab";
+      }
+    }
+  };
+
+  const handleScroll = (event: React.WheelEvent<HTMLCanvasElement>) => {
+    event.preventDefault();
+
+    const canvas = canvasRef.current;
+    const { clientX, clientY } = event;
+
+    if (canvas) {
+      const rect = canvas.getBoundingClientRect();
+      const offsetX = clientX - rect.left;
+      const offsetY = clientY - rect.top;
+
+      const scaleFactor = event.deltaY > 0 ? 0.9 : 1.1;
+      const newScale = scale * scaleFactor;
+
+      const newOffsetX = offsetX - (offsetX - offset.x) * scaleFactor;
+      const newOffsetY = offsetY - (offsetY - offset.y) * scaleFactor;
+
+      setScale(newScale);
+      setOffset({ x: newOffsetX, y: newOffsetY });
+    }
+  };
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+
+    if (canvas) {
+      canvas.addEventListener("wheel", handleScroll, { passive: false });
+      return () => {
+        canvas.removeEventListener("wheel", handleScroll);
+      };
+    }
   }, []);
 
   useEffect(() => {
-    if (svg && svgRef.current) {
-      // set the innerHTML of the svg container to the fetched SVG text
-      svgRef.current.innerHTML = svg;
-      svgRef.current.firstChild.style.height = "100%";
-      svgRef.current.firstChild.style.width = "100%";
-      // apply panzoom
-      const instance = panzoom(svgRef.current.firstChild, {
-        maxZoom: 9999999,
-        minZoom: 0.1,
-      });
-      instance.zoomAbs(0, 0, 1); // zoom to 100% at (0, 0)
-    }
-  }, [svg]);
+    const canvas = canvasRef.current;
 
-  const svgRef = useRef();
+    if (canvas) {
+      const transitionEndHandler = () => {
+        canvas.style.transition = "";
+        canvas.removeEventListener("transitionend", transitionEndHandler);
+      };
+
+      canvas.addEventListener("transitionend", transitionEndHandler);
+    }
+  }, []);
+
   return (
-    <div style={{ width: 500, height: 500, overflow: "hidden" }} ref={svgRef} />
+    <StyledRoot>
+      <StyledCanvas
+        ref={canvasRef}
+        style={{
+          maxWidth: width,
+          maxHeight: height,
+        }}
+        onWheel={handleWheel}
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        onMouseEnter={handleMouseEnter}
+      />
+    </StyledRoot>
   );
 };
 

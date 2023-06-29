@@ -6,9 +6,10 @@ import Image from "next/image";
 import Link from "next/link";
 import styled from "@emotion/styled";
 import CollectionGrid from "@/components/CollectionGrid";
+import { keyframes } from "@emotion/css";
 
 export default function MyNFTsPage() {
-  const { nftTokens } = useNFTMetadata(contractAddress);
+  const { nftTokens, isLoading } = useNFTMetadata(contractAddress);
   const { account } = useMetaMask();
 
   return (
@@ -16,6 +17,16 @@ export default function MyNFTsPage() {
       <H1>My NFT's</H1>
       {!account && <div>Please connect metamask to use this page</div>}
       <CollectionGrid>
+        {isLoading && (
+          <>
+            <StyledNFTSkeleton />
+            <StyledNFTSkeleton />
+            <StyledNFTSkeleton />
+            <StyledNFTSkeleton />
+            <StyledNFTSkeleton />
+            <StyledNFTSkeleton />
+          </>
+        )}
         {nftTokens.map(({ imageSrc, urlSlug, title }) => {
           return (
             <Link key={urlSlug} href={`/my-nfts/${urlSlug}`}>
@@ -43,4 +54,30 @@ const StyledNFTImage = styled(Image)`
   width: 100%;
   height: 100%;
   object-fit: cover;
+`;
+
+const load = keyframes`
+  to {
+    // Move shine from left to right, with offset on the right based on the width of the shine - see background-size
+    background-position: right -40px top 0;
+  }
+`;
+
+const StyledNFTSkeleton = styled.div`
+  width: 100%;
+  height: 100%;
+  // The skeleton itself will be a light gray
+  background-color: #ddd;
+  // The shine that's going to move across the skeleton:
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0.5),
+    rgba(255, 255, 255, 0)
+  );
+  background-size: 40px 100%; // width of the shine
+  background-repeat: no-repeat; // No need to repeat the shine effect
+  // Place shine on the left side, with offset on the left based on the width of the shine - see background-size
+  background-position: left -40px top 0;
+  animation: ${load} 1s ease infinite; // increase animation time to see effect in 'slow-mo'
 `;
