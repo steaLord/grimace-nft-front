@@ -10,12 +10,16 @@ import { useEffect } from "react";
 const StyledWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   padding: 0 !important;
   width: 100%;
 `;
 
 const StyledName = styled.div`
   font-size: 54px;
+  font-weight: 900;
+  margin: 0 auto;
+  margin-bottom: 22px;
 `;
 
 const StyledZoomableImageWrapper = styled.div``;
