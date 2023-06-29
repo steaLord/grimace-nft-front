@@ -1,9 +1,11 @@
 "use client";
 
 import styled from "@emotion/styled";
-import Container from "@/components/Container";
 import Image from "next/image";
 import grimaceNFTImage from "./grimace-nft-image.png";
+import Container from "@/components/Container";
+import Countdown from "@/components/Countdown";
+import { useEffect, useState } from "react";
 
 const Root = styled(Container)`
   width: 100%;
@@ -25,7 +27,12 @@ const NFTImage = styled(Image)`
 `;
 
 function NFT() {
-  return <NFTImage src={grimaceNFTImage} alt="Grimace NFT"/>;
+  return (
+    <NFTImage
+      src={grimaceNFTImage}
+      alt="Grimace NFT"
+      priority
+    />);
 }
 
 const HeadingWrapper = styled.h1`
@@ -50,9 +57,37 @@ const HeadingPart3 = styled.span`
   text-transform: uppercase;
   line-height: 0.8;
 `;
+const StartCountdown = styled(Countdown)`
+  margin-top: 24px;
+`;
 
+const startDate = new Date(process.env["TIMER_END_ISO_DATE"] ?? "2023-07-01T00:00:00.000Z");
+const startTime = startDate.getTime();
+
+function getRemainingSeconds() {
+  return Math.floor((startTime - (new Date()).getTime()) / 1000);
+}
+
+function useRemainingTime() {
+  const [remainingSeconds, setRemainingSeconds] = useState(getRemainingSeconds());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRemainingSeconds(getRemainingSeconds());
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const dd = Math.floor(remainingSeconds / 86400);
+  const hh = Math.floor((remainingSeconds % 86400) / 3600);
+  const mm = Math.floor((remainingSeconds % 3600) / 60);
+
+  return { dd, hh, mm };
+}
 
 export default function Home() {
+  const { dd, hh, mm } = useRemainingTime();
+
   return (
     <Root>
       <Content>
@@ -62,6 +97,7 @@ export default function Home() {
           <HeadingPart3>NFT</HeadingPart3>
         </HeadingWrapper>
         <Subheading>The first collection with sense</Subheading>
+        <StartCountdown num1={dd} num2={hh} num3={mm}/>
       </Content>
       <NFT/>
     </Root>
