@@ -14,8 +14,9 @@ interface ITokenMetadata {
 // TODO: Set contract address from proccess.env.CONTRACT_ADDRESS
 export const useNFTMetadata = (
   contractAddress
-): { nftTokens: ITokenMetadata[]; checkTokens: () => void } => {
+): { nftTokens: ITokenMetadata[], isLoading: boolean } => {
   const [nftTokens, setNFTTokens] = useState<ITokenMetadata[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const { account } = useMetaMask();
 
   const checkTokens = async () => {
@@ -24,6 +25,7 @@ export const useNFTMetadata = (
         alert("Please connect metamask to check your collection");
         return;
       }
+      setIsLoading(true);
 
       const web3 = new Web3(window.ethereum);
       // Create an instance of the contract using the contract ABI and address
@@ -49,7 +51,9 @@ export const useNFTMetadata = (
       }
 
       setNFTTokens(tokens);
+      setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
       console.error("Error checking NFT tokens:", error);
     }
   };
@@ -57,10 +61,13 @@ export const useNFTMetadata = (
   useEffect(() => {
     (async () => {
       if (account) {
-        return await checkTokens();
+        await checkTokens();
+      }
+      if(!account) {
+        setIsLoading(false)
       }
     })();
   }, [account]);
 
-  return { nftTokens, checkTokens };
+  return { nftTokens, isLoading };
 };

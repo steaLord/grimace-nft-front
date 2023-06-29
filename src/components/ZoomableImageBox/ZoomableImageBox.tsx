@@ -40,7 +40,7 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
       svgRef.current.firstChild.style.width = "100%";
       // apply panzoom
       const instance = panzoom(svgRef.current.firstChild, {
-        maxZoom: 5000,
+        maxZoom: 9999999,
         minZoom: 0.1,
       });
       instance.zoomAbs(0, 0, 1); // zoom to 100% at (0, 0)

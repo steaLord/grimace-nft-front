@@ -11,7 +11,6 @@ export default function MyNFTsPage() {
   const { nftTokens } = useNFTMetadata(contractAddress);
   const { account } = useMetaMask();
 
-  console.log({ nftTokens });
   return (
     <>
       <H1>My NFT's</H1>
@@ -20,7 +19,12 @@ export default function MyNFTsPage() {
         {nftTokens.map(({ imageSrc, urlSlug, title }) => {
           return (
             <Link key={urlSlug} href={`/my-nfts/${urlSlug}`}>
-              <StyledNFTImage width={300} height={300} src={imageSrc} alt={title ?? "my-nft"}/>
+              <StyledNFTImage
+                width={300}
+                height={300}
+                src={imageSrc}
+                alt={title ?? "my-nft"}
+              />
             </Link>
           );
         })}
