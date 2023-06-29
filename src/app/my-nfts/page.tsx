@@ -5,34 +5,7 @@ import { useMetaMask } from "metamask-react";
 import Image from "next/image";
 import Link from "next/link";
 import styled from "@emotion/styled";
-
-const StyledRoot = styled.main`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  padding: 0px 320px;
-`;
-
-const StyledWrapper = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
-`;
-
-const StyledTitle = styled.h1`
-  font-size: 54px;
-  margin-bottom: 22px;
-  font-weight: 100;
-`;
-
-const StyledNFTImage = styled(Image)`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-`;
+import CollectionGrid from "@/components/CollectionGrid";
 
 export default function MyNFTsPage() {
   const { nftTokens } = useNFTMetadata(contractAddress);
@@ -40,18 +13,30 @@ export default function MyNFTsPage() {
 
   console.log({ nftTokens });
   return (
-    <StyledRoot>
-      <StyledTitle>My NFT's</StyledTitle>
+    <>
+      <H1>My NFT's</H1>
       {!account && <div>Please connect metamask to use this page</div>}
-      <StyledWrapper>
+      <CollectionGrid>
         {nftTokens.map(({ imageSrc, urlSlug, title }) => {
           return (
             <Link key={urlSlug} href={`/my-nfts/${urlSlug}`}>
-              <StyledNFTImage src={imageSrc} alt={title} />
+              <StyledNFTImage width={300} height={300} src={imageSrc} alt={title ?? "my-nft"}/>
             </Link>
           );
         })}
-      </StyledWrapper>
-    </StyledRoot>
+      </CollectionGrid>
+    </>
   );
 }
+
+const H1 = styled.h1`
+  font-size: 3rem;
+  font-weight: 400;
+  margin-bottom: 24px;
+`;
+
+const StyledNFTImage = styled(Image)`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;

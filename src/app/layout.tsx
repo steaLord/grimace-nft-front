@@ -24,7 +24,7 @@ const BodyStyled = styled.body`
 const MainStyled = styled.main`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   flex-grow: 1;
 `;

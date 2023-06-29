@@ -12,7 +12,7 @@ import Container from "@/components/Container";
 const Root = styled.header`
   display: flex;
   justify-content: center;
-  padding: 54px 0;
+  padding: 48px 0;
 `;
 
 const Wrapper = styled(Container)`

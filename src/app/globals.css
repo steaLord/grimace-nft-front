@@ -4,8 +4,6 @@
   --color-purple: #9747ff;
   --color-orange: #e68c36;
 
-  --container-width: 1100px;
-
   --color-bg: var(--color-dark);
   --color-text: var(--color-white);
   --color-accent: var(--color-purple);
@@ -31,6 +29,13 @@
 @media (max-width: 1199.98px) {
   :root {
     --container-width: 920px;
+  }
+}
+
+/* Large desktops */
+@media (min-width: 1200px) {
+  :root {
+    --container-width: 1140px;
   }
 }
 
