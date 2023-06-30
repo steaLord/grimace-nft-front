@@ -1,29 +1,49 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import path from "path";
-import fs from "fs";
-import {JSDOM} from "jsdom";
+import { GetObjectRequest, ListObjectsRequest } from "aws-sdk/clients/s3";
+import { JSDOM } from "jsdom";
+
+const AWS = require("aws-sdk");
+AWS.config.update({
+  accessKeyId: process.env.AWS_S3_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_S3_SECRET_ACCESS_KEY,
+  region: "eu-central-1",
+});
 
 // TODO: Implement Security
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   // tokenURI example "https://<site-name>/metadata/{tokenId}"
-  const { file } = req.query;
+  const { nftName } = req.query;
 
-  const filePath = path.join(process.cwd(), "public", `NFT-1MAX.svg`);
+  // connect aws API
+  const s3 = new AWS.S3();
+  const listObjectsParams: ListObjectsRequest = {
+    Bucket: "grimace-nft",
+  };
+  s3.listObjects(listObjectsParams, (err, data) => {
+    if (err) {
+      console.error("Error listing objects:", err);
+    } else {
+      console.log("Files in the bucket:");
+      data.Contents.forEach((object) => {
+        console.log(object.Key);
+      });
+    }
+  });
 
-  if (fs.existsSync(filePath)) {
-    // If the file exists, read it
-    const svgData = fs.readFileSync(filePath, "utf8");
-    const dom = new JSDOM(svgData);
-    const svg = dom.window.document.querySelector('svg');
-    const svgString = svg.outerHTML;
-
-    // Set the correct Content-Type for SVG files
-    res.setHeader("Content-Type", "image/svg+xml");
-
-    // Send the SVG file as a response
-    res.status(200).send(svgString);
-  } else {
-    // If the file doesn't exist, send a 404 Not Found status code
-    res.status(404).send("File not found");
-  }
+  const getParams: GetObjectRequest = {
+    Bucket: "grimace-nft",
+    Key: "nft1.svg",
+  };
+  s3.getObject(getParams, (err, data) => {
+    if (err) {
+      console.log(err);
+    } else {
+      const svgResponse = data.Body.toString();
+      const dom = new JSDOM(svgResponse);
+      const svg = dom.window.document.querySelector("svg");
+      const svgString = svg.outerHTML;
+      res.setHeader("Content-Type", "image/svg+xml");
+      res.status(200).send(svgString);
+    }
+  });
 }

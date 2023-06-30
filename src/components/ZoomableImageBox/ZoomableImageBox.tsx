@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
 
 interface ZoomableCanvasProps {
@@ -36,18 +36,40 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
   });
   const [scale, setScale] = useState<number>(1);
   const [isDragging, setIsDragging] = useState<boolean>(false);
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [svgString, setSvgString] = useState("");
+  const [isLoadingSVG, setIsLoadingSVG] = useState(true);
+  const imageRef = useRef<HTMLImageElement>();
+  useEffect(() => {
+    (async () => {
+      setIsLoadingSVG(true);
+      try {
+        const res = await fetch(`/api/getSVGFile?nftName=${imageSrc}`);
+        const svgStringResponse = await res.text();
+        setSvgString(svgStringResponse);
+
+        const image = new Image();
+        const blob = new Blob([svgStringResponse], { type: "image/svg+xml" });
+        const url = URL.createObjectURL(blob);
+        image.onload = () => {
+          URL.revokeObjectURL(url);
+          imageRef.current = image;
+          setIsLoadingSVG(false);
+        };
+        imageRef.current = image;
+        image.src = url;
+      } catch (e) {
+        setIsLoadingSVG(false);
+      }
+    })();
+  }, [imageSrc]);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
+    if (imageRef.current && !isLoadingSVG) {
+      const canvas = canvasRef.current;
 
-    if (canvas) {
-      const context = canvas.getContext("2d");
+      if (canvas) {
+        const context = canvas.getContext("2d");
 
-      const image = new Image();
-      image.src = imageSrc;
-
-      image.onload = () => {
         const canvasWidth = width;
         const canvasHeight = height;
 
@@ -55,18 +77,20 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
         canvas.height = canvasHeight;
 
         context?.clearRect(0, 0, canvasWidth, canvasHeight);
+        console.log("Image Draw");
         context?.drawImage(
-          image,
+          imageRef.current,
           offset.x,
           offset.y,
           canvasWidth * scale,
           canvasHeight * scale
         );
-      };
+      }
     }
-  }, [width, height, imageSrc, offset, scale]);
+  }, [width, height, imageRef, svgString, offset, scale, isLoadingSVG]);
 
   const handleWheel = (event: React.WheelEvent<HTMLCanvasElement>) => {
+    event.stopPropagation()
     event.preventDefault();
 
     const canvas = canvasRef.current;
@@ -142,35 +166,17 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
     }
   };
 
-  const handleScroll = (event: React.WheelEvent<HTMLCanvasElement>) => {
+  const handleScroll = (event: WheelEvent) => {
+    event.stopPropagation()
     event.preventDefault();
-
-    const canvas = canvasRef.current;
-    const { clientX, clientY } = event;
-
-    if (canvas) {
-      const rect = canvas.getBoundingClientRect();
-      const offsetX = clientX - rect.left;
-      const offsetY = clientY - rect.top;
-
-      const scaleFactor = event.deltaY > 0 ? 0.9 : 1.1;
-      const newScale = scale * scaleFactor;
-
-      const newOffsetX = offsetX - (offsetX - offset.x) * scaleFactor;
-      const newOffsetY = offsetY - (offsetY - offset.y) * scaleFactor;
-
-      setScale(newScale);
-      setOffset({ x: newOffsetX, y: newOffsetY });
-    }
   };
-
   useEffect(() => {
     const canvas = canvasRef.current;
 
     if (canvas) {
-      canvas.addEventListener("wheel", handleScroll, { passive: false });
+      canvas.addEventListener("scroll", handleScroll, { passive: false });
       return () => {
-        canvas.removeEventListener("wheel", handleScroll);
+        canvas.removeEventListener("scroll", handleScroll);
       };
     }
   }, []);
@@ -188,6 +194,9 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
     }
   }, []);
 
+  if (isLoadingSVG) {
+    return <div>Loading...</div>;
+  }
   return (
     <StyledRoot>
       <StyledCanvas

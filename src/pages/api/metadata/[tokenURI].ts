@@ -43,8 +43,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   // tokenURI example "https://<site-name>/metadata/{tokenId}"
   const { tokenURI } = req.query;
 
-  // connect aws API
-
   const metadataJson = { ...metadata[tokenURI], svgSrc: "" /*aws response*/ };
   // decide what to store in URI
   res.status(200).json({ ...metadataJson });
