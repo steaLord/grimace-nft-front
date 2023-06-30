@@ -6,7 +6,7 @@ import grimaceNFTImage from "./grimace-nft-image.png";
 import Container from "@/components/Container";
 import Countdown from "@/components/Countdown";
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
+import Button from "@/components/Button";
 
 const Root = styled(Container)`
   width: 100%;
@@ -72,63 +72,6 @@ const Buttons = styled.div`
   gap: 20px;
 `;
 
-const ButtonFilled = styled(Link)`
-  min-width: 200px;
-  border-radius: 12px;
-  font-size: 1.5rem;
-  padding: 12px 8px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-transform: uppercase;
-  color: var(--color-white);
-  font-weight: 700;
-  background: linear-gradient(270deg, #9747FF 0%, #4C1592 100%);
-  cursor: pointer;
-
-  &.disabled {
-    font-weight: 400;
-    background: linear-gradient(270deg, #454545 0%, #676767 100%);
-    cursor: not-allowed;
-  }
-`;
-
-const ButtonOutlinedRoot = styled(Link)`
-  min-width: 200px;
-  border-radius: 12px;
-  font-size: 1.5rem;
-  padding: 4px;
-  text-transform: uppercase;
-  color: var(--color-white);
-  font-weight: 400;
-  background: linear-gradient(90deg, rgba(151, 71, 255, 1) 0%, rgba(76, 21, 146, 1) 50%, rgba(219, 0, 255, 1) 100%);;
-  cursor: pointer;
-
-  & > span {
-    background: var(--color-bg);
-    border-radius: 10px;
-    padding: 8px 4px;
-    width: 100%;
-    height: 100%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 150ms ease;
-  }
-
-  &:hover > span {
-    background: transparent;
-  }
-`;
-
-function ButtonOutlined({ children, ...rest }: React.ComponentProps<typeof Link>) {
-  return (
-    <ButtonOutlinedRoot {...rest}>
-      <span>{children}</span>
-    </ButtonOutlinedRoot>
-  );
-}
-
 function HeadingMeet() {
   return (
     <HeadingWrapper>
@@ -188,10 +131,10 @@ export default function Home() {
         {!released && <StartCountdown num1={dd} num2={hh} num3={mm}/>}
         <Buttons>
           {released
-            ? <ButtonFilled href={"#"}>Explore</ButtonFilled>
-            : <ButtonFilled href={"#"} className={"disabled"}>Coming soon</ButtonFilled>
+            ? <Button buttonType={"filled"} href={"#"}>Explore</Button>
+            : <Button buttonType={"filled"} href={"#"} className={"disabled"}>Coming soon</Button>
           }
-          <ButtonOutlined target="__blank" href="https://app.withmantra.com">Buy Grimace</ButtonOutlined>
+          <Button target="__blank" href="https://app.withmantra.com">Buy Grimace</Button>
         </Buttons>
       </Content>
       <NFT/>
