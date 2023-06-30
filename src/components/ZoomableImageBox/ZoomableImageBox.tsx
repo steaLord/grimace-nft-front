@@ -4,27 +4,31 @@ import styled from "@emotion/styled";
 interface ZoomableCanvasProps {
   width: number;
   height: number;
-  imageSrc: string;
+  nftName: string;
 }
 
 const StyledRoot = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  overscroll-behavior: contain;
 `;
 
 const StyledCanvas = styled.canvas`
   width: 100%;
   height: 100%;
+  max-width: ${({ width }) => width + "px"};
+  max-height: ${({ height }) => height + "px"};
   border-radius: 16px;
   background: #a9a9a9;
   box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.4);
+  overscroll-behavior: contain;
 `;
 
 const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
   width,
   height,
-  imageSrc,
+  nftName,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [dragStart, setDragStart] = useState<{ x: number; y: number } | null>(
@@ -43,7 +47,7 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
     (async () => {
       setIsLoadingSVG(true);
       try {
-        const res = await fetch(`/api/getSVGFile?nftName=${imageSrc}`);
+        const res = await fetch(`/api/getSVGFile?nftName=${nftName}`);
         const svgStringResponse = await res.text();
         setSvgString(svgStringResponse);
 
@@ -61,7 +65,7 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
         setIsLoadingSVG(false);
       }
     })();
-  }, [imageSrc]);
+  }, [nftName]);
 
   useEffect(() => {
     if (imageRef.current && !isLoadingSVG) {
@@ -90,7 +94,7 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
   }, [width, height, imageRef, svgString, offset, scale, isLoadingSVG]);
 
   const handleWheel = (event: React.WheelEvent<HTMLCanvasElement>) => {
-    event.stopPropagation()
+    event.stopPropagation();
     event.preventDefault();
 
     const canvas = canvasRef.current;
@@ -167,7 +171,7 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
   };
 
   const handleScroll = (event: WheelEvent) => {
-    event.stopPropagation()
+    event.stopPropagation();
     event.preventDefault();
   };
   useEffect(() => {
@@ -201,10 +205,8 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
     <StyledRoot>
       <StyledCanvas
         ref={canvasRef}
-        style={{
-          maxWidth: width,
-          maxHeight: height,
-        }}
+        width={width}
+        height={height}
         onWheel={handleWheel}
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
