@@ -52,6 +52,7 @@ const NFTImage = styled(Image)`
   flex-basis: 50%;
   height: auto;
   max-width: 50%;
+  object-fit: cover;
 `;
 
 const Content = styled.div`
