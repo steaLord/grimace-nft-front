@@ -8,6 +8,7 @@ interface ZoomableCanvasProps {
 }
 
 const StyledRoot = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -25,11 +26,35 @@ const StyledCanvas = styled.canvas`
   overscroll-behavior: contain;
 `;
 
+const ZoomButtonsContainer = styled.div`
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+`;
+
+const ZoomButton = styled.button`
+  background: #ffffff;
+  border: none;
+  border-radius: 4px;
+  width: 30px;
+  height: 30px;
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: bold;
+
+  &:focus {
+    outline: none;
+  }
+`;
+
 const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
-  width,
-  height,
-  nftName,
-}) => {
+                                                         width,
+                                                         height,
+                                                         nftName,
+                                                       }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [dragStart, setDragStart] = useState<{ x: number; y: number } | null>(
     null
@@ -43,6 +68,7 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
   const [svgString, setSvgString] = useState("");
   const [isLoadingSVG, setIsLoadingSVG] = useState(true);
   const imageRef = useRef<HTMLImageElement>();
+
   useEffect(() => {
     (async () => {
       setIsLoadingSVG(true);
@@ -81,7 +107,6 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
         canvas.height = canvasHeight;
 
         context?.clearRect(0, 0, canvasWidth, canvasHeight);
-        console.log("Image Draw");
         context?.drawImage(
           imageRef.current,
           offset.x,
@@ -93,13 +118,9 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
     }
   }, [width, height, imageRef, svgString, offset, scale, isLoadingSVG]);
 
-  const handleWheel = (event: React.WheelEvent<HTMLCanvasElement>) => {
-    event.stopPropagation();
-    event.preventDefault();
-
+  const handleWheel = (event: WheelEvent) => {
     const canvas = canvasRef.current;
     const { clientX, clientY } = event;
-
     if (canvas) {
       const rect = canvas.getBoundingClientRect();
       const offsetX = clientX - rect.left;
@@ -170,50 +191,63 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
     }
   };
 
-  const handleScroll = (event: WheelEvent) => {
-    event.stopPropagation();
-    event.preventDefault();
+  const handleZoomIn = () => {
+    setScale(scale * 1.1);
+    // adjustOffsetOnZoom(1.1);
   };
-  useEffect(() => {
+
+  const handleZoomOut = () => {
+    setScale(scale * 0.9);
+    // adjustOffsetOnZoom(0.9);
+  };
+
+  const adjustOffsetOnZoom = (scaleFactor: number) => {
     const canvas = canvasRef.current;
-
     if (canvas) {
-      canvas.addEventListener("scroll", handleScroll, { passive: false });
-      return () => {
-        canvas.removeEventListener("scroll", handleScroll);
-      };
+      const rect = canvas.getBoundingClientRect();
+      const offsetX = rect.width / 2 - rect.width / 2 * scaleFactor;
+      const offsetY = rect.height / 2 - rect.height / 2 * scaleFactor;
+      setOffset({ x: offsetX, y: offsetY });
     }
-  }, []);
+  };
 
   useEffect(() => {
-    const canvas = canvasRef.current;
+    const handleScroll = (event: WheelEvent) => {
+      const canvas = canvasRef.current;
+      if (event?.target?.id === canvas.id) {
+        event.preventDefault();
+        handleWheel(event);
+      }
+    };
 
-    if (canvas) {
-      const transitionEndHandler = () => {
-        canvas.style.transition = "";
-        canvas.removeEventListener("transitionend", transitionEndHandler);
-      };
+    window.addEventListener("wheel", handleScroll, { passive: false });
 
-      canvas.addEventListener("transitionend", transitionEndHandler);
-    }
-  }, []);
+    return () => {
+      window.removeEventListener("wheel", handleScroll);
+    };
+  }, [handleWheel]);
 
   if (isLoadingSVG) {
     return <div>Loading...</div>;
   }
+
   return (
     <StyledRoot>
       <StyledCanvas
+        id="imageCanvas"
         ref={canvasRef}
         width={width}
         height={height}
-        onWheel={handleWheel}
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
         onMouseEnter={handleMouseEnter}
       />
+      <ZoomButtonsContainer>
+        <ZoomButton onClick={handleZoomIn}>+</ZoomButton>
+        <ZoomButton onClick={handleZoomOut}>-</ZoomButton>
+      </ZoomButtonsContainer>
     </StyledRoot>
   );
 };
