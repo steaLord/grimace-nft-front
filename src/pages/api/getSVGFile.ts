@@ -32,7 +32,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 
   const getParams: GetObjectRequest = {
     Bucket: "grimace-nft",
-    Key: "nft1.svg",
+    Key: `${nftName}.svg` as string,
   };
   s3.getObject(getParams, (err, data) => {
     if (err) {

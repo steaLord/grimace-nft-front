@@ -12,7 +12,6 @@ const StyledRoot = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  overscroll-behavior: contain;
 `;
 
 const StyledCanvas = styled.canvas`
@@ -23,7 +22,6 @@ const StyledCanvas = styled.canvas`
   border-radius: 16px;
   background: #a9a9a9;
   box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.4);
-  overscroll-behavior: contain;
 `;
 
 const ZoomButtonsContainer = styled.div`
@@ -49,6 +47,11 @@ const ZoomButton = styled.button`
     outline: none;
   }
 `;
+
+// Easing function
+const easeInOutCubic = (t) => {
+  return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+};
 
 const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
                                                          width,
@@ -118,15 +121,14 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
     }
   }, [width, height, imageRef, svgString, offset, scale, isLoadingSVG]);
 
-  const handleWheel = (event: WheelEvent) => {
+  const handleZoom = (delta: number, clientX: number, clientY: number) => {
     const canvas = canvasRef.current;
-    const { clientX, clientY } = event;
     if (canvas) {
       const rect = canvas.getBoundingClientRect();
       const offsetX = clientX - rect.left;
       const offsetY = clientY - rect.top;
 
-      const scaleFactor = event.deltaY > 0 ? 0.9 : 1.1;
+      const scaleFactor = delta > 0 ? 0.9 : 1.1;
       const newScale = scale * scaleFactor;
 
       const newOffsetX = offsetX - (offsetX - offset.x) * scaleFactor;
@@ -137,19 +139,29 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
     }
   };
 
-  const handleMouseDown = (event: React.MouseEvent<HTMLCanvasElement>) => {
-    event.preventDefault();
-
+  const handleDragStart = (clientX: number, clientY: number) => {
     const canvas = canvasRef.current;
-
     if (canvas) {
-      setDragStart({ x: event.clientX, y: event.clientY });
+      setDragStart({ x: clientX, y: clientY });
       setIsDragging(true);
       canvas.style.cursor = "grabbing";
     }
   };
 
-  const handleMouseUp = () => {
+  const handleDragMove = (clientX: number, clientY: number) => {
+    if (dragStart && isDragging) {
+      const offsetX = clientX - dragStart.x;
+      const offsetY = clientY - dragStart.y;
+
+      const newOffsetX = offset.x + offsetX;
+      const newOffsetY = offset.y + offsetY;
+
+      setOffset({ x: newOffsetX, y: newOffsetY });
+      setDragStart({ x: clientX, y: clientY });
+    }
+  };
+
+  const handleDragEnd = () => {
     setDragStart(null);
     setIsDragging(false);
     const canvas = canvasRef.current;
@@ -158,27 +170,27 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
     }
   };
 
+  const handleMouseWheel = (event: WheelEvent) => {
+    event.preventDefault();
+    handleZoom(event.deltaY, event.clientX, event.clientY);
+  };
+
+  const handleMouseDown = (event: React.MouseEvent<HTMLCanvasElement>) => {
+    event.preventDefault();
+    handleDragStart(event.clientX, event.clientY);
+  };
+
   const handleMouseMove = (event: React.MouseEvent<HTMLCanvasElement>) => {
-    if (dragStart && isDragging) {
-      const offsetX = event.clientX - dragStart.x;
-      const offsetY = event.clientY - dragStart.y;
+    handleDragMove(event.clientX, event.clientY);
+  };
 
-      const newOffsetX = offset.x + offsetX;
-      const newOffsetY = offset.y + offsetY;
-
-      setOffset({ x: newOffsetX, y: newOffsetY });
-      setDragStart({ x: event.clientX, y: event.clientY });
-    }
+  const handleMouseUp = () => {
+    handleDragEnd();
   };
 
   const handleMouseLeave = () => {
     if (isDragging) {
-      setDragStart(null);
-      setIsDragging(false);
-      const canvas = canvasRef.current;
-      if (canvas) {
-        canvas.style.cursor = "grab";
-      }
+      handleDragEnd();
     }
   };
 
@@ -191,24 +203,35 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
     }
   };
 
+  const handleTouchStart = (event: React.TouchEvent<HTMLCanvasElement>) => {
+    event.preventDefault();
+    const touch = event.touches[0];
+    handleDragStart(touch.clientX, touch.clientY);
+  };
+
+  const handleTouchMove = (event: React.TouchEvent<HTMLCanvasElement>) => {
+    const touch = event.touches[0];
+    handleDragMove(touch.clientX, touch.clientY);
+  };
+
+  const handleTouchEnd = () => {
+    handleDragEnd();
+  };
+
   const handleZoomIn = () => {
-    setScale(scale * 1.1);
-    // adjustOffsetOnZoom(1.1);
+    const newScale = scale * 1.1;
+    const offsetX = width / 2 - ((width / 2 - offset.x) / scale) * newScale;
+    const offsetY = height / 2 - ((height / 2 - offset.y) / scale) * newScale;
+    setOffset({ x: offsetX, y: offsetY });
+    setScale(newScale);
   };
 
   const handleZoomOut = () => {
-    setScale(scale * 0.9);
-    // adjustOffsetOnZoom(0.9);
-  };
-
-  const adjustOffsetOnZoom = (scaleFactor: number) => {
-    const canvas = canvasRef.current;
-    if (canvas) {
-      const rect = canvas.getBoundingClientRect();
-      const offsetX = rect.width / 2 - rect.width / 2 * scaleFactor;
-      const offsetY = rect.height / 2 - rect.height / 2 * scaleFactor;
-      setOffset({ x: offsetX, y: offsetY });
-    }
+    const newScale = scale * 0.9;
+    const offsetX = width / 2 - ((width / 2 - offset.x) / scale) * newScale;
+    const offsetY = height / 2 - ((height / 2 - offset.y) / scale) * newScale;
+    setOffset({ x: offsetX, y: offsetY });
+    setScale(newScale);
   };
 
   useEffect(() => {
@@ -216,7 +239,7 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
       const canvas = canvasRef.current;
       if (event?.target?.id === canvas.id) {
         event.preventDefault();
-        handleWheel(event);
+        handleMouseWheel(event);
       }
     };
 
@@ -225,7 +248,7 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
     return () => {
       window.removeEventListener("wheel", handleScroll);
     };
-  }, [handleWheel]);
+  }, [handleMouseWheel]);
 
   if (isLoadingSVG) {
     return <div>Loading...</div>;
@@ -239,10 +262,13 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
         width={width}
         height={height}
         onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseLeave}
         onMouseEnter={handleMouseEnter}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
       />
       <ZoomButtonsContainer>
         <ZoomButton onClick={handleZoomIn}>+</ZoomButton>

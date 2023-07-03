@@ -7,7 +7,8 @@ import { usePathname } from "next/navigation";
 import { useMetaMask } from "metamask-react";
 import { useConnectMetamask } from "@/app/hooks/useConnectMetamask";
 import Container from "@/components/Container";
-
+import metamaskLogoIcon from "../../../public/matamask_logo.png";
+import Image from "next/image";
 
 const Root = styled.header`
   display: flex;
@@ -17,7 +18,7 @@ const Root = styled.header`
 
 const Wrapper = styled(Container)`
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   width: 100%;
 `;
@@ -41,11 +42,25 @@ const OutlinedButton = styled.button`
   }
 `;
 
-const ItemsLeft = styled.div``;
+const AccountAddressWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  //margin-top: 6px;
+  color: rgb(255, 255, 255);
+  font-size: 1rem;
+  img {
+    margin-right: 4px
+  }
+`;
+
+const ItemsLeft = styled.div`
+`;
 const ItemsRight = styled.div`
   display: flex;
   align-items: center;
   gap: 36px;
+  margin-bottom: 4px;
 `;
 
 const navLinkStyle = css`
@@ -54,14 +69,10 @@ const navLinkStyle = css`
 
 const navLinkActiveStyle = css``;
 
-export type NavLinkProps = React.ComponentProps<typeof Link>
+export type NavLinkProps = React.ComponentProps<typeof Link>;
 
 function NavLink(props: NavLinkProps) {
-  const {
-    className,
-    href,
-    ...rest
-  } = props;
+  const { className, href, ...rest } = props;
   const pathname = usePathname();
   const isActive = pathname?.startsWith(href.toString()) ?? false;
 
@@ -87,9 +98,36 @@ const LogoLink = styled(Link)`
 
 function Logo() {
   return (
-    <LogoLink href="/"><b>Grimace NFT</b> View</LogoLink>
+    <LogoLink href="/">
+      <b>Grimace NFT</b> View
+    </LogoLink>
   );
 }
+
+const ConnectMetamaskWrapper = ({
+  account,
+  handleConnect,
+}: {
+  account: string;
+  handleConnect: () => Promise<void>;
+}) => {
+  if (account) {
+    return (
+      <AccountAddressWrapper>
+        <Image
+          width={30}
+          height={30}
+          src={metamaskLogoIcon}
+          alt="metamask logo"
+        />
+        <p>{account.substring(0, 8)}...</p>
+      </AccountAddressWrapper>
+    );
+  }
+  return (
+    <OutlinedButton onClick={handleConnect}>Connect MetaMask</OutlinedButton>
+  );
+};
 
 /**
  * Header
@@ -101,15 +139,16 @@ function Header() {
   return (
     <Root>
       <Wrapper>
-        <ItemsLeft><Logo/></ItemsLeft>
+        <ItemsLeft>
+          <Logo />
+        </ItemsLeft>
         <ItemsRight>
           <NavLink href="/my-nfts">My NFTs</NavLink>
           <NavLink href="/collection">Collection</NavLink>
-          {!account ? (
-            <OutlinedButton onClick={handleConnect}>Connect MetaMask</OutlinedButton>
-          ) : (
-            <div style={{ color: "black" }}>{account.substring(0, 8)}...</div>
-          )}
+          <ConnectMetamaskWrapper
+            account={account}
+            handleConnect={handleConnect}
+          />
         </ItemsRight>
       </Wrapper>
     </Root>

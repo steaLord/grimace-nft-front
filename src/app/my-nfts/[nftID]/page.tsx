@@ -11,7 +11,7 @@ const StyledWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 !important;
+  padding: 0 24px;
   width: 100%;
 `;
 
@@ -20,6 +20,7 @@ const StyledName = styled.div`
   font-weight: 900;
   margin: 0 auto;
   margin-bottom: 22px;
+  text-align: center;
 `;
 
 const StyledZoomableImageWrapper = styled.div``;
@@ -41,7 +42,7 @@ export default function MyNFTPage(props) {
     return (
       <StyledWrapper>
         <StyledName>{nftID}</StyledName>
-        <ZoomableImageBox width={600} height={600} imageSrc="/NFT-1MAX.svg" />
+        <ZoomableImageBox width={600} height={600} nftName="nft1" />
       </StyledWrapper>
     );
   }
