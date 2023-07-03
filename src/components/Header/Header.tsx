@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import styled from "@emotion/styled";
 import { css } from "@emotion/css";
@@ -9,17 +9,21 @@ import { useConnectMetamask } from "@/app/hooks/useConnectMetamask";
 import Container from "@/components/Container";
 import metamaskLogoIcon from "../../../public/matamask_logo.png";
 import Image from "next/image";
+import { media } from "@/app/utils";
+import Hamburger from "hamburger-react";
+import { useWindowSize } from "@uidotdev/usehooks";
 
 const Root = styled.header`
   display: flex;
   justify-content: center;
-  padding: 48px 0;
+  padding: 24px 24px;
 `;
 
 const Wrapper = styled(Container)`
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
+  position: relative;
   width: 100%;
 `;
 
@@ -40,6 +44,10 @@ const OutlinedButton = styled.button`
     background-color: var(--color-orange);
     cursor: pointer;
   }
+
+  ${media["768px"](
+          `font-size: 1rem; margin-top: 12px`
+  )}
 `;
 
 const AccountAddressWrapper = styled.div`
@@ -50,12 +58,11 @@ const AccountAddressWrapper = styled.div`
   color: rgb(255, 255, 255);
   font-size: 1rem;
   img {
-    margin-right: 4px
+    margin-right: 4px;
   }
 `;
 
-const ItemsLeft = styled.div`
-`;
+const ItemsLeft = styled.div``;
 const ItemsRight = styled.div`
   display: flex;
   align-items: center;
@@ -71,13 +78,19 @@ const navLinkActiveStyle = css``;
 
 export type NavLinkProps = React.ComponentProps<typeof Link>;
 
+const StyledNavLink = styled(Link)`
+  ${media["768px"](
+    `margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid gray; width: 100%;`
+  )}
+`;
+
 function NavLink(props: NavLinkProps) {
   const { className, href, ...rest } = props;
   const pathname = usePathname();
   const isActive = pathname?.startsWith(href.toString()) ?? false;
 
   return (
-    <Link
+    <StyledNavLink
       {...rest}
       className={classNames(className, navLinkStyle, {
         [navLinkActiveStyle]: isActive,
@@ -87,9 +100,55 @@ function NavLink(props: NavLinkProps) {
   );
 }
 
+const StyledHamburgerWrapper = styled.div`
+  display: none;
+  ${media["768px"](`
+    display: inline;
+    font-size: 1.5rem;
+    z-index: 99999999999999;
+  `)}
+`;
+
+const StyledMenuWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background: #1a1a1a;
+  box-shadow: 8px 0px 40px #000000;
+  width: 80%;
+  height: 100vh;
+  max-width: 300px;
+  padding: 100px 36px;
+
+  opacity: ${({ isOpen }) => (isOpen ? "1" : "0")};
+  display: ${({ isOpen }) => (isOpen ? "flex" : "none")};
+  z-index: 99999;
+`;
+
+const StyledMenuBackgroundDrop = styled.div`
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(4.5px);
+  opacity: ${({ isOpen }) => (isOpen ? "1" : "0")};
+  display: ${({ isOpen }) => (isOpen ? "flex" : "none")};
+  z-index: 99999;
+`;
+
 const LogoLink = styled(Link)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-weight: 300;
   font-size: 2.5rem;
+  ${media["768px"](`
+    font-size: 1.5rem;
+  `)}
 
   & b {
     font-weight: 700;
@@ -135,7 +194,12 @@ const ConnectMetamaskWrapper = ({
 function Header() {
   const { handleConnect } = useConnectMetamask();
   const { account } = useMetaMask();
-
+  const [isOpen, setOpen] = useState(false);
+  const handleCloseMenu = (e: Event) => {
+    e.stopPropagation();
+    setOpen(false);
+  };
+  const size = useWindowSize();
   return (
     <Root>
       <Wrapper>
@@ -143,14 +207,36 @@ function Header() {
           <Logo />
         </ItemsLeft>
         <ItemsRight>
-          <NavLink href="/my-nfts">My NFTs</NavLink>
-          <NavLink href="/collection">Collection</NavLink>
-          <ConnectMetamaskWrapper
-            account={account}
-            handleConnect={handleConnect}
-          />
+          {size.width > 768 && (
+            <>
+              <NavLink href="/my-nfts">My NFTs</NavLink>
+              <NavLink href="/collection">Collection</NavLink>
+              <ConnectMetamaskWrapper
+                account={account}
+                handleConnect={handleConnect}
+              />
+            </>
+          )}
+          <StyledHamburgerWrapper>
+            <Hamburger toggled={isOpen} toggle={setOpen} />
+          </StyledHamburgerWrapper>
         </ItemsRight>
       </Wrapper>
+      {size.width <= 768 && (
+        <StyledMenuBackgroundDrop isOpen={isOpen} onClick={handleCloseMenu}>
+          <StyledMenuWrapper
+            isOpen={isOpen}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <NavLink href="/my-nfts">My NFTs</NavLink>
+            <NavLink href="/collection">Collection</NavLink>
+            <ConnectMetamaskWrapper
+              account={account}
+              handleConnect={handleConnect}
+            />
+          </StyledMenuWrapper>
+        </StyledMenuBackgroundDrop>
+      )}
     </Root>
   );
 }

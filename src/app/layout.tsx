@@ -41,7 +41,7 @@ export default function RootLayout({
       <MetaMaskProvider>
         <RootStyleRegistry>
           <Header/>
-          <MainStyled>
+          <MainStyled id="page-wrap">
             {children}
           </MainStyled>
           <Footer/>

@@ -12,6 +12,7 @@ const Root = styled(Container)`
   width: 100%;
   display: flex;
   justify-content: space-between;
+  padding: 0 24px;
 `;
 
 const Content = styled.div``;
