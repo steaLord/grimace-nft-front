@@ -1,11 +1,13 @@
 "use client";
 
-import styled from "@emotion/styled";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import styled from "@emotion/styled";
+import { css } from "@emotion/css";
+import classNames from "classnames";
 import grimaceNFTImage from "./grimace-nft-image.png";
 import Container from "@/components/Container";
 import Countdown from "@/components/Countdown";
-import React, { useEffect, useState } from "react";
 import Button from "@/components/Button";
 
 const Root = styled(Container)`
@@ -13,20 +15,57 @@ const Root = styled(Container)`
   display: flex;
   justify-content: space-between;
   padding: 0 24px;
+  flex-direction: column;
+
+  @media (min-width: 992px) {
+    flex-wrap: wrap;
+    max-height: 500px;
+    padding: 24px;
+  }
 `;
 
-const Content = styled.div``;
+const HeadingsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  order: 1;
+
+  @media (min-width: 768px) and (max-width: 992px) {
+    margin: auto;
+  }
+`
 
 const Subheading = styled.h2`
   font-size: 2rem;
   font-weight: 300;
-  margin-bottom: 24px;
+
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+  }
 `;
 
 const NFTImage = styled(Image)`
-  width: 500px;
-  max-width: 50%;
+  max-width: 500px;
   height: auto;
+  object-fit: contain;
+  order: 3;
+
+  @media (max-width: 992px) {
+    max-width: 500px;
+    align-self: center;
+    margin-top: 24px;
+    width: 100%;
+    order: 2;
+  }
+
+  @media (min-width: 992px) {
+    max-width: 500px;
+    align-self: center;
+    margin-top: 24px;
+    width: 40%;
+    order: 2;
+  }
 `;
 
 function NFT() {
@@ -44,12 +83,12 @@ const HeadingWrapper = styled.h1`
   margin-bottom: 14px;
 `;
 const HeadingPart1 = styled.span`
-  font-size: 42px;
+  font-size: 2.5rem;
   font-weight: 400;
   line-height: 1;
 `;
 const HeadingPart2 = styled.span`
-  font-size: 64px;
+  font-size: 4rem;
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -57,7 +96,7 @@ const HeadingPart2 = styled.span`
   white-space: nowrap;
 `;
 const HeadingPart3 = styled.span`
-  font-size: 210px;
+  font-size: 10rem;
   font-weight: 700;
   text-transform: uppercase;
   line-height: 0.8;
@@ -71,7 +110,25 @@ const Buttons = styled.div`
   display: flex;
   align-items: center;
   gap: 20px;
+  order: 2;
+  margin-top: 24px;
+
+  @media (max-width: 992px) {
+    order: 3;
+    margin: 24px auto auto;
+    min-width: min(500px, 100%);
+
+  }
 `;
+
+const buttonStyles = css`
+  flex-basis: 200px;
+
+  @media (max-width: 992px) {
+    flex: 1 1 50%;
+    max-width: 250px;
+  }
+`
 
 function HeadingMeet() {
   return (
@@ -126,18 +183,20 @@ export default function Home() {
 
   return (
     <Root>
-      <Content>
+      <HeadingsContainer>
         {released ? <HeadingMeet/> : <HeadingPrepare/>}
         <Subheading>The first collection with sense</Subheading>
         {!released && <StartCountdown num1={dd} num2={hh} num3={mm}/>}
-        <Buttons>
-          {released
-            ? <Button buttonType={"filled"} href={"#"}>Explore</Button>
-            : <Button buttonType={"filled"} href={"#"} className={"disabled"}>Coming soon</Button>
-          }
-          <Button target="__blank" href="https://app.withmantra.com">Buy Grimace</Button>
-        </Buttons>
-      </Content>
+      </HeadingsContainer>
+      <Buttons>
+        {released
+          ? <Button buttonType={"filled"} href={"#"} className={buttonStyles}>Explore</Button>
+          : <Button buttonType={"filled"} href={"#"} className={classNames("disabled", buttonStyles)}>
+            Coming soon
+          </Button>
+        }
+        <Button target="__blank" href="https://app.withmantra.com" className={buttonStyles}>Buy Grimace</Button>
+      </Buttons>
       <NFT/>
     </Root>
   );
