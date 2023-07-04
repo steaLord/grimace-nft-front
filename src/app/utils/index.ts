@@ -1,4 +1,4 @@
 export const media = {
-  "768px": (cssInjection: string) =>
-    `@media(max-width: 768px) {${cssInjection}};`,
+  "992px": (cssInjection: string) =>
+    `@media(max-width: 992px) {${cssInjection}};`,
 };

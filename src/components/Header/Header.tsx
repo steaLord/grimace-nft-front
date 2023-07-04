@@ -45,7 +45,7 @@ const OutlinedButton = styled.button`
     cursor: pointer;
   }
 
-  ${media["768px"](
+  ${media["992px"](
           `font-size: 1rem; margin-top: 12px`
   )}
 `;
@@ -57,6 +57,7 @@ const AccountAddressWrapper = styled.div`
   //margin-top: 6px;
   color: rgb(255, 255, 255);
   font-size: 1rem;
+
   img {
     margin-right: 4px;
   }
@@ -79,8 +80,8 @@ const navLinkActiveStyle = css``;
 export type NavLinkProps = React.ComponentProps<typeof Link>;
 
 const StyledNavLink = styled(Link)`
-  ${media["768px"](
-    `margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid gray; width: 100%;`
+  ${media["992px"](
+          `margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid gray; width: 100%;`
   )}
 `;
 
@@ -102,7 +103,7 @@ function NavLink(props: NavLinkProps) {
 
 const StyledHamburgerWrapper = styled.div`
   display: none;
-  ${media["768px"](`
+  ${media["992px"](`
     display: inline;
     font-size: 1.5rem;
     z-index: 99999999999999;
@@ -146,10 +147,10 @@ const LogoLink = styled(Link)`
   justify-content: center;
   font-weight: 300;
   font-size: 2.5rem;
-  ${media["768px"](`
+
+  ${media["992px"](`
     font-size: 1.5rem;
   `)}
-
   & b {
     font-weight: 700;
   }
@@ -204,10 +205,10 @@ function Header() {
     <Root>
       <Wrapper>
         <ItemsLeft>
-          <Logo />
+          <Logo/>
         </ItemsLeft>
         <ItemsRight>
-          {size.width > 768 && (
+          {size.width > 992 && (
             <>
               <NavLink href="/my-nfts">My NFTs</NavLink>
               <NavLink href="/collection">Collection</NavLink>
@@ -218,11 +219,11 @@ function Header() {
             </>
           )}
           <StyledHamburgerWrapper>
-            <Hamburger toggled={isOpen} toggle={setOpen} />
+            <Hamburger toggled={isOpen} toggle={setOpen}/>
           </StyledHamburgerWrapper>
         </ItemsRight>
       </Wrapper>
-      {size.width <= 768 && (
+      {size.width <= 992 && (
         <StyledMenuBackgroundDrop isOpen={isOpen} onClick={handleCloseMenu}>
           <StyledMenuWrapper
             isOpen={isOpen}
