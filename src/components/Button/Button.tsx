@@ -48,10 +48,18 @@ function Button(props: ButtonProps) {
 }
 
 
-const buttonFilledStyles = css`
-  min-width: 200px;
+const commonButtonStyles = css`
   border-radius: 12px;
   font-size: 1.5rem;
+
+  @media (max-width: 768px) {
+    font-size: 1.25rem;
+  }
+`
+
+
+const buttonFilledStyles = css`
+  ${commonButtonStyles};
   padding: 12px 8px;
   display: inline-flex;
   align-items: center;
@@ -70,9 +78,7 @@ const buttonFilledStyles = css`
 `;
 
 const buttonOutlinedStyles = css`
-  min-width: 200px;
-  border-radius: 12px;
-  font-size: 1.5rem;
+  ${commonButtonStyles};
   padding: 4px;
   text-transform: uppercase;
   color: var(--color-white);
