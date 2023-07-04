@@ -55,6 +55,13 @@ const Box = styled.div`
   background-color: var(--color-white);
   color: var(--color-dark);
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    width: 40px;
+    height: 60px;
+    font-size: 60px;
+    border-radius: 8px;
+  }
 `;
 
 const boxStyleEnter = css`
@@ -96,6 +103,11 @@ const Char = styled.span`
   line-height: 1;
   left: 0;
   top: 0;
+
+  @media (max-width: 768px) {
+    width: 40px;
+    height: 60px;
+  }
 `;
 
 export default CountdownBox;

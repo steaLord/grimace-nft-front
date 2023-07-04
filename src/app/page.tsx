@@ -10,146 +10,7 @@ import Container from "@/components/Container";
 import Countdown from "@/components/Countdown";
 import Button from "@/components/Button";
 
-const Root = styled(Container)`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  padding: 0 24px;
-  flex-direction: column;
-
-  @media (min-width: 992px) {
-    flex-wrap: wrap;
-    max-height: 500px;
-    padding: 24px;
-  }
-`;
-
-const HeadingsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  order: 1;
-
-  @media (min-width: 768px) and (max-width: 992px) {
-    margin: auto;
-  }
-`
-
-const Subheading = styled.h2`
-  font-size: 2rem;
-  font-weight: 300;
-
-  @media (max-width: 768px) {
-    font-size: 1.5rem;
-  }
-`;
-
-const NFTImage = styled(Image)`
-  max-width: 500px;
-  height: auto;
-  object-fit: contain;
-  order: 3;
-
-  @media (max-width: 992px) {
-    max-width: 500px;
-    align-self: center;
-    margin-top: 24px;
-    width: 100%;
-    order: 2;
-  }
-
-  @media (min-width: 992px) {
-    max-width: 500px;
-    align-self: center;
-    margin-top: 24px;
-    width: 40%;
-    order: 2;
-  }
-`;
-
-function NFT() {
-  return (
-    <NFTImage
-      src={grimaceNFTImage}
-      alt="Grimace NFT"
-      priority
-    />);
-}
-
-const HeadingWrapper = styled.h1`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 14px;
-`;
-const HeadingPart1 = styled.span`
-  font-size: 2.5rem;
-  font-weight: 400;
-  line-height: 1;
-`;
-const HeadingPart2 = styled.span`
-  font-size: 4rem;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  line-height: 1;
-  white-space: nowrap;
-`;
-const HeadingPart3 = styled.span`
-  font-size: 10rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  line-height: 0.8;
-`;
-
-const StartCountdown = styled(Countdown)`
-  margin: 28px 0;
-`;
-
-const Buttons = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  order: 2;
-  margin-top: 24px;
-
-  @media (max-width: 992px) {
-    order: 3;
-    margin: 24px auto auto;
-    min-width: min(500px, 100%);
-
-  }
-`;
-
-const buttonStyles = css`
-  flex-basis: 200px;
-
-  @media (max-width: 992px) {
-    flex: 1 1 50%;
-    max-width: 250px;
-  }
-`
-
-function HeadingMeet() {
-  return (
-    <HeadingWrapper>
-      <HeadingPart1>Meet</HeadingPart1>
-      <HeadingPart2>Grimace</HeadingPart2>
-      <HeadingPart3>NFT</HeadingPart3>
-    </HeadingWrapper>
-  );
-}
-
-function HeadingPrepare() {
-  return (
-    <HeadingWrapper>
-      <HeadingPart1>Prepare to</HeadingPart1>
-      <HeadingPart2>Grimace NFT</HeadingPart2>
-    </HeadingWrapper>
-  );
-}
-
-const startDate = new Date(process.env["TIMER_END_ISO_DATE"] ?? "2023-07-01T00:00:00.000Z");
+const startDate = new Date(process.env["TIMER_END_ISO_DATE"] ?? "2023-10-01T00:00:00.000Z");
 const startTime = startDate.getTime();
 
 function getRemainingSeconds() {
@@ -183,11 +44,22 @@ export default function Home() {
 
   return (
     <Root>
-      <HeadingsContainer>
-        {released ? <HeadingMeet/> : <HeadingPrepare/>}
-        <Subheading>The first collection with sense</Subheading>
-        {!released && <StartCountdown num1={dd} num2={hh} num3={mm}/>}
-      </HeadingsContainer>
+      {released
+        ? (
+          <>
+            <HeadingPart1>Meet</HeadingPart1>
+            <HeadingPart2>Grimace</HeadingPart2>
+            <HeadingPart3>NFT</HeadingPart3>
+          </>
+        ) : (
+          <>
+            <HeadingPart1>Prepare to</HeadingPart1>
+            <HeadingPart2>Grimace NFT</HeadingPart2>
+          </>
+        )
+      }
+      <Subheading className={released ? "released" : ""}>The first collection with sense</Subheading>
+      {!released && <StartCountdown num1={dd} num2={hh} num3={mm}/>}
       <Buttons>
         {released
           ? <Button buttonType={"filled"} href={"#"} className={buttonStyles}>Explore</Button>
@@ -197,9 +69,135 @@ export default function Home() {
         }
         <Button target="__blank" href="https://app.withmantra.com" className={buttonStyles}>Buy Grimace</Button>
       </Buttons>
-      <NFT/>
+      <NFTImage
+        src={grimaceNFTImage}
+        alt="Grimace NFT"
+        priority
+      />
     </Root>
   );
 }
+
+
+const Root = styled(Container)`
+  width: 100%;
+  margin-top: 36px;
+
+  display: grid;
+
+  grid-template-columns: 45% auto 45%;
+  grid-template-rows: repeat(6, auto);
+
+  @media (max-width: 992px) {
+    grid-template-columns: 100%;
+    grid-template-rows: repeat(6, auto);
+    padding: 0 24px;
+    margin: 0;
+  }
+`;
+
+const NFTImage = styled(Image)`
+  height: auto;
+  object-fit: contain;
+  max-width: 100%;
+
+  grid-column: 3 / 4;
+  grid-row: 1 / 7;
+
+  @media (max-width: 992px) {
+    grid-column: 1 / 2;
+    grid-row: 5 / 6;
+    margin: 0 auto 32px auto;
+
+    max-width: min(400px, 100%);
+  }
+`;
+
+const HeadingPart1 = styled.span`
+  font-size: 2.5rem;
+  font-weight: 400;
+  line-height: 1;
+  margin-top: 36px;
+
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+
+  @media (max-width: 992px) {
+    margin-top: 0;
+  }
+`;
+const HeadingPart2 = styled.span`
+  font-size: 4rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  line-height: 1;
+  white-space: nowrap;
+
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
+
+  @media (max-width: 768px) {
+    font-size: 3rem;
+  }
+`;
+const HeadingPart3 = styled.span`
+  font-size: 10rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 0.8;
+
+  grid-column: 1 / 2;
+  grid-row: 3 / 4;
+`;
+
+const Subheading = styled.h2`
+  font-size: 2rem;
+  font-weight: 300;
+  white-space: nowrap;
+
+  grid-column: 1 / 2;
+  grid-row: 3 / 4;
+
+  &.released {
+    grid-column: 1 / 2;
+    grid-row: 4 / 5;
+    margin: 16px 0 24px 0;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+  }
+`;
+
+const StartCountdown = styled(Countdown)`
+  grid-column: 1 / 2;
+  grid-row: 4 / 5;
+  margin: 32px 0;
+`;
+
+const Buttons = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: min(450px, 100%);
+
+  grid-column: 1 / 2;
+  grid-row: 5 / 6;
+
+  @media (max-width: 992px) {
+    min-width: min(500px, 100%);
+    grid-column: 1 / 2;
+    grid-row: 6 / 7;
+    margin: auto;
+  }
+
+  & > * {
+    flex-basis: 100%;
+  }
+`;
+
+const buttonStyles = css`
+`
 
 export const contractAddress = "0x1C5e8f0fa8B15E735dAd516146A56366c5469438";

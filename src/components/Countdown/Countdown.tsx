@@ -29,12 +29,20 @@ const Root = styled.div`
   gap: 8px;
   align-items: center;
   user-select: none;
+
+  @media (max-width: 768px) {
+    gap: 4px;
+  }
 `;
 
 const Separator = styled.span`
   font-size: 80px;
   line-height: 1;
   transform: translateY(-13%); // Font line height fix
+
+  @media (max-width: 768px) {
+    font-size: 60px;
+  }
 `;
 
 export default Countdown;
