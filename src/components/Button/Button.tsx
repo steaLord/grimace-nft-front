@@ -53,7 +53,7 @@ const commonButtonStyles = css`
   font-size: 1.5rem;
 
   @media (max-width: 768px) {
-    font-size: 1.25rem;
+    font-size: 1rem;
   }
 `
 

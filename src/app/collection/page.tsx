@@ -9,7 +9,7 @@ export default function CollectionPage() {
       <H1>Browse Collection</H1>
       <CollectionGrid>
         {Array.from({ length: 8 }).map((_, i) => (
-          <PlaceholderItem key={i} />
+          <PlaceholderItem key={i}/>
         ))}
       </CollectionGrid>
     </>
@@ -20,6 +20,7 @@ const H1 = styled.h1`
   font-size: 3rem;
   font-weight: 400;
   margin-bottom: 24px;
+  padding-left: 24px;
 `;
 
 // Placeholder item that fill the space of a cell
@@ -29,7 +30,7 @@ const PlaceholderItem = styled.div`
   width: 100%;
   height: 100%;
   transition: background 150ms ease-in-out, opacity 150ms ease-in-out,
-    transform 150ms ease-in-out;
+  transform 150ms ease-in-out;
 
   &:hover {
     cursor: pointer;
