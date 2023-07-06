@@ -2,6 +2,7 @@
 import { useParams } from "next/navigation";
 import NFTDetails from "@/components/NFTDetails";
 import Container from "@/components/Container";
+import React from "react";
 
 export default function NFTPage() {
   const { nftID } = useParams() as { nftID: string };

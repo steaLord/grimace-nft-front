@@ -10,16 +10,20 @@ import Container from "@/components/Container";
 import Countdown from "@/components/Countdown";
 import Button from "@/components/Button";
 
-const startDate = new Date(process.env["TIMER_END_ISO_DATE"] ?? "2023-10-01T00:00:00.000Z");
+const startDate = new Date(
+  process.env["TIMER_END_ISO_DATE"] ?? "2023-10-01T00:00:00.000Z"
+);
 const startTime = startDate.getTime();
 
 function getRemainingSeconds() {
-  const secondsRemain = Math.floor((startTime - (new Date()).getTime()) / 1000);
+  const secondsRemain = Math.floor((startTime - new Date().getTime()) / 1000);
   return secondsRemain > 0 ? secondsRemain : 0;
 }
 
 function useRemainingSeconds() {
-  const [remainingSeconds, setRemainingSeconds] = useState(getRemainingSeconds());
+  const [remainingSeconds, setRemainingSeconds] = useState(
+    getRemainingSeconds()
+  );
   useEffect(() => {
     const interval = setInterval(() => {
       setRemainingSeconds(getRemainingSeconds());
@@ -44,40 +48,49 @@ export default function Home() {
 
   return (
     <Root>
-      {released
-        ? (
-          <>
-            <HeadingPart1>Meet</HeadingPart1>
-            <HeadingPart2>Grimace</HeadingPart2>
-            <HeadingPart3>NFT</HeadingPart3>
-          </>
-        ) : (
-          <>
-            <HeadingPart1>Prepare to</HeadingPart1>
-            <HeadingPart2>Grimace NFT</HeadingPart2>
-          </>
-        )
-      }
-      <Subheading className={released ? "released" : ""}>The first collection with sense</Subheading>
-      {!released && <StartCountdown num1={dd} num2={hh} num3={mm}/>}
+      <title>Grimace NFT</title>
+      {released ? (
+        <>
+          <HeadingPart1>Meet</HeadingPart1>
+          <HeadingPart2>Grimace</HeadingPart2>
+          <HeadingPart3>NFT</HeadingPart3>
+        </>
+      ) : (
+        <>
+          <HeadingPart1>Prepare to</HeadingPart1>
+          <HeadingPart2>Grimace NFT</HeadingPart2>
+        </>
+      )}
+      <Subheading className={released ? "released" : ""}>
+        The first collection with sense
+      </Subheading>
+      {!released && <StartCountdown num1={dd} num2={hh} num3={mm} />}
       <Buttons>
-        {released
-          ? <Button buttonType={"filled"} href={"#"} className={buttonStyles}>Explore</Button>
-          : <Button buttonType={"filled"} href={"#"} className={classNames("disabled", buttonStyles)}>
+        {released ? (
+          <Button buttonType={"filled"} href={"#"} className={buttonStyles}>
+            Explore
+          </Button>
+        ) : (
+          <Button
+            buttonType={"filled"}
+            href={"#"}
+            className={classNames("disabled", buttonStyles)}
+          >
             Coming soon
           </Button>
-        }
-        <Button target="__blank" href="https://app.withmantra.com" className={buttonStyles}>Buy Grimace</Button>
+        )}
+        <Button
+          target="__blank"
+          href="https://app.withmantra.com"
+          className={buttonStyles}
+        >
+          Buy Grimace
+        </Button>
       </Buttons>
-      <NFTImage
-        src={grimaceNFTImage}
-        alt="Grimace NFT"
-        priority
-      />
+      <NFTImage src={grimaceNFTImage} alt="Grimace NFT" priority />
     </Root>
   );
 }
-
 
 const Root = styled(Container)`
   width: 100%;
@@ -197,7 +210,4 @@ const Buttons = styled.div`
   }
 `;
 
-const buttonStyles = css`
-`
-
-export const contractAddress = "0x1C5e8f0fa8B15E735dAd516146A56366c5469438";
+const buttonStyles = css``;

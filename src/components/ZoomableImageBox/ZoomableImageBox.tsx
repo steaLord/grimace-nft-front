@@ -32,7 +32,8 @@ const ZoomButtonsContainer = styled.div`
 
 const ZoomButton = styled.button`
   background: #ffffff;
-  border: none;
+  color: #1a1a1a;
+  border: 1px solid rgba(0, 0, 0, 0.45);
   border-radius: 4px;
   width: 30px;
   height: 30px;

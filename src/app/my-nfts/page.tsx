@@ -6,6 +6,7 @@ import Link from "next/link";
 import styled from "@emotion/styled";
 import CollectionGrid from "@/components/CollectionGrid";
 import { keyframes } from "@emotion/css";
+import React from "react";
 
 export default function MyNFTsPage() {
   const { nftTokens, isLoading } = useNFTMetadata(
@@ -15,6 +16,7 @@ export default function MyNFTsPage() {
 
   return (
     <>
+      <title>My NFT's</title>
       <H1>My NFT&apos;s</H1>
       {!account && <div>Please connect metamask to use this page</div>}
       <CollectionGrid>

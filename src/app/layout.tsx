@@ -8,6 +8,7 @@ import styled from "@emotion/styled";
 import { MetaMaskProvider } from "metamask-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Head from "next/head";
 
 const fredoka = Fredoka({
   subsets: ["latin"],

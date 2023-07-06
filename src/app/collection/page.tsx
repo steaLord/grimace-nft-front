@@ -2,10 +2,12 @@
 
 import styled from "@emotion/styled";
 import CollectionGrid from "@/components/CollectionGrid";
+import React from "react";
 
 export default function CollectionPage() {
   return (
     <>
+      <title>Collection</title>
       <H1>Browse Collection</H1>
       <CollectionGrid>
         {Array.from({ length: 8 }).map((_, i) => (
