@@ -14,7 +14,7 @@ export default function MyNFTsPage() {
 
   return (
     <>
-      <H1>My NFT`&apos;s</H1>
+      <H1>My NFT&apos;s</H1>
       {!account && <div>Please connect metamask to use this page</div>}
       <CollectionGrid>
         {isLoading && (
