@@ -9,12 +9,12 @@ import CollectionGrid from "@/components/CollectionGrid";
 import { keyframes } from "@emotion/css";
 
 export default function MyNFTsPage() {
-  const { nftTokens, isLoading } = useNFTMetadata(contractAddress);
+  const { nftTokens, isLoading } = useNFTMetadata(process.env.CONTRACT_ADDRESS);
   const { account } = useMetaMask();
 
   return (
     <>
-      <H1>My NFT's</H1>
+      <H1>My NFT`&apos;s</H1>
       {!account && <div>Please connect metamask to use this page</div>}
       <CollectionGrid>
         {isLoading && (

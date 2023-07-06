@@ -5,7 +5,6 @@ import styled from "@emotion/styled";
 import { useMetaMask } from "metamask-react";
 import { useNFTMetadata } from "@/app/hooks/useNFTMetadata";
 import { contractAddress } from "@/app/page";
-import { useEffect } from "react";
 
 const StyledWrapper = styled.div`
   display: flex;
@@ -28,7 +27,7 @@ const StyledZoomableImageWrapper = styled.div``;
 export default function MyNFTPage(props) {
   const { nftID } = useParams();
   const { account } = useMetaMask();
-  const { nftTokens, isLoading } = useNFTMetadata(contractAddress);
+  const { nftTokens, isLoading } = useNFTMetadata(process.env.CONTRACT_ADDRESS);
 
   if (!account) {
     return <StyledWrapper>Please connect to metamask</StyledWrapper>;
@@ -46,5 +45,5 @@ export default function MyNFTPage(props) {
       </StyledWrapper>
     );
   }
-  return <StyledWrapper>You don't have access to this NFT</StyledWrapper>;
+  return <StyledWrapper>You don&apos;t have access to this NFT</StyledWrapper>;
 }

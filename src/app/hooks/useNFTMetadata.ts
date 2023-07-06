@@ -13,8 +13,8 @@ interface ITokenMetadata {
 
 // TODO: Set contract address from proccess.env.CONTRACT_ADDRESS
 export const useNFTMetadata = (
-  contractAddress
-): { nftTokens: ITokenMetadata[], isLoading: boolean } => {
+  contractAddress: string
+): { nftTokens: ITokenMetadata[]; isLoading: boolean } => {
   const [nftTokens, setNFTTokens] = useState<ITokenMetadata[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { account } = useMetaMask();
@@ -63,8 +63,8 @@ export const useNFTMetadata = (
       if (account) {
         await checkTokens();
       }
-      if(!account) {
-        setIsLoading(false)
+      if (!account) {
+        setIsLoading(false);
       }
     })();
   }, [account]);

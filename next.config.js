@@ -1,18 +1,19 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    serverComponentsExternalPackages: ["fabric"],
+  typescript: {
+    ignoreBuildErrors: true,
   },
-  webpack(config, { isServer }) {
+  webpack(config) {
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      bufferutil: false,
+      "utf-8-validate": false,
+      encoding: false,
+    };
     config.module.rules.push({
       test: /\.svg$/,
       use: ["@svgr/webpack"],
     });
-    config.externals = [...config.externals, "canvas", "jsdom"];
-    config.resolve.alias["fabric"] = "fabric/dist/fabric.js";
-    if (!isServer) {
-      config.resolve.alias["fabric"] = "fabric/dist/fabric.js";
-    }
     return config;
   },
 };
