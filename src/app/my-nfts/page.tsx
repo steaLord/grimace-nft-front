@@ -20,7 +20,7 @@ export default function MyNFTsPage() {
       <H1>My NFT&apos;s</H1>
       {!account && <div>Please connect metamask to use this page</div>}
       {account && !isLoading && nftTokens.length === 0 && (
-        <div>You don't own any Grimace NFT</div>
+        <div>You don&apos;t own any Grimace NFT</div>
       )}
       <CollectionGrid>
         {account && isLoading && (
