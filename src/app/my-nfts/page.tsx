@@ -19,8 +19,11 @@ export default function MyNFTsPage() {
       <title>My NFT&apos;s</title>
       <H1>My NFT&apos;s</H1>
       {!account && <div>Please connect metamask to use this page</div>}
+      {account && !isLoading && nftTokens.length === 0 && (
+        <div>You don't own any Grimace NFT</div>
+      )}
       <CollectionGrid>
-        {isLoading && (
+        {account && isLoading && (
           <>
             <StyledNFTSkeleton />
             <StyledNFTSkeleton />
@@ -30,18 +33,19 @@ export default function MyNFTsPage() {
             <StyledNFTSkeleton />
           </>
         )}
-        {nftTokens.map(({ imageSrc, urlSlug, title }) => {
-          return (
-            <Link key={urlSlug} href={`/my-nfts/${urlSlug}`}>
-              <StyledNFTImage
-                width={300}
-                height={300}
-                src={imageSrc}
-                alt={title ?? "my-nft"}
-              />
-            </Link>
-          );
-        })}
+        {account &&
+          nftTokens.map(({ imageSrc, urlSlug, title }) => {
+            return (
+              <Link key={urlSlug} href={`/my-nfts/${urlSlug}`}>
+                <StyledNFTImage
+                  width={300}
+                  height={300}
+                  src={imageSrc}
+                  alt={title ?? "my-nft"}
+                />
+              </Link>
+            );
+          })}
       </CollectionGrid>
     </>
   );
