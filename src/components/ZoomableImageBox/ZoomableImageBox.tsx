@@ -48,16 +48,11 @@ const ZoomButton = styled.button`
   }
 `;
 
-// Easing function
-const easeInOutCubic = (t) => {
-  return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
-};
-
 const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
-                                                         width,
-                                                         height,
-                                                         nftName,
-                                                       }) => {
+  width,
+  height,
+  nftName,
+}) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [dragStart, setDragStart] = useState<{ x: number; y: number } | null>(
     null
@@ -170,11 +165,6 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
     }
   };
 
-  const handleMouseWheel = (event: WheelEvent) => {
-    event.preventDefault();
-    handleZoom(event.deltaY, event.clientX, event.clientY);
-  };
-
   const handleMouseDown = (event: React.MouseEvent<HTMLCanvasElement>) => {
     event.preventDefault();
     handleDragStart(event.clientX, event.clientY);
@@ -239,7 +229,7 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
       const canvas = canvasRef.current;
       if (event?.target?.id === canvas.id) {
         event.preventDefault();
-        handleMouseWheel(event);
+        handleZoom(event.deltaY, event.clientX, event.clientY);
       }
     };
 
@@ -248,7 +238,7 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
     return () => {
       window.removeEventListener("wheel", handleScroll);
     };
-  }, [handleMouseWheel]);
+  }, [handleZoom]);
 
   if (isLoadingSVG) {
     return <div>Loading...</div>;
