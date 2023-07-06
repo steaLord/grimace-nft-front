@@ -27,7 +27,7 @@ const StyledZoomableImageWrapper = styled.div``;
 export default function MyNFTPage(props) {
   const { nftID } = useParams();
   const { account } = useMetaMask();
-  const { nftTokens, isLoading } = useNFTMetadata(process.env.CONTRACT_ADDRESS);
+  const { nftTokens, isLoading } = useNFTMetadata(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS);
 
   if (!account) {
     return <StyledWrapper>Please connect to metamask</StyledWrapper>;

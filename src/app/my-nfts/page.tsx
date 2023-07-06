@@ -1,6 +1,5 @@
 "use client";
 import { useNFTMetadata } from "@/app/hooks/useNFTMetadata";
-import { contractAddress } from "@/app/page";
 import { useMetaMask } from "metamask-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,7 +8,9 @@ import CollectionGrid from "@/components/CollectionGrid";
 import { keyframes } from "@emotion/css";
 
 export default function MyNFTsPage() {
-  const { nftTokens, isLoading } = useNFTMetadata(process.env.CONTRACT_ADDRESS);
+  const { nftTokens, isLoading } = useNFTMetadata(
+    process.env.NEXT_PUBLIC_CONTRACT_ADDRESS
+  );
   const { account } = useMetaMask();
 
   return (

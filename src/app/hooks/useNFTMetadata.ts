@@ -11,7 +11,7 @@ interface ITokenMetadata {
   description?: string;
 }
 
-// TODO: Set contract address from proccess.env.CONTRACT_ADDRESS
+// TODO: Set contract address from proccess.env.NEXT_PUBLIC_CONTRACT_ADDRESS
 export const useNFTMetadata = (
   contractAddress: string
 ): { nftTokens: ITokenMetadata[]; isLoading: boolean } => {
