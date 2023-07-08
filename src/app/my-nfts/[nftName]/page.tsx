@@ -24,7 +24,7 @@ const StyledName = styled.div`
 const StyledZoomableImageWrapper = styled.div``;
 
 export default function MyNFTPage(props) {
-  const { nftID } = useParams();
+  const { nftName } = useParams();
   const { account } = useMetaMask();
   const { nftTokens, isLoading } = useNFTMetadata(
     process.env.NEXT_PUBLIC_CONTRACT_ADDRESS
@@ -45,13 +45,13 @@ export default function MyNFTPage(props) {
     );
   }
 
-  const isNFTInToken = nftTokens.find(({ urlSlug }) => urlSlug === nftID);
+  const isNFTInToken = nftTokens.find(({ urlSlug }) => urlSlug === nftName);
   if (nftTokens.length > 0 && isNFTInToken) {
     return (
       <StyledWrapper>
-        <title>{nftID}</title>
-        <StyledName>{nftID}</StyledName>
-        <ZoomableImageBox width={600} height={600} nftName="nft1" />
+        <title>{nftName}</title>
+        <StyledName>{nftName}</StyledName>
+        <ZoomableImageBox width={800} height={600} nftName={nftName} />
       </StyledWrapper>
     );
   }

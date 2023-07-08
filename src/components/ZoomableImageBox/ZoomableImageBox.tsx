@@ -49,6 +49,42 @@ const ZoomButton = styled.button`
   }
 `;
 
+const LoadingSpinner = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  max-height: 100%;
+  width: ${({ width }) => width + "px"};
+  height: ${({ height }) => height + "px"};
+  display: flex;
+  margin-top: 32px;
+  background: #a9a9a9;
+  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.4);
+  border-radius: 16px;
+`;
+
+const Spinner = styled.div`
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #9747ff;
+  margin-bottom: 8px;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+`;
+
 const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
   width,
   height,
@@ -66,6 +102,8 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [svgString, setSvgString] = useState("");
   const [isLoadingSVG, setIsLoadingSVG] = useState(true);
+  const [svgWidth, setSvgWidth] = useState<number>(0);
+  const [svgHeight, setSvgHeight] = useState<number>(0);
   const imageRef = useRef<HTMLImageElement>();
 
   useEffect(() => {
@@ -82,6 +120,9 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
         image.onload = () => {
           URL.revokeObjectURL(url);
           imageRef.current = image;
+          setSvgWidth(image.width);
+          setSvgHeight(image.height);
+          console.log({ image, width: image.width, height: image.height });
           setIsLoadingSVG(false);
         };
         imageRef.current = image;
@@ -106,23 +147,44 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
         canvas.height = canvasHeight;
 
         context?.clearRect(0, 0, canvasWidth, canvasHeight);
+
+        const aspectRatio = svgWidth / svgHeight;
+        const targetWidth = Math.min(canvasWidth, svgWidth);
+        const targetHeight = targetWidth / aspectRatio;
+
+        const scaledWidth = targetWidth * scale;
+        const scaledHeight = targetHeight * scale;
+
+        const offsetX = (canvasWidth - scaledWidth) / 2;
+        const offsetY = (canvasHeight - scaledHeight) / 2;
+
         context?.drawImage(
           imageRef.current,
-          offset.x,
-          offset.y,
-          canvasWidth * scale,
-          canvasHeight * scale
+          offsetX + offset.x,
+          offsetY + offset.y,
+          scaledWidth,
+          scaledHeight
         );
       }
     }
-  }, [width, height, imageRef, svgString, offset, scale, isLoadingSVG]);
+  }, [
+    width,
+    height,
+    imageRef,
+    svgString,
+    offset,
+    scale,
+    isLoadingSVG,
+    svgWidth,
+    svgHeight,
+  ]);
 
   const handleZoom = (delta: number, clientX: number, clientY: number) => {
     const canvas = canvasRef.current;
     if (canvas) {
       const rect = canvas.getBoundingClientRect();
-      const offsetX = clientX - rect.left;
-      const offsetY = clientY - rect.top;
+      const offsetX = clientX - (rect.left + canvas.width / 2);
+      const offsetY = clientY - (rect.top + canvas.height / 2);
 
       const scaleFactor = delta > 0 ? 0.9 : 1.1;
       const newScale = scale * scaleFactor;
@@ -131,6 +193,7 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
       const newOffsetY = offsetY - (offsetY - offset.y) * scaleFactor;
 
       setScale(newScale);
+      console.log({ offset });
       setOffset({ x: newOffsetX, y: newOffsetY });
     }
   };
@@ -209,26 +272,31 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
     handleDragEnd();
   };
 
-  const handleZoomIn = () => {
-    const newScale = scale * 1.1;
-    const offsetX = width / 2 - ((width / 2 - offset.x) / scale) * newScale;
-    const offsetY = height / 2 - ((height / 2 - offset.y) / scale) * newScale;
-    setOffset({ x: offsetX, y: offsetY });
+  const handleZoomClick = (isZoomIn: boolean) => {
+    const newScale = scale * (isZoomIn ? 1.1 : 0.9);
     setScale(newScale);
+    console.log({ offset });
+
+    const offsetX = width / 2 - (width / 2 - offset.x) * (newScale / scale);
+    const offsetY = height / 2 - (height / 2 - offset.y) * (newScale / scale);
+    setOffset({ x: offsetX, y: offsetY });
+  };
+
+  const handleZoomIn = () => {
+    handleZoomClick(true);
   };
 
   const handleZoomOut = () => {
-    const newScale = scale * 0.9;
-    const offsetX = width / 2 - ((width / 2 - offset.x) / scale) * newScale;
-    const offsetY = height / 2 - ((height / 2 - offset.y) / scale) * newScale;
-    setOffset({ x: offsetX, y: offsetY });
-    setScale(newScale);
+    handleZoomClick(false);
+    // const offsetX = width / 2 - (width / 2 - offset.x) * (newScale / scale);
+    // const offsetY = height / 2 - (height / 2 - offset.y) * (newScale / scale);
+    // setOffset({ x: offsetX, y: offsetY });
   };
 
   useEffect(() => {
     const handleScroll = (event: WheelEvent) => {
       const canvas = canvasRef.current;
-      if (event?.target?.id === canvas.id) {
+      if (canvasRef.current && event?.target?.id === canvas?.id) {
         event.preventDefault();
         handleZoom(event.deltaY, event.clientX, event.clientY);
       }
@@ -242,7 +310,12 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
   }, [handleZoom]);
 
   if (isLoadingSVG) {
-    return <div>Loading...</div>;
+    return (
+      <LoadingSpinner width={width} height={height}>
+        <Spinner />
+        Loading NFT
+      </LoadingSpinner>
+    );
   }
 
   return (
