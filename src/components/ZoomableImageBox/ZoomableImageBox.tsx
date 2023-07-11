@@ -198,6 +198,11 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
     }
   };
 
+  const handleZoomClick = (isZoomIn: boolean) => {
+    const newScale = scale * (isZoomIn ? 1.1 : 0.9);
+    setScale(newScale);
+  };
+
   const handleDragStart = (clientX: number, clientY: number) => {
     const canvas = canvasRef.current;
     if (canvas) {
@@ -270,16 +275,6 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
 
   const handleTouchEnd = () => {
     handleDragEnd();
-  };
-
-  const handleZoomClick = (isZoomIn: boolean) => {
-    const newScale = scale * (isZoomIn ? 1.1 : 0.9);
-    setScale(newScale);
-    console.log({ offset });
-
-    const offsetX = width / 2 - (width / 2 - offset.x) * (newScale / scale);
-    const offsetY = height / 2 - (height / 2 - offset.y) * (newScale / scale);
-    setOffset({ x: offsetX, y: offsetY });
   };
 
   const handleZoomIn = () => {
