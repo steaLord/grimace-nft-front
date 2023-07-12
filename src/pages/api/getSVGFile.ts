@@ -16,20 +16,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 
   // connect aws API
   const s3 = new AWS.S3();
-  const listObjectsParams: ListObjectsRequest = {
-    Bucket: "grimace-nft",
-  };
-  s3.listObjects(listObjectsParams, (err, data) => {
-    if (err) {
-      console.error("Error listing objects:", err);
-    } else {
-      console.log("Files in the bucket:");
-      data.Contents.forEach((object) => {
-        console.log(object.Key);
-      });
-    }
-  });
-
   const getParams: GetObjectRequest = {
     Bucket: "grimace-nft",
     Key: `${nftName}.svg` as string,
@@ -48,3 +34,9 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     }
   });
 }
+
+export const config = {
+  api: {
+    responseLimit: false,
+  },
+};

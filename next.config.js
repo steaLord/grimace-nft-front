@@ -10,10 +10,6 @@ const nextConfig = {
       "utf-8-validate": false,
       encoding: false,
     };
-    config.module.rules.push({
-      test: /\.svg$/,
-      use: ["@svgr/webpack"],
-    });
     return config;
   },
 };
