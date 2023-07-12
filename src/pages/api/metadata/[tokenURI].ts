@@ -5,6 +5,7 @@ import nft3Src from "../../../../public/revered-guardian-of-the-odyssey.jpg";
 import nft4Src from "../../../../public/believer-diamond-degen.jpg";
 import nft5Src from "../../../../public/golden-degen-dick.jpg";
 import nft6Src from "../../../../public/silver-soldier-of-the-odyssey.jpg";
+import nftsMetadata from "../../NFTsMetadata.json";
 
 const metadata = {
   "SAFE4LIFE.COM": {
@@ -40,10 +41,17 @@ const metadata = {
 };
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  // tokenURI example "https://<site-name>/metadata/{tokenId}"
-  const { tokenURI } = req.query;
+  try {
+    const { tokenURI } = req.query;
 
-  const metadataJson = { ...metadata[tokenURI], svgSrc: "" /*aws response*/ };
-  // decide what to store in URI
-  res.status(200).json({ ...metadataJson });
+    const completeMetadata = { ...nftsMetadata, ...metadata };
+
+    const metadataJson = {
+      ...completeMetadata[tokenURI],
+    };
+    // decide what to store in URI
+    res.status(200).json({ ...metadataJson });
+  } catch (e) {
+    res.status(500).send(e);
+  }
 }

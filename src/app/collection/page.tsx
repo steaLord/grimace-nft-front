@@ -30,7 +30,6 @@ export default function CollectionPage() {
         {collectionPreviewImages.map(({ src, urlSlug }, i) => (
           <Link href={`/collection/${urlSlug}`} key={urlSlug}>
             <PlaceholderItem src={src} key={i} />
-            {urlSlug}
           </Link>
         ))}
       </CollectionGrid>
