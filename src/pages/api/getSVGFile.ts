@@ -8,6 +8,7 @@ AWS.config.update({
   secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
   region: "eu-central-1",
 });
+const s3 = new AWS.S3();
 
 // TODO: Implement Security
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -15,7 +16,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const { nftName } = req.query;
 
   // connect aws API
-  const s3 = new AWS.S3();
   const getParams: GetObjectRequest = {
     Bucket: "grimace-nft",
     Key: `${nftName}.svg` as string,
@@ -23,7 +23,13 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   s3.getObject(getParams, (err, data) => {
     if (err) {
       console.log(err);
-      res.status(500).send(err);
+      res
+        .status(500)
+        .send({
+          err,
+          accessKey: process.env.S3_ACCESS_KEY_ID,
+          secretKey: process.env.S3_SECRET_ACCESS_KEY,
+        });
     } else {
       const svgResponse = data.Body.toString();
       const dom = new JSDOM(svgResponse);
