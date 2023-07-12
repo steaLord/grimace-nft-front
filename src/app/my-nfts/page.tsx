@@ -61,6 +61,7 @@ const StyledNFTImage = styled(Image)`
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 12px;
 `;
 
 const load = keyframes`
@@ -87,4 +88,5 @@ const StyledNFTSkeleton = styled.div`
   // Place shine on the left side, with offset on the left based on the width of the shine - see background-size
   background-position: left -40px top 0;
   animation: ${load} 1s ease infinite; // increase animation time to see effect in 'slow-mo'
+  border-radius: 12px;
 `;

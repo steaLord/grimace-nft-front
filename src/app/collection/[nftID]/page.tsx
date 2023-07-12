@@ -3,12 +3,19 @@ import { useParams } from "next/navigation";
 import NFTDetails from "@/components/NFTDetails";
 import Container from "@/components/Container";
 import React from "react";
+import { collectionPreviewImages } from "@/app/collection/page";
+import styled from "@emotion/styled";
 
 export default function NFTPage() {
   const { nftID } = useParams() as { nftID: string };
 
+  const previewImage = collectionPreviewImages.find(
+    ({ urlSlug }) => urlSlug === nftID
+  );
+  console.log({ previewImage });
+
   return (
-    <Container>
+    <StyledRoot>
       <NFTDetails
         name={nftID}
         subheading={"available: 5/10"}
@@ -17,8 +24,12 @@ export default function NFTPage() {
         }
         buyHref={"#"}
         buyGrimaceHref={"#"}
-        imageSrc={"/nft1.jpeg"}
+        imageSrc={previewImage.src}
       />
-    </Container>
+    </StyledRoot>
   );
 }
+
+const StyledRoot = styled(Container)`
+  padding-top: 32px;
+`;

@@ -37,6 +37,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   s3.getObject(getParams, (err, data) => {
     if (err) {
       console.log(err);
+      res.status(500).send(err);
     } else {
       const svgResponse = data.Body.toString();
       const dom = new JSDOM(svgResponse);

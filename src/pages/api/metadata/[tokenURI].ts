@@ -1,10 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import nft1Src from ".././../../../public/nft1.jpeg";
-import nft2Src from ".././../../../public/nft2.jpeg";
-import nft3Src from ".././../../../public/nft3.jpeg";
-import nft4Src from ".././../../../public/nft4.jpeg";
-import nft5Src from ".././../../../public/nft5.jpeg";
-import nft6Src from ".././../../../public/nft6.jpeg";
+import nft1Src from "../../../../public/eternal-supreme-ultradegen.jpg";
+import nft2Src from "../../../../public/vip-degen-highest-caste.jpg";
+import nft3Src from "../../../../public/revered-guardian-of-the-odyssey.jpg";
+import nft4Src from "../../../../public/believer-diamond-degen.jpg";
+import nft5Src from "../../../../public/golden-degen-dick.jpg";
+import nft6Src from "../../../../public/silver-soldier-of-the-odyssey.jpg";
 
 const metadata = {
   "SAFE4LIFE.COM": {

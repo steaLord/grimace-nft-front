@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import Button from "@/components/Button";
+import Image from "next/image";
 
 export type NFTDetailsProps = {
   name: React.ReactNode;
@@ -23,8 +24,7 @@ function NFTDetails({
   return (
     <Root>
       <NFTImage
-        // src={imageSrc}
-        src={"https://placehold.co/800x800"}
+        src={imageSrc}
         alt={typeof name === "string" ? name : "NFT"}
         width={500}
         height={500}
@@ -54,11 +54,12 @@ const Root = styled.div`
   }
 `;
 
-const NFTImage = styled.img`
+const NFTImage = styled(Image)`
   height: auto;
   object-fit: cover;
   max-width: min(500px, 100%);
   max-height: max(400px, 80vh);
+  border-radius: 24px;
 
   grid-column: 1 / 2;
   grid-row: 1 / 6;
@@ -72,8 +73,8 @@ const NFTImage = styled.img`
 
 const Name = styled.h1`
   font-size: 3rem;
-  font-weight: 400;
-
+  font-weight: bold;
+  
   grid-column: 3 / 4;
   grid-row: 1 / 2;
 

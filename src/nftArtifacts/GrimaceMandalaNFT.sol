@@ -14,7 +14,7 @@ contract GrimaceMandalaNFT is ERC721, ERC721URIStorage, ERC721Enumerable, Pausab
 
     Counters.Counter private _tokenIdCounter;
 
-    constructor() ERC721("GrimaceMandalaNFT", "MTK") {}
+    constructor() ERC721("GrimaceMandalaNFT", "GMNFT") {}
 
     function pause() public onlyOwner {
         _pause();
