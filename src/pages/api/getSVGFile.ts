@@ -5,10 +5,6 @@ import { JSDOM } from "jsdom";
 const AWS = require("aws-sdk");
 AWS.config.update({
   region: "eu-central-1",
-  credentials: {
-    accessKeyId: process.env.ACCESS_KEY_ID,
-    secretAccessKey: process.env.SECRET_ACCESS_KEY,
-  },
 });
 const s3 = new AWS.S3();
 
