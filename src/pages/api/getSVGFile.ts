@@ -12,7 +12,8 @@ const s3 = new S3({
   },
 });
 
-// TODO: Implement Security
+const MAX_CHUNK_SIZE = 512 * 1024; // Maximum chunk size in bytes
+
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   // tokenURI example "https://<site-name>/metadata/{tokenId}"
   const { nftName } = req.query;
@@ -24,37 +25,50 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   };
   s3.getObject(getParams, (err, data) => {
     if (err) {
-      console.log(
-        "[LOG]: ACCESS KEY ID",
-        process.env.NEXT_PUBLIC_ACCESS_KEY_ID
-      );
-      console.log(
-        "[LOG] SECRET ACCESS KEY:",
-        process.env.NEXT_PUBLIC_SECRET_ACCESS_KEY
-      );
-      console.log({ err });
-      res.status(500).send({
-        err,
-        version: 3.0,
-        credentials: {
-          accessKeyId: process.env.NEXT_PUBLIC_ACCESS_KEY_ID,
-          secretAccessKey: process.env.NEXT_PUBLIC_SECRET_ACCESS_KEY,
-        },
-      });
+      res.status(500).send(err);
     } else {
       const svgResponse = data.Body.toString();
       const dom = new JSDOM(svgResponse);
       const svg = dom.window.document.querySelector("svg");
       const svgString = svg.outerHTML;
-      console.log("[LOG]: ", {
-        accessKeyId: process.env.NEXT_PUBLIC_ACCESS_KEY_ID,
-        secretAccessKey: process.env.NEXT_PUBLIC_SECRET_ACCESS_KEY,
-      });
-      console.log("[LOG]: ", { svgString });
-      res.setHeader("Content-Type", "image/svg+xml");
-      res.status(200).send("svgString");
+
+      const svgChunks = chunkString(svgString, MAX_CHUNK_SIZE);
+      sendChunks(res, svgChunks);
+      // console.log("[LOG]: ", { svgString });
+      // res.setHeader("Content-Type", "image/svg+xml");
+      // res.status(200).send("svgString");
     }
   });
+}
+
+function chunkString(str: string, size: number) {
+  const numChunks = Math.ceil(str.length / size);
+  const chunks = new Array(numChunks);
+
+  for (let i = 0, o = 0; i < numChunks; ++i, o += size) {
+    chunks[i] = str.substr(o, size);
+  }
+
+  return chunks;
+}
+
+function sendChunks(res: NextApiResponse, chunks: string[]) {
+  res.setHeader("Transfer-Encoding", "chunked");
+  res.setHeader("Content-Type", "image/svg+xml");
+
+  const sendChunk = (index: number) => {
+    if (index >= chunks.length) {
+      res.end();
+      return;
+    }
+
+    const chunk = chunks[index];
+    res.write(chunk, () => {
+      sendChunk(index + 1);
+    });
+  };
+
+  sendChunk(0);
 }
 
 export const config = {
