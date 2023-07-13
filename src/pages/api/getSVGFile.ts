@@ -22,8 +22,11 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     Bucket: "grimace-nft",
     Key: `${nftName}.svg` as string,
   };
+  console.log("[LOG]:", "BEFORE FETCHING SVG");
   s3.getObject(getParams, (err, data) => {
     if (err) {
+      console.log("[LOG]: ACCESS KEY ID", process.env.AMAZON_S3_ACCESS_KEY_ID);
+      console.log("[LOG] SECRET ACCESS KEY:", process.env.AMAZON_S3_SECRET_ACCESS_KEY);
       console.log(err);
       res.status(500).send({
         err,
