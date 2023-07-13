@@ -1,0 +1,12 @@
+{
+  "resourceName": "storageresource",
+  "policyUUID": "3acd086e",
+  "bucketName": "grimace-nft",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "READ"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}

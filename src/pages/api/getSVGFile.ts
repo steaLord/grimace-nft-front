@@ -1,12 +1,16 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { GetObjectRequest } from "aws-sdk/clients/s3";
+import S3, { GetObjectRequest } from "aws-sdk/clients/s3";
 import { JSDOM } from "jsdom";
 
-const AWS = require("aws-sdk");
-AWS.config.update({
-  region: "eu-central-1",
+const s3 = new S3({
+  accessKeyId: process.env.NEXT_PUBLIC_ACCESS_KEY_ID,
+  secretAccessKey: process.env.NEXT_PUBLIC_SECRET_ACCESS_KEY,
+  region: process.env.NEXT_PUBLIC_AWS_REGION,
+  credentials: {
+    accessKeyId: process.env.NEXT_PUBLIC_ACCESS_KEY_ID,
+    secretAccessKey: process.env.NEXT_PUBLIC_SECRET_ACCESS_KEY,
+  },
 });
-const s3 = new AWS.S3();
 
 // TODO: Implement Security
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -15,26 +19,27 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 
   // connect aws API
   const getParams: GetObjectRequest = {
-    Bucket: "grimace-nft",
+    Bucket: process.env.NEXT_PUBLIC_BUCKET_SVG_NAME,
     Key: `${nftName}.svg` as string,
   };
-  console.log("[LOG]:", "BEFORE FETCHING SVG");
   s3.getObject(getParams, (err, data) => {
     if (err) {
-      console.log("[LOG]: ACCESS KEY ID", process.env.ACCESS_KEY_ID);
-      console.log("[LOG]: ACCESS KEY ID", process.env.AWS_ACCESS_KEY_ID);
-      console.log("[LOG] SECRET ACCESS KEY:", process.env.SECRET_ACCESS_KEY);
-      console.log("[LOG] SECRET ACCESS KEY:", process.env.AWS_SECRET_ACCESS_KEY);
-      console.log("[LOG] AKI:", process.env.AKI);
-      console.log("[LOG] SAK:", process.env.SAK);
+      console.log(
+        "[LOG]: ACCESS KEY ID",
+        process.env.NEXT_PUBLIC_ACCESS_KEY_ID
+      );
+      console.log(
+        "[LOG] SECRET ACCESS KEY:",
+        process.env.NEXT_PUBLIC_SECRET_ACCESS_KEY
+      );
       console.log(err);
       res.status(500).send({
         err,
-        version: 2.0,
+        version: 3.0,
         credentials: {
-          accessKeyId: process.env.ACCESS_KEY_ID,
-          secretAccessKey: process.env.SECRET_ACCESS_KEY,
-        }
+          accessKeyId: process.env.NEXT_PUBLIC_ACCESS_KEY_ID,
+          secretAccessKey: process.env.NEXT_PUBLIC_SECRET_ACCESS_KEY,
+        },
       });
     } else {
       const svgResponse = data.Body.toString();

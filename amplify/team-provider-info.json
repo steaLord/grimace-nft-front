@@ -23,6 +23,11 @@
       "StackName": "amplify-grimacemandala-dev-135135",
       "StackId": "arn:aws:cloudformation:eu-central-1:275816298984:stack/amplify-grimacemandala-dev-135135/0117eab0-217c-11ee-a2c6-0605273b96be",
       "AmplifyAppId": "d4pj4179gg71t"
+    },
+    "categories": {
+      "auth": {
+        "grimacemandalaecbb0b08": {}
+      }
     }
   }
 }
