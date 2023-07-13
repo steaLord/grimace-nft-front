@@ -31,12 +31,8 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       const dom = new JSDOM(svgResponse);
       const svg = dom.window.document.querySelector("svg");
       const svgString = svg.outerHTML;
-
-      const svgChunks = chunkString(svgString, MAX_CHUNK_SIZE);
-      sendChunks(res, svgChunks);
-      // console.log("[LOG]: ", { svgString });
-      // res.setHeader("Content-Type", "image/svg+xml");
-      // res.status(200).send("svgString");
+      res.setHeader("Content-Type", "image/svg+xml");
+      res.status(200).send(svgString);
     }
   });
 }
@@ -73,9 +69,9 @@ function sendChunks(res: NextApiResponse, chunks: string[]) {
 
 export const config = {
   api: {
-    responseLimit: "50mb",
+    responseLimit: "5mb",
     bodyParser: {
-      sizeLimit: "50mb",
+      sizeLimit: "5mb",
     },
     timeout: 120000,
   },

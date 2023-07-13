@@ -1,12 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  api: {
-    responseLimit: "50mb",
-    bodyParser: {
-      sizeLimit: "50mb",
-    },
-    timeout: 120000,
-  },
   typescript: {
     ignoreBuildErrors: true,
   },
