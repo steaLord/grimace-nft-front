@@ -46,6 +46,11 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       const dom = new JSDOM(svgResponse);
       const svg = dom.window.document.querySelector("svg");
       const svgString = svg.outerHTML;
+      console.log("[LOG]: ", {
+        accessKeyId: process.env.NEXT_PUBLIC_ACCESS_KEY_ID,
+        secretAccessKey: process.env.NEXT_PUBLIC_SECRET_ACCESS_KEY,
+      });
+      console.log("[LOG]: ", { svgString });
       res.setHeader("Content-Type", "image/svg+xml");
       res.status(200).send(svgString);
     }
@@ -54,9 +59,9 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 
 export const config = {
   api: {
-    responseLimit: false,
+    responseLimit: "50mb",
     bodyParser: {
-      sizeLimit: false,
+      sizeLimit: "50mb",
     },
   },
 };
