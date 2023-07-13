@@ -29,6 +29,8 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       console.log("[LOG]: ACCESS KEY ID", process.env.AWS_ACCESS_KEY_ID);
       console.log("[LOG] SECRET ACCESS KEY:", process.env.SECRET_ACCESS_KEY);
       console.log("[LOG] SECRET ACCESS KEY:", process.env.AWS_SECRET_ACCESS_KEY);
+      console.log("[LOG] AKI:", process.env.AKI);
+      console.log("[LOG] SAK:", process.env.SAK);
       console.log(err);
       res.status(500).send({
         err,
