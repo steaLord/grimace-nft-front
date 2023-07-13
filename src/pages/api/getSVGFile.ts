@@ -63,5 +63,6 @@ export const config = {
     bodyParser: {
       sizeLimit: "50mb",
     },
+    timeout: 120000,
   },
 };
