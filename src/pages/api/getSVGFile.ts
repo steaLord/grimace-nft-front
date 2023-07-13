@@ -52,7 +52,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       });
       console.log("[LOG]: ", { svgString });
       res.setHeader("Content-Type", "image/svg+xml");
-      res.status(200).send(svgString);
+      res.status(200).send("svgString");
     }
   });
 }
