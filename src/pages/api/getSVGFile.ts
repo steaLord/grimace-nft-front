@@ -4,8 +4,6 @@ import { JSDOM } from "jsdom";
 
 const AWS = require("aws-sdk");
 AWS.config.update({
-  accessKeyId: process.env.AMAZON_S3_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AMAZON_S3_SECRET_ACCESS_KEY,
   region: "eu-central-1",
   credentials: {
     accessKeyId: process.env.AMAZON_S3_ACCESS_KEY_ID,
@@ -29,8 +27,11 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       console.log(err);
       res.status(500).send({
         err,
-        accessKey: process.env.AMAZON_S3_ACCESS_KEY_ID,
-        secretKey: process.env.AMAZON_S3_SECRET_ACCESS_KEY,
+        version: 1.0,
+        credentials: {
+          accessKeyId: process.env.AMAZON_S3_ACCESS_KEY_ID,
+          secretAccessKey: process.env.AMAZON_S3_SECRET_ACCESS_KEY,
+        }
       });
     } else {
       const svgResponse = data.Body.toString();
