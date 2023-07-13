@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { GetObjectRequest, ListObjectsRequest } from "aws-sdk/clients/s3";
+import { GetObjectRequest } from "aws-sdk/clients/s3";
 import { JSDOM } from "jsdom";
 
 const AWS = require("aws-sdk");
@@ -7,6 +7,10 @@ AWS.config.update({
   accessKeyId: process.env.AMAZON_S3_ACCESS_KEY_ID,
   secretAccessKey: process.env.AMAZON_S3_SECRET_ACCESS_KEY,
   region: "eu-central-1",
+  credentials: {
+    accessKeyId: process.env.AMAZON_S3_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AMAZON_S3_SECRET_ACCESS_KEY,
+  },
 });
 const s3 = new AWS.S3();
 
@@ -23,13 +27,11 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   s3.getObject(getParams, (err, data) => {
     if (err) {
       console.log(err);
-      res
-        .status(500)
-        .send({
-          err,
-          accessKey: process.env.AMAZON_S3_ACCESS_KEY_ID,
-          secretKey: process.env.AMAZON_S3_SECRET_ACCESS_KEY,
-        });
+      res.status(500).send({
+        err,
+        accessKey: process.env.AMAZON_S3_ACCESS_KEY_ID,
+        secretKey: process.env.AMAZON_S3_SECRET_ACCESS_KEY,
+      });
     } else {
       const svgResponse = data.Body.toString();
       const dom = new JSDOM(svgResponse);
