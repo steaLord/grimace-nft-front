@@ -32,7 +32,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
         "[LOG] SECRET ACCESS KEY:",
         process.env.NEXT_PUBLIC_SECRET_ACCESS_KEY
       );
-      console.log(err);
+      console.log({ err });
       res.status(500).send({
         err,
         version: 3.0,
