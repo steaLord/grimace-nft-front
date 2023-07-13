@@ -6,8 +6,8 @@ const AWS = require("aws-sdk");
 AWS.config.update({
   region: "eu-central-1",
   credentials: {
-    accessKeyId: process.env.AMAZON_S3_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AMAZON_S3_SECRET_ACCESS_KEY,
+    accessKeyId: process.env.ACCESS_KEY_ID,
+    secretAccessKey: process.env.SECRET_ACCESS_KEY,
   },
 });
 const s3 = new AWS.S3();
@@ -25,15 +25,17 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   console.log("[LOG]:", "BEFORE FETCHING SVG");
   s3.getObject(getParams, (err, data) => {
     if (err) {
-      console.log("[LOG]: ACCESS KEY ID", process.env.AMAZON_S3_ACCESS_KEY_ID);
-      console.log("[LOG] SECRET ACCESS KEY:", process.env.AMAZON_S3_SECRET_ACCESS_KEY);
+      console.log("[LOG]: ACCESS KEY ID", process.env.ACCESS_KEY_ID);
+      console.log("[LOG]: ACCESS KEY ID", process.env.AWS_ACCESS_KEY_ID);
+      console.log("[LOG] SECRET ACCESS KEY:", process.env.SECRET_ACCESS_KEY);
+      console.log("[LOG] SECRET ACCESS KEY:", process.env.AWS_SECRET_ACCESS_KEY);
       console.log(err);
       res.status(500).send({
         err,
         version: 1.0,
         credentials: {
-          accessKeyId: process.env.AMAZON_S3_ACCESS_KEY_ID,
-          secretAccessKey: process.env.AMAZON_S3_SECRET_ACCESS_KEY,
+          accessKeyId: process.env.ACCESS_KEY_ID,
+          secretAccessKey: process.env.SECRET_ACCESS_KEY,
         }
       });
     } else {
