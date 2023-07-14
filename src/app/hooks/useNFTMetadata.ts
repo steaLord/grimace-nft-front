@@ -4,6 +4,7 @@ import { useMetaMask } from "metamask-react";
 import { Web3 } from "web3";
 
 interface ITokenMetadata {
+  id: any;
   imageSrc: string;
   urlSlug: string;
   title?: string;
@@ -47,7 +48,7 @@ export const useNFTMetadata = (
         const tokenURI = await contract.methods.tokenURI(tokenId).call();
         const res = await fetch(`/api/metadata/${tokenURI}`);
         const nftMetadata = await res.json();
-        tokens.push({ ...nftMetadata });
+        tokens.push({ ...nftMetadata, id: tokenId });
       }
 
       setNFTTokens(tokens);

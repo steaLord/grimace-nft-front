@@ -115,7 +115,8 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
           {
             headers: {
               "Content-Type": "image/svg+xml",
-              "Access-Control-Allow-Origin": process.env.NEXT_PUBLIC_BACKEND_ENDPOINT, // Replace with your domain or specific origin
+              "Access-Control-Allow-Origin":
+                process.env.NEXT_PUBLIC_BACKEND_ENDPOINT, // Replace with your domain or specific origin
             },
           }
         );
@@ -242,14 +243,21 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
       const newOffsetY = offsetY - (offsetY - offset.y) * scaleFactor;
 
       setScale(newScale);
-      console.log({ offset });
       setOffset({ x: newOffsetX, y: newOffsetY });
     }
   };
 
   const handleZoomClick = (isZoomIn: boolean) => {
-    const newScale = scale * (isZoomIn ? 1.1 : 0.9);
+    const scaleFactor = isZoomIn ? 1.1 : 0.9;
+    const newScale = scale * scaleFactor;
+    const offsetX = offset.x;
+    const offsetY = offset.y;
+    const newOffsetX =
+      offsetX * scaleFactor; /*+ isZoomIn ? offset.x : offset.x * -1;*/
+    const newOffsetY =
+      offsetY * scaleFactor; /*+ isZoomIn ? offset.y : offset.y * -1;*/
     setScale(newScale);
+    setOffset({ x: newOffsetX, y: newOffsetY });
   };
 
   const handleDragStart = (clientX: number, clientY: number) => {

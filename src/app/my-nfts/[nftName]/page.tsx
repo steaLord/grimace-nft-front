@@ -45,8 +45,8 @@ export default function MyNFTPage(props) {
     );
   }
 
-  const isNFTInToken = nftTokens.find(({ urlSlug }) => urlSlug === nftName);
-  if (nftTokens.length > 0 && isNFTInToken) {
+  const nftToken = nftTokens.find(({ urlSlug }) => urlSlug === nftName);
+  if (nftTokens.length > 0 && nftToken) {
     return (
       <StyledWrapper>
         <title>{nftName}</title>
