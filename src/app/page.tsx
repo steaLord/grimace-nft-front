@@ -10,27 +10,25 @@ import Container from "@/components/Container";
 import Countdown from "@/components/Countdown";
 import Button from "@/components/Button";
 
-const startDate = new Date(
-  process.env["TIMER_END_ISO_DATE"] ?? "2023-10-01T00:00:00.000Z"
-);
-const startTime = startDate.getTime();
-
-function getRemainingSeconds() {
+function getRemainingSeconds(startTime) {
   const secondsRemain = Math.floor((startTime - new Date().getTime()) / 1000);
   return secondsRemain > 0 ? secondsRemain : 0;
 }
 
-function useRemainingSeconds() {
+export function useRemainingTime(startDate: string) {
+  const startTime = new Date(startDate ?? "2023-10-01T00:00:00.000Z").getTime();
   const [remainingSeconds, setRemainingSeconds] = useState(
-    getRemainingSeconds()
+    getRemainingSeconds(startTime)
   );
   useEffect(() => {
     const interval = setInterval(() => {
-      setRemainingSeconds(getRemainingSeconds());
+      setRemainingSeconds(getRemainingSeconds(startTime));
     }, 1000);
     return () => clearInterval(interval);
   }, []);
-  return remainingSeconds;
+  const { mm, dd, hh } = getRemainingTime(remainingSeconds);
+  const isReleased = remainingSeconds <= 0;
+  return { dd, hh, mm, isReleased, remainingSeconds };
 }
 
 function getRemainingTime(remainingSeconds: number) {
@@ -42,14 +40,14 @@ function getRemainingTime(remainingSeconds: number) {
 }
 
 export default function Home() {
-  const remainingSeconds = useRemainingSeconds();
-  const { dd, hh, mm } = getRemainingTime(remainingSeconds);
-  const released = remainingSeconds <= 0;
+  const { isReleased, hh, mm, dd } = useRemainingTime(
+    process.env["TIMER_END_ISO_DATE"]
+  );
 
   return (
     <Root>
       <title>Grimace NFT</title>
-      {released ? (
+      {isReleased ? (
         <>
           <HeadingPart1>Meet</HeadingPart1>
           <HeadingPart2>Grimace</HeadingPart2>
@@ -61,12 +59,12 @@ export default function Home() {
           <HeadingPart2>Grimace NFT</HeadingPart2>
         </>
       )}
-      <Subheading className={released ? "released" : ""}>
+      <Subheading className={isReleased ? "released" : ""}>
         The first collection with sense
       </Subheading>
-      {!released && <StartCountdown num1={dd} num2={hh} num3={mm} />}
+      {!isReleased && <StartCountdown num1={dd} num2={hh} num3={mm} />}
       <Buttons>
-        {released ? (
+        {isReleased ? (
           <Button buttonType={"filled"} href={"#"} className={buttonStyles}>
             Explore
           </Button>
@@ -81,7 +79,7 @@ export default function Home() {
         )}
         <Button
           target="__blank"
-          href="https://app.withmantra.com"
+          href="https://coinmarketcap.com/currencies/grimace-top/"
           className={buttonStyles}
         >
           Buy Grimace

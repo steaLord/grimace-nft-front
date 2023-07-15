@@ -13,19 +13,20 @@ function Button(props: ButtonProps) {
     children,
     buttonType,
     className,
+    isDisabled,
     ...rest
   } = props;
 
   if ("href" in rest) {
     if (buttonType === "filled") {
       return (
-        <Link {...rest} className={classNames(className, buttonFilledStyles)}>
+        <Link {...rest} className={classNames(className, buttonFilledStyles, isDisabled && "disabled")}>
           {children}
         </Link>
       );
     } else {
       return (
-        <Link {...rest} className={classNames(className, buttonOutlinedStyles)}>
+        <Link {...rest} className={classNames(className, buttonOutlinedStyles, isDisabled && "disabled")}>
           <span>{children}</span>
         </Link>
       );
@@ -46,6 +47,9 @@ function Button(props: ButtonProps) {
     }
   }
 }
+
+const StyledLink = `
+`;
 
 
 const commonButtonStyles = css`
@@ -69,6 +73,12 @@ const buttonFilledStyles = css`
   font-weight: 700;
   background: linear-gradient(270deg, #9747FF 0%, #4C1592 100%);
   cursor: pointer;
+  
+  &:disabled {
+    font-weight: 400;
+    background: linear-gradient(270deg, #454545 0%, #676767 100%);
+    cursor: not-allowed;
+  }
 
   &.disabled {
     font-weight: 400;

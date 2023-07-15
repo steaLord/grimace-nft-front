@@ -20,7 +20,7 @@ export default function NFTPage() {
         subheading={"available: 5/10"}
         description={previewItem.description}
         buyHref={"#"}
-        buyGrimaceHref={"#"}
+        buyGrimaceHref={"https://coinmarketcap.com/currencies/grimace-top/"}
         imageSrc={previewItem.imageSrc}
       />
     </StyledRoot>

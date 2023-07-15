@@ -2,6 +2,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import Button from "@/components/Button";
 import Image from "next/image";
+import { useRemainingTime } from "@/app/page";
 
 export type NFTDetailsProps = {
   name: React.ReactNode;
@@ -20,6 +21,7 @@ function NFTDetails({
   buyGrimaceHref,
   imageSrc,
 }: NFTDetailsProps) {
+  const { isReleased } = useRemainingTime(process.env["TIMER_END_ISO_DATE"]);
   return (
     <Root>
       <NFTImage
@@ -34,10 +36,21 @@ function NFTDetails({
         dangerouslySetInnerHTML={{ __html: description }}
       ></Description>
       <Buttons>
-        <Button href={buyHref} buttonType="filled">
+        <Button
+          href={buyHref}
+          buttonType="filled"
+          isDisabled={!isReleased}
+          title={!isReleased ? "Wait until release" : "Link to NFT Marketplace"}
+        >
           Buy
         </Button>
-        <Button href={buyGrimaceHref} buttonType="outlined">
+        <Button
+          href={buyGrimaceHref}
+          buttonType="outlined"
+          isDisabled={!isReleased}
+          target={"__blank"}
+          title={!isReleased ? "Wait until release" : "Link to Exchange"}
+        >
           Buy Grimace
         </Button>
       </Buttons>
