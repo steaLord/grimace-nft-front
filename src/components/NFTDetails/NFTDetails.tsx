@@ -10,8 +10,7 @@ export type NFTDetailsProps = {
   buyHref: string;
   buyGrimaceHref: string;
   imageSrc: string;
-}
-
+};
 
 function NFTDetails({
   name,
@@ -31,10 +30,16 @@ function NFTDetails({
       />
       <Name>{name}</Name>
       <Subheading>{subheading}</Subheading>
-      <Description>{description}</Description>
+      <Description
+        dangerouslySetInnerHTML={{ __html: description }}
+      ></Description>
       <Buttons>
-        <Button href={buyHref} buttonType="filled">Buy</Button>
-        <Button href={buyGrimaceHref} buttonType="outlined">Buy Grimace</Button>
+        <Button href={buyHref} buttonType="filled">
+          Buy
+        </Button>
+        <Button href={buyGrimaceHref} buttonType="outlined">
+          Buy Grimace
+        </Button>
       </Buttons>
     </Root>
   );
@@ -44,7 +49,7 @@ const Root = styled.div`
   display: grid;
   width: 100%;
 
-  grid-template-columns:  auto 48px 50%;
+  grid-template-columns: auto 48px 50%;
   grid-template-rows: auto auto auto auto auto;
 
   @media (max-width: 992px) {
@@ -74,7 +79,7 @@ const NFTImage = styled(Image)`
 const Name = styled.h1`
   font-size: 3rem;
   font-weight: bold;
-  
+
   grid-column: 3 / 4;
   grid-row: 1 / 2;
 
