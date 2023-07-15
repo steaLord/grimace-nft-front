@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 interface ZoomableCanvasProps {
   width: number;
   height: number;
-  nftName: string;
+  nftID: string;
 }
 
 const StyledRoot = styled.div`
@@ -88,7 +88,7 @@ const Spinner = styled.div`
 const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
   width,
   height,
-  nftName,
+  nftID,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [dragStart, setDragStart] = useState<{ x: number; y: number } | null>(
@@ -111,7 +111,7 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
       setIsLoadingSVG(true);
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/api/getSvgFile?nftName=${nftName}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/api/getSvgFile?nftID=${nftID}`,
           {
             headers: {
               "Content-Type": "image/svg+xml",
@@ -140,7 +140,7 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
         setIsLoadingSVG(false);
       }
     })();
-  }, [nftName]);
+  }, [nftID]);
 
   // useEffect(() => {
   //   (async () => {

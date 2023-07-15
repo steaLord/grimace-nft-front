@@ -9,34 +9,34 @@ import nftsMetadata from "/public/NFTsMetadata.json";
 
 const metadata = {
   "SAFE4LIFE.COM": {
-    title: "Eternal Supreme UltraDegen",
+    id: "eternal-supreme-ultradegen",
+    collection: "Eternal Supreme UltraDegen",
     imageSrc: nft1Src,
-    urlSlug: "eternal-supreme-ultradegen",
   },
   "TEST_LINK.COM": {
-    title: "VIP-Degen Highest Caste",
+    id: "vip-degen-highest-caste",
+    collection: "VIP-Degen Highest Caste",
     imageSrc: nft2Src,
-    urlSlug: "vip-degen-highest-caste",
   },
   rgoto: {
-    title: "Revered Guardian of the Odyssey",
+    id: "reverd-guardian-of-the-odyssey",
+    collection: "Revered Guardian of the Odyssey",
     imageSrc: nft3Src,
-    urlSlug: "revered-guardian-of-the-odyssey",
   },
   bdd: {
-    title: "Believer Diamond Degen",
+    id: "believer-diamond-degen",
+    collection: "Believer Diamond Degen",
     imageSrc: nft4Src,
-    urlSlug: "believer-diamond-degen",
   },
   gdd: {
-    title: "Golden Degen Dick",
+    id: "golden-degen-dick",
+    collection: "Golden Degen Dick",
     imageSrc: nft5Src,
-    urlSlug: "golden-degen-dick",
   },
   ssoto: {
-    title: "Silver Soldier of the Odyssey",
+    id: "silver-soldier-of-the-odyssey",
+    collection: "Silver Soldier of the Odyssey",
     imageSrc: nft6Src,
-    urlSlug: "silver-soldier-of-the-odyssey",
   },
 };
 

@@ -46,12 +46,17 @@ export default function MyNFTPage(props) {
   }
 
   const nftToken = nftTokens.find(({ urlSlug }) => urlSlug === nftName);
+  console.log({ nftToken });
   if (nftTokens.length > 0 && nftToken) {
     return (
       <StyledWrapper>
-        <title>{nftName}</title>
-        <StyledName>{nftName}</StyledName>
-        <ZoomableImageBox width={800} height={600} nftName={nftName} />
+        <title>
+          {nftToken.collection} {nftToken.id}
+        </title>
+        <StyledName>
+          {nftToken.collection} {nftToken.id}
+        </StyledName>
+        <ZoomableImageBox width={800} height={600} nftID={nftToken.id} />
       </StyledWrapper>
     );
   }
