@@ -7,6 +7,10 @@ import nft5Src from "../../../../public/golden-degen-dick.jpg";
 import nft6Src from "../../../../public/silver-soldier-of-the-odyssey.jpg";
 import nftsMetadata from "./NFTsMetadata.json";
 
+function isObjectEmpty(obj) {
+  return Object.keys(obj).length === 0;
+}
+
 const metadata = {
   "SAFE4LIFE.COM": {
     id: "eternal-supreme-ultradegen",
@@ -48,15 +52,19 @@ const metadata = {
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const { tokenURI } = req.query;
+    const { nftID } = req.query;
 
     const completeMetadata = { ...nftsMetadata, ...metadata };
 
     const metadataJson = {
-      ...completeMetadata[tokenURI],
+      ...completeMetadata[nftID],
     };
+
+    if (isObjectEmpty(metadataJson)) {
+      res.status(404).send(`No metadata found for NFT with ${nftID} ID`);
+    }
     // decide what to store in URI
-    res.status(200).json({ ...metadataJson });
+    res.status(200).json({ ...metadataJson, nftID: nftID });
   } catch (e) {
     res.status(500).send(e);
   }

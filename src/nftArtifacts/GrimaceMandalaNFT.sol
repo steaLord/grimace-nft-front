@@ -14,13 +14,7 @@ contract GrimaceMandalaNFT is ERC721, ERC721URIStorage, ERC721Enumerable, Pausab
 
     Counters.Counter private _tokenIdCounter;
 
-    address private grimaceCoinAddress;
-    IERC20 private grimaceCoin;
-
-    constructor(address grimaceCoinAddress) ERC721("GrimaceMandalaNFT", "GMNFT") {
-        grimaceCoinAddress = grimaceCoinAddress;
-        grimaceCoin = IERC20(grimaceCoinAddress);
-    }
+    constructor() ERC721("GrimaceMandalaNFT", "GMNFT") {}
 
     function pause() public onlyOwner {
         _pause();
@@ -37,15 +31,10 @@ contract GrimaceMandalaNFT is ERC721, ERC721URIStorage, ERC721Enumerable, Pausab
         _setTokenURI(tokenId, uri);
     }
 
-    function withdrawFunds() public onlyOwner {
-        uint256 contractBalance = grimaceCoin.balanceOf(address(this));
-        require(grimaceCoin.transfer(owner(), contractBalance), "Transfer failed");
-    }
-
     function _beforeTokenTransfer(address from, address to, uint256 tokenId, uint256 batchSize)
-        internal
-        whenNotPaused
-        override(ERC721, ERC721Enumerable)
+    internal
+    whenNotPaused
+    override(ERC721, ERC721Enumerable)
     {
         super._beforeTokenTransfer(from, to, tokenId, batchSize);
     }
@@ -57,19 +46,19 @@ contract GrimaceMandalaNFT is ERC721, ERC721URIStorage, ERC721Enumerable, Pausab
     }
 
     function tokenURI(uint256 tokenId)
-        public
-        view
-        override(ERC721, ERC721URIStorage)
-        returns (string memory)
+    public
+    view
+    override(ERC721, ERC721URIStorage)
+    returns (string memory)
     {
         return super.tokenURI(tokenId);
     }
 
     function supportsInterface(bytes4 interfaceId)
-        public
-        view
-        override(ERC721, ERC721Enumerable, ERC721URIStorage)
-        returns (bool)
+    public
+    view
+    override(ERC721, ERC721Enumerable, ERC721URIStorage)
+    returns (bool)
     {
         return super.supportsInterface(interfaceId);
     }
