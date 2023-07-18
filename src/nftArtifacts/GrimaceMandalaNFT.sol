@@ -14,7 +14,13 @@ contract GrimaceMandalaNFT is ERC721, ERC721URIStorage, ERC721Enumerable, Pausab
 
     Counters.Counter private _tokenIdCounter;
 
-    constructor() ERC721("GrimaceMandalaNFT", "GMNFT") {}
+    address private grimaceCoinAddress;
+    IERC20 private grimaceCoin;
+
+    constructor(address grimaceCoinAddress) ERC721("GrimaceMandalaNFT", "GMNFT") {
+        grimaceCoinAddress = grimaceCoinAddress;
+        grimaceCoin = IERC20(grimaceCoinAddress);
+    }
 
     function pause() public onlyOwner {
         _pause();
@@ -29,6 +35,11 @@ contract GrimaceMandalaNFT is ERC721, ERC721URIStorage, ERC721Enumerable, Pausab
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, uri);
+    }
+
+    function withdrawFunds() public onlyOwner {
+        uint256 contractBalance = grimaceCoin.balanceOf(address(this));
+        require(grimaceCoin.transfer(owner(), contractBalance), "Transfer failed");
     }
 
     function _beforeTokenTransfer(address from, address to, uint256 tokenId, uint256 batchSize)

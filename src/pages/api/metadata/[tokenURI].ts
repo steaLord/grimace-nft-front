@@ -5,7 +5,7 @@ import nft3Src from "../../../../public/revered-guardian-of-the-odyssey.jpg";
 import nft4Src from "../../../../public/believer-diamond-degen.jpg";
 import nft5Src from "../../../../public/golden-degen-dick.jpg";
 import nft6Src from "../../../../public/silver-soldier-of-the-odyssey.jpg";
-import nftsMetadata from "/public/NFTsMetadata.json";
+import nftsMetadata from "./NFTsMetadata.json";
 
 const metadata = {
   "SAFE4LIFE.COM": {
