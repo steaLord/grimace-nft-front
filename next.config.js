@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  images: {
+    domains: ['grimace-nft-preview.s3.eu-central-1.amazonaws.com'],
+  },
   typescript: {
     ignoreBuildErrors: true,
   },

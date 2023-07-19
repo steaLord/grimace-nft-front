@@ -13,6 +13,10 @@ interface ITokenMetadata {
   description?: string;
 }
 
+export const collectionNameToURLSlug = (collection: string) => {
+  return collection.toLowerCase().replace(/\s+/g, "-");
+};
+
 // TODO: Set contract address from proccess.env.NEXT_PUBLIC_CONTRACT_ADDRESS
 export const useNFTMetadata = (
   contractAddress: string
@@ -53,7 +57,7 @@ export const useNFTMetadata = (
           ...nftMetadata,
           web3Id: tokenId,
           urlSlug:
-            nftMetadata.collection.toLowerCase().replace(/\s+/g, "-") +
+            collectionNameToURLSlug(nftMetadata.collection) +
             "-" +
             nftMetadata.id,
         });

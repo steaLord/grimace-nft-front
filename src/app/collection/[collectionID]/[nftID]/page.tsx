@@ -3,22 +3,18 @@ import { useParams } from "next/navigation";
 import NFTDetails from "@/components/NFTDetails";
 import Container from "@/components/Container";
 import React from "react";
-import { collectionPreviewItems } from "@/app/collection/page";
+import nftsMetadata from "/public/NFTsMetadata.json";
 import styled from "@emotion/styled";
 
 export default function NFTPage() {
   const { nftID } = useParams() as { nftID: string };
 
-  const previewItem = collectionPreviewItems.find(
-    ({ urlSlug }) => urlSlug === nftID
-  );
-
+  const previewItem = nftsMetadata?.[nftID];
   return (
     <StyledRoot>
       <NFTDetails
         collection={previewItem.collection}
-        name={nftID}
-        id="1"
+        id={nftID}
         description={previewItem.description}
         buyHref={"#"}
         buyGrimaceHref={"https://coinmarketcap.com/currencies/grimace-top/"}
