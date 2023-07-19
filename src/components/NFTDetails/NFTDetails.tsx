@@ -1,55 +1,37 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 import Button from "@/components/Button";
 import Image from "next/image";
-import { useRemainingTime } from "@/app/page";
+import { IBlockchainAuctionData } from "@/app/hooks/useAuction";
 
 export type NFTDetailsProps = {
-  id: string;
-  collection: string;
-  name: React.ReactNode;
-  subheading: React.ReactNode;
-  description: React.ReactNode;
-  buyHref: string;
-  buyGrimaceHref: string;
-  imageSrc: string;
+  nftItem: {
+    metadata: {
+      id: string;
+      collection: string;
+      name: React.ReactNode;
+      subheading: React.ReactNode;
+      description: React.ReactNode;
+      buyHref: string;
+      buyGrimaceHref: string;
+      imageSrc: string;
+    };
+    blockchainData: IBlockchainAuctionData;
+  };
 };
 
-function NFTDetails({
-  name,
-  collection,
-  id,
-  description,
-  buyHref,
-  buyGrimaceHref,
-  imageSrc,
-}: NFTDetailsProps) {
-  const { isReleased, remainingTime } = useRemainingTime(
-    process.env["TIMER_END_ISO_DATE"]
-  );
-  const [highestBid, setHighestBid] = useState(0);
-  const [highestBidder, setHighestBidder] = useState("");
-  const bidStep = 3;
-
-  useEffect(() => {
-    const fetchAuctionData = async () => {
-      try {
-        // Fetch the highest bid and bidder information from the contract
-        const highestBid = await contract.methods.getHighestBid(id).call();
-        const highestBidder = await contract.methods
-          .getHighestBidder(id)
-          .call();
-        setHighestBid(highestBid);
-        setHighestBidder(highestBidder);
-      } catch (error) {
-        console.error("Failed to fetch auction data:", error);
-      }
-    };
-
-    if (isReleased) {
-      fetchAuctionData();
-    }
-  }, [isReleased, id]);
+function NFTDetails({ nftItem }: NFTDetailsProps) {
+  const { metadata, blockchainData } = nftItem;
+  const { id, collection, name, buyGrimaceHref, imageSrc, description } =
+    metadata;
+  const {
+    initialPrice,
+    highestBidder,
+    highestBid,
+    bidStep,
+    timeLeftForAuction,
+  } = blockchainData;
+  const isReleased = initialPrice !== 0;
 
   const formatTimeLeft = (timeInSeconds) => {
     const days = Math.floor(timeInSeconds / (60 * 60 * 24));
@@ -72,12 +54,14 @@ function NFTDetails({
         <Name>
           {collection} {id}
         </Name>
-        <Subheading>Auction started</Subheading>
+        <Subheading>
+          {isReleased ? "Auction started" : "Wait for auction"}
+        </Subheading>
         <Description
           dangerouslySetInnerHTML={{ __html: description }}
         ></Description>
         <BidDetails>
-          <BidStep>Bid Step: {bidStep} $GRIMACE</BidStep>
+          {isReleased && <BidStep>Bid Step: {bidStep} $GRIMACE</BidStep>}
           {isReleased && (
             <>
               <HighestBid>
@@ -89,17 +73,18 @@ function NFTDetails({
                   </>
                 )}
               </HighestBid>
-              <TimeLeft>Time Left: {formatTimeLeft(remainingTime)}</TimeLeft>
+              <TimeLeft>
+                Time Left: {formatTimeLeft(timeLeftForAuction)}
+              </TimeLeft>
             </>
           )}
         </BidDetails>
         <Buttons>
           <Button
-            href={buyHref}
             buttonType="filled"
-            isDisabled={!isReleased}
+            disabled={!isReleased}
             title={
-              !isReleased ? "Wait until release" : "Link to NFT Marketplace"
+              !isReleased ? "Wait until auction" : "Link to NFT Marketplace"
             }
           >
             Place Bid
@@ -107,9 +92,8 @@ function NFTDetails({
           <Button
             href={buyGrimaceHref}
             buttonType="outlined"
-            isDisabled={!isReleased}
             target={"__blank"}
-            title={!isReleased ? "Wait until release" : "Link to Exchange"}
+            title={buyGrimaceHref}
           >
             Buy Grimace
           </Button>

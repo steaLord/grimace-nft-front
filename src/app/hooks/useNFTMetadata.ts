@@ -46,25 +46,37 @@ export const useNFTMetadata = (
       // Retrieve the metadata URI for each token
       const tokens: ITokenMetadata[] = [];
 
+      const fetchPromises = [];
       for (let i = 0; i < balance; i++) {
-        const tokenId = await contract.methods
-          .tokenOfOwnerByIndex(account, i)
-          .call();
-        const tokenURI = (await contract.methods
-          .tokenURI(tokenId)
-          .call()) as string;
-        const nftID = tokenURI?.split("/")?.pop();
-        const res = await fetch(`/api/metadata/${nftID}`);
-        const nftMetadata = await res.json();
-        tokens.push({
-          ...nftMetadata,
-          web3Id: tokenId,
-          urlSlug:
-            collectionNameToURLSlug(nftMetadata.collection) +
-            "-" +
-            nftMetadata.id,
-        });
+        fetchPromises.push(
+          new Promise(async (resolve, rej) => {
+            try {
+              const tokenId = await contract.methods
+                .tokenOfOwnerByIndex(account, i)
+                .call();
+              const tokenURI = (await contract.methods
+                .tokenURI(tokenId)
+                .call()) as string;
+              const nftID = tokenURI?.split("/")?.pop();
+              const res = await fetch(`/api/metadata/${nftID}`);
+              const nftMetadata = await res.json();
+              tokens.push({
+                ...nftMetadata,
+                web3Id: tokenId,
+                urlSlug:
+                  collectionNameToURLSlug(nftMetadata.collection) +
+                  "-" +
+                  nftMetadata.id,
+              });
+              resolve();
+            } catch (e) {
+              rej(e);
+            }
+          })
+        );
       }
+
+      await Promise.all(fetchPromises);
 
       setNFTTokens(tokens);
       setIsLoading(false);

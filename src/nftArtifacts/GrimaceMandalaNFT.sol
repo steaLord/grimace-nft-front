@@ -14,9 +14,11 @@ contract GrimaceMandalaNFT is ERC721, ERC721URIStorage, ERC721Enumerable, Pausab
     using Counters for Counters.Counter;
 
     Counters.Counter private _tokenIdCounter;
+    uint256 public sequentialCounter;
 
     address private grimaceCoinAddress;
     IERC20 private grimaceCoin;
+    mapping(uint256 => uint256) public sequentialToTokenId;
 
     struct Auction {
         uint256 tokenId;
@@ -47,6 +49,13 @@ contract GrimaceMandalaNFT is ERC721, ERC721URIStorage, ERC721Enumerable, Pausab
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, uri);
+        sequentialToTokenId[sequentialCounter] = tokenId;
+        sequentialCounter++;
+    }
+
+    // Used to get auction data from frontend without need of owning nft.
+    function getNFTBySequentialId(uint256 sequentialId) public view returns (uint256) {
+        return sequentialToTokenId[sequentialId];
     }
 
     function startAuction(
@@ -90,22 +99,23 @@ contract GrimaceMandalaNFT is ERC721, ERC721URIStorage, ERC721Enumerable, Pausab
     public
     view
     returns (
-        uint256,
-        uint256,
-        uint256,
-        uint256,
-        address,
-        uint256
+        uint256 tokenId,
+        uint256 initialPrice,
+        uint256 bidStep,
+        uint256 endTime,
+        address highestBidder,
+        uint256 highestBid
     )
     {
         Auction memory auction = tokenIdToAuction[tokenId];
+
         return (
-        auction.tokenId,
-        auction.initialPrice,
-        auction.bidStep,
-        auction.endTime,
-        auction.highestBidder,
-        auction.highestBid
+            auction.tokenId,
+            auction.initialPrice,
+            auction.bidStep,
+            auction.endTime,
+            auction.highestBidder,
+            auction.highestBid
         );
     }
 

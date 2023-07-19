@@ -1,24 +1,36 @@
 import { useEffect, useState } from "react";
-import { Web3 } from "web3/lib/types";
 import GrimaceMandalasNFT from "@/nftArtifacts/GrimaceMandalaNFT.json";
 import { useMetaMask } from "metamask-react";
+import { Web3 } from "web3";
+
+export interface IBlockchainAuctionData {
+  nftID: number;
+  initialPrice: number;
+  bidStep: number;
+  timeLeftForAuction: number;
+  endTime: number;
+  highestBidder: string;
+  highestBid: number;
+}
 
 const useAuction = ({
   contractAddress,
-  tokenId,
+  nftID,
 }: {
   contractAddress: string;
-  tokenId: string;
+  nftID: number;
 }) => {
   const { account } = useMetaMask();
   const [isLoading, setIsLoading] = useState(true);
-  const [isAuctionStarted, setIsAuctionStarted] = useState(false);
-  const [timeLeftForAuction, setTimeLeftForAuction] = useState(null);
-  const [currentHighestBid, setCurrentHighestBid] = useState({
-    address: "",
-    amount: "",
+  const [auctionDetails, setAuctionDetails] = useState({
+    nftID: 0,
+    initialPrice: 0,
+    bidStep: 0,
+    timeLeftForAuction: 0,
+    endTime: 0,
+    highestBidder: "",
+    highestBid: 0,
   });
-  const [bidStep, setBidStep] = useState(0);
 
   useEffect(() => {
     const fetchAuctionData = async () => {
@@ -31,15 +43,25 @@ const useAuction = ({
         );
         // Fetch the auction details from the contract
         const auctionDetails = await contract.methods
-          .getAuctionDetails(tokenId)
+          .getAuctionDetails(nftID - 1)
           .call();
-        setIsAuctionStarted(auctionDetails.endTime > 0);
-        setTimeLeftForAuction(new Date(auctionDetails.endTime * 1000));
-        setCurrentHighestBid({
-          address: auctionDetails.highestBidder,
-          amount: auctionDetails.highestBid,
+        const {
+          0: blockchainnftID,
+          1: initialPrice,
+          2: bidStep,
+          3: endTime,
+          4: highestBidder,
+          5: highestBid,
+        } = auctionDetails;
+        setAuctionDetails({
+          nftID: Number(blockchainnftID),
+          initialPrice: Number(initialPrice),
+          bidStep: Number(bidStep),
+          timeLeftForAuction: Number(new Date(Number(endTime) * 1000)),
+          endTime: Number(endTime),
+          highestBidder,
+          highestBid: Number(highestBid),
         });
-        setBidStep(auctionDetails.bidStep);
         setIsLoading(false);
       } catch (error) {
         console.error("Failed to fetch auction data:", error);
@@ -47,8 +69,10 @@ const useAuction = ({
       }
     };
 
-    fetchAuctionData();
-  }, [account, contractAddress, tokenId]);
+    if (nftID !== null && contractAddress) {
+      fetchAuctionData();
+    }
+  }, [account, contractAddress, nftID]);
 
   const placeBid = async () => {
     try {
@@ -62,7 +86,7 @@ const useAuction = ({
       const newBidAmount = Number(currentHighestBid.amount) + Number(bidStep);
       // Use the contract's method to place a bid with the calculated `newBidAmount`
       await contract.methods
-        .placeBid(tokenId, newBidAmount)
+        .placeBid(nftID, newBidAmount)
         .send({ from: account });
     } catch (error) {
       console.error("Failed to place bid:", error);
@@ -71,11 +95,8 @@ const useAuction = ({
 
   return {
     isLoading,
-    isAuctionStarted,
-    timeLeftForAuction,
     placeBid,
-    currentHighestBid,
-    bidStep,
+    auctionDetails,
   };
 };
 

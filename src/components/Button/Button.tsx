@@ -6,27 +6,35 @@ import classNames from "classnames";
 export type ButtonProps = { buttonType?: "filled" | "outlined" } & (
   | React.ComponentProps<typeof Link>
   | HTMLAttributes<HTMLButtonElement>
-  )
+);
 
 function Button(props: ButtonProps) {
-  const {
-    children,
-    buttonType,
-    className,
-    isDisabled,
-    ...rest
-  } = props;
+  const { children, buttonType, className, disabled, ...rest } = props;
 
   if ("href" in rest) {
     if (buttonType === "filled") {
       return (
-        <Link {...rest} className={classNames(className, buttonFilledStyles, isDisabled && "disabled")}>
+        <Link
+          {...rest}
+          className={classNames(
+            className,
+            buttonFilledStyles,
+            disabled && "disabled"
+          )}
+        >
           {children}
         </Link>
       );
     } else {
       return (
-        <Link {...rest} className={classNames(className, buttonOutlinedStyles, isDisabled && "disabled")}>
+        <Link
+          {...rest}
+          className={classNames(
+            className,
+            buttonOutlinedStyles,
+            disabled && "disabled"
+          )}
+        >
           <span>{children}</span>
         </Link>
       );
@@ -34,13 +42,21 @@ function Button(props: ButtonProps) {
   } else {
     if (buttonType === "filled") {
       return (
-        <button {...rest} className={classNames(className, buttonFilledStyles)}>
+        <button
+          {...rest}
+          disabled={disabled}
+          className={classNames(className, buttonFilledStyles)}
+        >
           {children}
         </button>
       );
     } else {
       return (
-        <button {...rest} className={classNames(className, buttonOutlinedStyles)}>
+        <button
+          {...rest}
+          disabled={disabled}
+          className={classNames(className, buttonOutlinedStyles)}
+        >
           <span>{children}</span>
         </button>
       );
@@ -51,7 +67,6 @@ function Button(props: ButtonProps) {
 const StyledLink = `
 `;
 
-
 const commonButtonStyles = css`
   border-radius: 12px;
   font-size: 1.5rem;
@@ -59,8 +74,7 @@ const commonButtonStyles = css`
   @media (max-width: 768px) {
     font-size: 1rem;
   }
-`
-
+`;
 
 const buttonFilledStyles = css`
   ${commonButtonStyles};
@@ -71,9 +85,10 @@ const buttonFilledStyles = css`
   text-transform: uppercase;
   color: var(--color-white);
   font-weight: 700;
-  background: linear-gradient(270deg, #9747FF 0%, #4C1592 100%);
+  background: linear-gradient(270deg, #9747ff 0%, #4c1592 100%);
   cursor: pointer;
-  
+  border: none;
+
   &:disabled {
     font-weight: 400;
     background: linear-gradient(270deg, #454545 0%, #676767 100%);
@@ -93,7 +108,12 @@ const buttonOutlinedStyles = css`
   text-transform: uppercase;
   color: var(--color-white);
   font-weight: 400;
-  background: linear-gradient(90deg, rgba(151, 71, 255, 1) 0%, rgba(76, 21, 146, 1) 50%, rgba(219, 0, 255, 1) 100%);;
+  background: linear-gradient(
+    90deg,
+    rgba(151, 71, 255, 1) 0%,
+    rgba(76, 21, 146, 1) 50%,
+    rgba(219, 0, 255, 1) 100%
+  );
   cursor: pointer;
 
   & > span {
