@@ -17,7 +17,6 @@ export type NFTDetailsProps = {
 
 function NFTDetails({
   name,
-  subheading,
   collection,
   id,
   description,
@@ -34,48 +33,48 @@ function NFTDetails({
         width={500}
         height={500}
       />
-      <Name>
-        {collection} {id}
-      </Name>
-      <Subheading>Auction started</Subheading>
-      <Description
-        dangerouslySetInnerHTML={{ __html: description }}
-      ></Description>
-      <Buttons>
-        <Button
-          href={buyHref}
-          buttonType="filled"
-          // isDisabled={!isReleased}
-          isDisabled={false}
-          title={!isReleased ? "Wait until release" : "Link to NFT Marketplace"}
-        >
-          Place Bid
-        </Button>
-        <Button
-          href={buyGrimaceHref}
-          buttonType="outlined"
-          isDisabled={!isReleased}
-          target={"__blank"}
-          title={!isReleased ? "Wait until release" : "Link to Exchange"}
-        >
-          Buy Grimace
-        </Button>
-      </Buttons>
+      <Content>
+        <Name>
+          {collection} {id}
+        </Name>
+        <Subheading>Auction started</Subheading>
+        <Description
+          dangerouslySetInnerHTML={{ __html: description }}
+        ></Description>
+        <Buttons>
+          <Button
+            href={buyHref}
+            buttonType="filled"
+            // isDisabled={!isReleased}
+            isDisabled={false}
+            title={
+              !isReleased ? "Wait until release" : "Link to NFT Marketplace"
+            }
+          >
+            Place Bid
+          </Button>
+          <Button
+            href={buyGrimaceHref}
+            buttonType="outlined"
+            isDisabled={!isReleased}
+            target={"__blank"}
+            title={!isReleased ? "Wait until release" : "Link to Exchange"}
+          >
+            Buy Grimace
+          </Button>
+        </Buttons>
+      </Content>
     </Root>
   );
 }
 
 const Root = styled.div`
-  display: grid;
+  display: flex;
   width: 100%;
 
-  grid-template-columns: auto 48px 50%;
-  grid-template-rows: auto auto auto auto auto;
-
   @media (max-width: 992px) {
-    grid-template-columns: 24px 1fr 24px;
-    grid-template-rows: auto auto auto auto auto;
     max-width: 500px;
+    flex-direction: column;
   }
 `;
 
@@ -86,75 +85,52 @@ const NFTImage = styled(Image)`
   max-height: max(400px, 80vh);
   border-radius: 24px;
 
-  grid-column: 1 / 2;
-  grid-row: 1 / 6;
-
   @media (max-width: 992px) {
     margin: auto;
-    grid-column: 2 / 3;
-    grid-row: 3 / 4;
+  }
+`;
+
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left: 24px;
+  flex: 1;
+
+  @media (max-width: 992px) {
+    margin-left: 0;
   }
 `;
 
 const Name = styled.h1`
   font-size: 3rem;
   font-weight: bold;
-
-  grid-column: 3 / 4;
-  grid-row: 1 / 2;
+  margin-top: 0;
 
   @media (max-width: 992px) {
-    grid-column: 2 / 3;
-    grid-row: 1 / 2;
+    margin-bottom: 12px;
   }
 `;
 
 const Subheading = styled.h3`
   font-size: 1.5rem;
   font-weight: 400;
-
   margin-bottom: 12px;
-
-  grid-column: 3 / 4;
-  grid-row: 2 / 3;
-
-  @media (max-width: 992px) {
-    grid-column: 2 / 3;
-    grid-row: 2 / 3;
-    margin-bottom: 16px;
-  }
 `;
 
 const Description = styled.p`
   font-size: 0.9rem;
   font-weight: 400;
-
-  grid-column: 3 / 4;
-  grid-row: 3 / 4;
-
-  @media (max-width: 992px) {
-    grid-column: 2 / 3;
-    grid-row: 5 / 6;
-  }
 `;
 
 const Buttons = styled.div`
   gap: 24px;
   display: flex;
   justify-content: flex-end;
-
   margin-top: 24px;
-
-  grid-column: 3 / 4;
-  grid-row: 4 / 5;
-
-  align-self: end;
 
   @media (max-width: 992px) {
     justify-content: space-between;
     gap: 16px;
-    grid-column: 2 / 3;
-    grid-row: 4 / 5;
     margin: 16px 0;
   }
 
