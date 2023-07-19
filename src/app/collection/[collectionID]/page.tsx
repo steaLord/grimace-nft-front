@@ -26,7 +26,7 @@ export default function NFTPage() {
       <title>{previewItem?.collection}</title>
       <H1>{previewItem?.collection}</H1>
       <CollectionGrid>
-        {nfts.map(({ id, edition }, i) => (
+        {nfts.map(({ id, edition }, i:number) => (
           <div style={{ position: "relative" }}>
             <Link href={`/collection/${collectionID}/${id}`} key={id}>
               <PlaceholderItem src={previewItem!.imageSrc} alt={id} key={i} />
