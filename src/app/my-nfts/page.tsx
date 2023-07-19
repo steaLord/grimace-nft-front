@@ -34,8 +34,10 @@ export default function MyNFTsPage() {
           </>
         )}
         {account &&
-          nftTokens.map(({ imageSrc, urlSlug, title }) => {
+          nftTokens.map(({ imageSrc, urlSlug, title,id }) => {
             return (
+              
+              <div style={{ position: "relative" }}>
               <Link key={urlSlug} href={`/my-nfts/${urlSlug}`}>
                 <StyledNFTImage
                   width={300}
@@ -44,6 +46,17 @@ export default function MyNFTsPage() {
                   alt={title ?? "my-nft"}
                 />
               </Link>
+              <div
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                }}
+              >
+                <P>{id}</P>
+              </div>
+            </div>
             );
           })}
       </CollectionGrid>
@@ -56,12 +69,30 @@ const H1 = styled.h1`
   font-weight: 400;
   margin-bottom: 24px;
 `;
-
+const P = styled.p`
+  color: #AC6CFF;
+  font-size: 32px;
+  font-weight: 700;
+  text-shadow:
+    -2px -2px 0 #000,
+    2px -2px 0 #000,
+    -2px 2px 0 #000,
+    2px 2px 0 #000;
+`;
 const StyledNFTImage = styled(Image)`
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: 12px;
+  transition: background 150ms ease-in-out, opacity 150ms ease-in-out,
+    transform 150ms ease-in-out;
+  opacity:0.7;
+  &:hover {
+    cursor: pointer;
+    background: var(--color-purple);
+    opacity: 0.9;
+    transform: scale(1.05);
+  }
 `;
 
 const load = keyframes`
