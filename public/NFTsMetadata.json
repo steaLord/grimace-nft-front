@@ -289,96 +289,105 @@
   },
   "33": {
     "id": "33",
-    "collection": "Believer Diamond Degen",
-    "imageSrc": "https://grimace-nft-preview.s3.eu-central-1.amazonaws.com/believer-diamond-degen.jpg",
-    "name": "NFT 1",
-    "description": "Description of NFT 1",
+    "collection": "Revered Guardian of the Odyssey",
+    "imageSrc": "https://grimace-nft-preview.s3.eu-central-1.amazonaws.com/revered-guardian-of-the-odyssey.jpg",
+    "name": "NFT 11",
+    "description": "Description of NFT 10",
     "year": "2023",
-    "edition": "1 of 11"
+    "edition": "11 of 11"
   },
   "34": {
     "id": "34",
     "collection": "Believer Diamond Degen",
     "imageSrc": "https://grimace-nft-preview.s3.eu-central-1.amazonaws.com/believer-diamond-degen.jpg",
-    "name": "NFT 2",
-    "description": "Description of NFT 2",
+    "name": "NFT 1",
+    "description": "Description of NFT 1",
     "year": "2023",
-    "edition": "2 of 11"
+    "edition": "1 of 11"
   },
   "35": {
     "id": "35",
     "collection": "Believer Diamond Degen",
     "imageSrc": "https://grimace-nft-preview.s3.eu-central-1.amazonaws.com/believer-diamond-degen.jpg",
-    "name": "NFT 3",
-    "description": "Description of NFT 3",
+    "name": "NFT 2",
+    "description": "Description of NFT 2",
     "year": "2023",
-    "edition": "3 of 11"
+    "edition": "2 of 11"
   },
   "36": {
     "id": "36",
     "collection": "Believer Diamond Degen",
     "imageSrc": "https://grimace-nft-preview.s3.eu-central-1.amazonaws.com/believer-diamond-degen.jpg",
-    "name": "NFT 4",
-    "description": "Description of NFT 4",
+    "name": "NFT 3",
+    "description": "Description of NFT 3",
     "year": "2023",
-    "edition": "4 of 11"
+    "edition": "3 of 11"
   },
   "37": {
     "id": "37",
     "collection": "Believer Diamond Degen",
     "imageSrc": "https://grimace-nft-preview.s3.eu-central-1.amazonaws.com/believer-diamond-degen.jpg",
-    "name": "NFT 5",
-    "description": "Description of NFT 5",
+    "name": "NFT 4",
+    "description": "Description of NFT 4",
     "year": "2023",
-    "edition": "5 of 11"
+    "edition": "4 of 11"
   },
   "38": {
     "id": "38",
     "collection": "Believer Diamond Degen",
     "imageSrc": "https://grimace-nft-preview.s3.eu-central-1.amazonaws.com/believer-diamond-degen.jpg",
-    "name": "NFT 6",
-    "description": "Description of NFT 6",
+    "name": "NFT 5",
+    "description": "Description of NFT 5",
     "year": "2023",
-    "edition": "6 of 11"
+    "edition": "5 of 11"
   },
   "39": {
     "id": "39",
     "collection": "Believer Diamond Degen",
     "imageSrc": "https://grimace-nft-preview.s3.eu-central-1.amazonaws.com/believer-diamond-degen.jpg",
-    "name": "NFT 7",
-    "description": "Description of NFT 7",
+    "name": "NFT 6",
+    "description": "Description of NFT 6",
     "year": "2023",
-    "edition": "7 of 11"
+    "edition": "6 of 11"
   },
   "40": {
     "id": "40",
     "collection": "Believer Diamond Degen",
     "imageSrc": "https://grimace-nft-preview.s3.eu-central-1.amazonaws.com/believer-diamond-degen.jpg",
-    "name": "NFT 8",
-    "description": "Description of NFT 8",
+    "name": "NFT 7",
+    "description": "Description of NFT 7",
     "year": "2023",
-    "edition": "8 of 11"
+    "edition": "7 of 11"
   },
   "41": {
     "id": "41",
     "collection": "Believer Diamond Degen",
     "imageSrc": "https://grimace-nft-preview.s3.eu-central-1.amazonaws.com/believer-diamond-degen.jpg",
-    "name": "NFT 9",
-    "description": "Description of NFT 9",
+    "name": "NFT 8",
+    "description": "Description of NFT 8",
     "year": "2023",
-    "edition": "9 of 11"
+    "edition": "8 of 11"
   },
   "42": {
     "id": "42",
     "collection": "Believer Diamond Degen",
     "imageSrc": "https://grimace-nft-preview.s3.eu-central-1.amazonaws.com/believer-diamond-degen.jpg",
+    "name": "NFT 9",
+    "description": "Description of NFT 9",
+    "year": "2023",
+    "edition": "9 of 11"
+  },
+  "43": {
+    "id": "43",
+    "collection": "Believer Diamond Degen",
+    "imageSrc": "https://grimace-nft-preview.s3.eu-central-1.amazonaws.com/believer-diamond-degen.jpg",
     "name": "NFT 10",
     "description": "Description of NFT 10",
     "year": "2023",
     "edition": "10 of 11"
   },
-  "43": {
-    "id": "43",
+  "44": {
+    "id": "44",
     "collection": "Believer Diamond Degen",
     "imageSrc": "https://grimace-nft-preview.s3.eu-central-1.amazonaws.com/believer-diamond-degen.jpg",
     "name": "NFT 11",
@@ -386,35 +395,35 @@
     "year": "2023",
     "edition": "11 of 11"
   },
-  "44": {
-    "id": "44",
+  "45": {
+    "id": "45",
     "collection": "Golden Degen Dick",
     "imageSrc": "https://grimace-nft-preview.s3.eu-central-1.amazonaws.com/golden-degen-dick.jpg",
     "name": "NFT 1",
     "description": "Description of NFT 1",
     "year": "2023",
     "edition": "1 of 11"
-  },
-  "45": {
-    "id": "45",
-    "collection": "Golden Degen Dick",
-    "imageSrc": "https://grimace-nft-preview.s3.eu-central-1.amazonaws.com/golden-degen-dick.jpg",
-    "name": "NFT 2",
-    "description": "Description of NFT 2",
-    "year": "2023",
-    "edition": "2 of 11"
   },
   "46": {
     "id": "46",
     "collection": "Golden Degen Dick",
     "imageSrc": "https://grimace-nft-preview.s3.eu-central-1.amazonaws.com/golden-degen-dick.jpg",
+    "name": "NFT 2",
+    "description": "Description of NFT 2",
+    "year": "2023",
+    "edition": "2 of 11"
+  },
+  "47": {
+    "id": "47",
+    "collection": "Golden Degen Dick",
+    "imageSrc": "https://grimace-nft-preview.s3.eu-central-1.amazonaws.com/golden-degen-dick.jpg",
     "name": "NFT 3",
     "description": "Description of NFT 3",
     "year": "2023",
     "edition": "3 of 11"
   },
-  "47": {
-    "id": "47",
+  "48": {
+    "id": "48",
     "collection": "Golden Degen Dick",
     "imageSrc": "https://grimace-nft-preview.s3.eu-central-1.amazonaws.com/golden-degen-dick.jpg",
     "name": "NFT 4",
@@ -422,8 +431,8 @@
     "year": "2023",
     "edition": "4 of 11"
   },
-  "48": {
-    "id": "48",
+  "49": {
+    "id": "49",
     "collection": "Golden Degen Dick",
     "imageSrc": "https://grimace-nft-preview.s3.eu-central-1.amazonaws.com/golden-degen-dick.jpg",
     "name": "NFT 5",
@@ -431,8 +440,8 @@
     "year": "2023",
     "edition": "5 of 11"
   },
-  "49": {
-    "id": "49",
+  "50": {
+    "id": "50",
     "collection": "Golden Degen Dick",
     "imageSrc": "https://grimace-nft-preview.s3.eu-central-1.amazonaws.com/golden-degen-dick.jpg",
     "name": "NFT 6",
@@ -440,8 +449,8 @@
     "year": "2023",
     "edition": "6 of 11"
   },
-  "50": {
-    "id": "50",
+  "51": {
+    "id": "51",
     "collection": "Golden Degen Dick",
     "imageSrc": "https://grimace-nft-preview.s3.eu-central-1.amazonaws.com/golden-degen-dick.jpg",
     "name": "NFT 7",
@@ -449,8 +458,8 @@
     "year": "2023",
     "edition": "7 of 11"
   },
-  "51": {
-    "id": "51",
+  "52": {
+    "id": "52",
     "collection": "Golden Degen Dick",
     "imageSrc": "https://grimace-nft-preview.s3.eu-central-1.amazonaws.com/golden-degen-dick.jpg",
     "name": "NFT 8",
@@ -458,8 +467,8 @@
     "year": "2023",
     "edition": "8 of 11"
   },
-  "52": {
-    "id": "52",
+  "53": {
+    "id": "53",
     "collection": "Golden Degen Dick",
     "imageSrc": "https://grimace-nft-preview.s3.eu-central-1.amazonaws.com/golden-degen-dick.jpg",
     "name": "NFT 9",
@@ -467,8 +476,8 @@
     "year": "2023",
     "edition": "9 of 11"
   },
-  "53": {
-    "id": "53",
+  "54": {
+    "id": "54",
     "collection": "Golden Degen Dick",
     "imageSrc": "https://grimace-nft-preview.s3.eu-central-1.amazonaws.com/golden-degen-dick.jpg",
     "name": "NFT 10",
@@ -476,17 +485,17 @@
     "year": "2023",
     "edition": "10 of 11"
   },
-  "54": {
-    "id": "54",
-    "collection": "Silver Soldier of the Odyssey",
-    "imageSrc": "https://grimace-nft-preview.s3.eu-central-1.amazonaws.com/silver-soldier-of-the-odyssey.jpg",
+  "55": {
+    "id": "55",
+    "collection": "Golden Degen Dick",
+    "imageSrc": "https://grimace-nft-preview.s3.eu-central-1.amazonaws.com/golden-degen-dick.jpg",
     "name": "NFT 11",
-    "description": "Description of NFT 10",
+    "description": "Description of NFT 11",
     "year": "2023",
     "edition": "11 of 11"
   },
-  "55": {
-    "id": "55",
+  "56": {
+    "id": "56",
     "collection": "Silver Soldier of the Odyssey",
     "imageSrc": "https://grimace-nft-preview.s3.eu-central-1.amazonaws.com/silver-soldier-of-the-odyssey.jpg",
     "name": "NFT 1",
@@ -494,8 +503,8 @@
     "year": "2023",
     "edition": "1 of 11"
   },
-  "56": {
-    "id": "56",
+  "57": {
+    "id": "57",
     "collection": "Silver Soldier of the Odyssey",
     "imageSrc": "https://grimace-nft-preview.s3.eu-central-1.amazonaws.com/silver-soldier-of-the-odyssey.jpg",
     "name": "NFT 2",
@@ -503,8 +512,8 @@
     "year": "2023",
     "edition": "2 of 11"
   },
-  "57": {
-    "id": "57",
+  "58": {
+    "id": "58",
     "collection": "Silver Soldier of the Odyssey",
     "imageSrc": "https://grimace-nft-preview.s3.eu-central-1.amazonaws.com/silver-soldier-of-the-odyssey.jpg",
     "name": "NFT 3",
@@ -512,8 +521,8 @@
     "year": "2023",
     "edition": "3 of 11"
   },
-  "58": {
-    "id": "58",
+  "59": {
+    "id": "59",
     "collection": "Silver Soldier of the Odyssey",
     "imageSrc": "https://grimace-nft-preview.s3.eu-central-1.amazonaws.com/silver-soldier-of-the-odyssey.jpg",
     "name": "NFT 4",
@@ -521,8 +530,8 @@
     "year": "2023",
     "edition": "4 of 11"
   },
-  "59": {
-    "id": "59",
+  "60": {
+    "id": "60",
     "collection": "Silver Soldier of the Odyssey",
     "imageSrc": "https://grimace-nft-preview.s3.eu-central-1.amazonaws.com/silver-soldier-of-the-odyssey.jpg",
     "name": "NFT 5",
@@ -530,8 +539,8 @@
     "year": "2023",
     "edition": "5 of 11"
   },
-  "60": {
-    "id": "60",
+  "61": {
+    "id": "61",
     "collection": "Silver Soldier of the Odyssey",
     "imageSrc": "https://grimace-nft-preview.s3.eu-central-1.amazonaws.com/silver-soldier-of-the-odyssey.jpg",
     "name": "NFT 6",
@@ -539,8 +548,8 @@
     "year": "2023",
     "edition": "6 of 11"
   },
-  "61": {
-    "id": "61",
+  "62": {
+    "id": "62",
     "collection": "Silver Soldier of the Odyssey",
     "imageSrc": "https://grimace-nft-preview.s3.eu-central-1.amazonaws.com/silver-soldier-of-the-odyssey.jpg",
     "name": "NFT 7",
@@ -548,8 +557,8 @@
     "year": "2023",
     "edition": "7 of 11"
   },
-  "62": {
-    "id": "62",
+  "63": {
+    "id": "63",
     "collection": "Silver Soldier of the Odyssey",
     "imageSrc": "https://grimace-nft-preview.s3.eu-central-1.amazonaws.com/silver-soldier-of-the-odyssey.jpg",
     "name": "NFT 8",
@@ -557,8 +566,8 @@
     "year": "2023",
     "edition": "8 of 11"
   },
-  "63": {
-    "id": "63",
+  "64": {
+    "id": "64",
     "collection": "Silver Soldier of the Odyssey",
     "imageSrc": "https://grimace-nft-preview.s3.eu-central-1.amazonaws.com/silver-soldier-of-the-odyssey.jpg",
     "name": "NFT 9",
@@ -566,23 +575,14 @@
     "year": "2023",
     "edition": "9 of 11"
   },
-  "64": {
-    "id": "64",
+  "65": {
+    "id": "65",
     "collection": "Silver Soldier of the Odyssey",
     "imageSrc": "https://grimace-nft-preview.s3.eu-central-1.amazonaws.com/silver-soldier-of-the-odyssey.jpg",
     "name": "NFT 10",
     "description": "Description of NFT 10",
     "year": "2023",
     "edition": "10 of 11"
-  },
-  "65": {
-    "id": "65",
-    "collection": "Silver Soldier of the Odyssey",
-    "imageSrc": "https://grimace-nft-preview.s3.eu-central-1.amazonaws.com/silver-soldier-of-the-odyssey.jpg",
-    "name": "NFT 11",
-    "description": "Description of NFT 11",
-    "year": "2023",
-    "edition": "11 of 11"
   },
   "66": {
     "id": "66",
