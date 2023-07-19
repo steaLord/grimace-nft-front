@@ -77,6 +77,7 @@ export const useNFTMetadata = (
       }
 
       await Promise.all(fetchPromises);
+      tokens.sort((a, b) => a.id - b.id);
 
       setNFTTokens(tokens);
       setIsLoading(false);
