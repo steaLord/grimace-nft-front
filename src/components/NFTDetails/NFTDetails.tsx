@@ -5,6 +5,8 @@ import Image from "next/image";
 import { useRemainingTime } from "@/app/page";
 
 export type NFTDetailsProps = {
+  id: string;
+  collection: string;
   name: React.ReactNode;
   subheading: React.ReactNode;
   description: React.ReactNode;
@@ -16,6 +18,8 @@ export type NFTDetailsProps = {
 function NFTDetails({
   name,
   subheading,
+  collection,
+  id,
   description,
   buyHref,
   buyGrimaceHref,
@@ -30,8 +34,10 @@ function NFTDetails({
         width={500}
         height={500}
       />
-      <Name>{name}</Name>
-      <Subheading>{subheading}</Subheading>
+      <Name>
+        {collection} {id}
+      </Name>
+      <Subheading>Auction started</Subheading>
       <Description
         dangerouslySetInnerHTML={{ __html: description }}
       ></Description>
@@ -39,10 +45,11 @@ function NFTDetails({
         <Button
           href={buyHref}
           buttonType="filled"
-          isDisabled={!isReleased}
+          // isDisabled={!isReleased}
+          isDisabled={false}
           title={!isReleased ? "Wait until release" : "Link to NFT Marketplace"}
         >
-          Buy
+          Place Bid
         </Button>
         <Button
           href={buyGrimaceHref}
@@ -106,7 +113,7 @@ const Subheading = styled.h3`
   font-size: 1.5rem;
   font-weight: 400;
 
-  margin-bottom: 24px;
+  margin-bottom: 12px;
 
   grid-column: 3 / 4;
   grid-row: 2 / 3;
@@ -119,7 +126,7 @@ const Subheading = styled.h3`
 `;
 
 const Description = styled.p`
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 400;
 
   grid-column: 3 / 4;

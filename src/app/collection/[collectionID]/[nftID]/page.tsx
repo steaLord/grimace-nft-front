@@ -16,8 +16,9 @@ export default function NFTPage() {
   return (
     <StyledRoot>
       <NFTDetails
+        collection={previewItem.collection}
         name={nftID}
-        subheading={"available: 5/10"}
+        id="1"
         description={previewItem.description}
         buyHref={"#"}
         buyGrimaceHref={"https://coinmarketcap.com/currencies/grimace-top/"}

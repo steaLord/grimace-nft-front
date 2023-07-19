@@ -142,47 +142,6 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
     })();
   }, [nftID]);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     setIsLoadingSVG(true);
-  //     try {
-  //
-  //       const res = await fetch(`/api/getSVGFile?nftName=${nftName}`);
-  //       const reader = res.body.getReader();
-  //       const decoder = new TextDecoder();
-  //       let svgStringResponse = "";
-  //       let chunks = [];
-  //
-  //       while (true) {
-  //         const { done, value } = await reader.read();
-  //         if (done) break;
-  //         const chunk = decoder.decode(value);
-  //         chunks.push(chunk);
-  //       }
-  //
-  //       svgStringResponse = chunks.join("");
-  //
-  //       setSvgString(svgStringResponse);
-  //
-  //       const image = new Image();
-  //       const blob = new Blob([svgStringResponse], { type: "image/svg+xml" });
-  //       const url = URL.createObjectURL(blob);
-  //       image.onload = () => {
-  //         URL.revokeObjectURL(url);
-  //         imageRef.current = image;
-  //         setSvgWidth(image.width);
-  //         setSvgHeight(image.height);
-  //         console.log({ image, width: image.width, height: image.height });
-  //         setIsLoadingSVG(false);
-  //       };
-  //       imageRef.current = image;
-  //       image.src = url;
-  //     } catch (e) {
-  //       setIsLoadingSVG(false);
-  //     }
-  //   })();
-  // }, [nftName]);
-
   useEffect(() => {
     if (imageRef.current && !isLoadingSVG) {
       const canvas = canvasRef.current;
