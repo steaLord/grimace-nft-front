@@ -50,8 +50,11 @@ export const useNFTMetadata = (
         const tokenId = await contract.methods
           .tokenOfOwnerByIndex(account, i)
           .call();
-        const tokenURI = await contract.methods.tokenURI(tokenId).call();
-        const res = await fetch(`/api/metadata/${tokenURI}`);
+        const tokenURI = (await contract.methods
+          .tokenURI(tokenId)
+          .call()) as string;
+        const nftID = tokenURI?.split("/")?.pop();
+        const res = await fetch(`/api/metadata/${nftID}`);
         const nftMetadata = await res.json();
         tokens.push({
           ...nftMetadata,
