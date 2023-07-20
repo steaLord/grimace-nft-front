@@ -61,18 +61,23 @@ function NFTDetails({ nftItem }: NFTDetailsProps) {
           dangerouslySetInnerHTML={{ __html: description }}
         ></Description>
         <BidDetails>
-          {isReleased && <BidStep>Bid Step: {bidStep} $GRIMACE</BidStep>}
+          {isReleased && (
+            <BidStep>
+              Bid Step: {bidStep} <span>$GRIMACE</span>
+            </BidStep>
+          )}
           {isReleased && (
             <>
-              <HighestBid>
-                {highestBidder && (
+              {highestBidder && (
+                <HighestBid>
                   <>
-                    <span>Highest Bid:</span>
-                    <span>{highestBid} ETH</span>
-                    <span>Bidder: {highestBidder}</span>
+                    <p>
+                      Highest Bid: {highestBid} <span>$GRIMACE</span>
+                    </p>
+                    <p>Bidder: {highestBidder}</p>
                   </>
-                )}
-              </HighestBid>
+                </HighestBid>
+              )}
               <TimeLeft>
                 Time Left: {formatTimeLeft(timeLeftForAuction)}
               </TimeLeft>
@@ -168,33 +173,33 @@ const BidDetails = styled.div`
 const BidStep = styled.p`
   margin-bottom: 4px;
   display: inline-block;
-  padding:8px;
+  padding: 8px;
   border-radius: 12px;
-  border: 1px solid #AC6CFF;
-  span{
+  border: 1px solid #ac6cff;
+  span {
     display: inline-block;
-    color: #AC6CFF;
+    color: #ac6cff;
   }
 `;
 
 const HighestBid = styled.div`
   margin-bottom: 4px;
-  max-width:fit-content;
-  padding:8px;
+  max-width: fit-content;
+  padding: 8px;
   border-radius: 12px;
-  border: 1px solid #AC6CFF;
-  span{
+  border: 1px solid #ac6cff;
+  span {
     display: inline-block;
-    color: #AC6CFF;
+    color: #ac6cff;
   }
 `;
 
 const TimeLeft = styled.div`
   margin-bottom: 4px;
-  display: inline-block;
-  padding:8px;
+  max-width: fit-content;
+  padding: 8px;
   border-radius: 12px;
-  border: 1px solid #AC6CFF;
+  border: 1px solid #ac6cff;
 `;
 
 const Buttons = styled.div`
