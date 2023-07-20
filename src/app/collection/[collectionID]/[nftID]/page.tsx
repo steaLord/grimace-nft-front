@@ -9,7 +9,12 @@ import useAuction from "@/app/hooks/useAuction";
 
 export default function NFTPage() {
   const { nftID } = useParams() as { nftID: string };
-  const { isLoading: isAuctionLoading, auctionDetails } = useAuction({
+  const {
+    isLoading: isAuctionLoading,
+    auctionDetails,
+    placeBid,
+    isPendingBid,
+  } = useAuction({
     nftID: Number(nftID),
     contractAddress: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
   });
@@ -29,7 +34,11 @@ export default function NFTPage() {
           Loading NFT
         </LoadingSpinner>
       ) : (
-        <NFTDetails nftItem={nftItem} />
+        <NFTDetails
+          isPendingBid={isPendingBid}
+          onPlaceBidClick={placeBid}
+          nftItem={nftItem}
+        />
       )}
     </StyledRoot>
   );
@@ -38,7 +47,7 @@ export default function NFTPage() {
 const StyledRoot = styled(Container)`
   padding-top: 32px;
 `;
-const LoadingSpinner = styled.div`
+export const LoadingSpinner = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -54,13 +63,14 @@ const LoadingSpinner = styled.div`
   border-radius: 16px;
 `;
 
-const Spinner = styled.div`
+export const Spinner = styled.div`
   display: inline-block;
-  width: 80px;
-  height: 80px;
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #9747ff;
-  margin-bottom: 8px;
+  width: ${({ width }) => (width ? width + "px" : "80px")};
+  height: ${({ height }) => (height ? height + "px" : "80px")};
+  border: ${({ borderWidth }) => borderWidth || "4px"} solid #f3f3f3;
+  border-top: ${({ borderWidth }) => borderWidth || "4px"} solid #9747ff;
+  margin-bottom: ${({ marginBottom }) => marginBottom || "8px"};
+  margin-left: ${({ marginLeft }) => marginLeft || "0px"};
   border-radius: 50%;
   animation: spin 1s linear infinite;
 

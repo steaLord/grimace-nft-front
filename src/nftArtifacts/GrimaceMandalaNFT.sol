@@ -116,11 +116,14 @@ contract GrimaceMandalaNFT is ERC721, ERC721URIStorage, ERC721Enumerable, Pausab
         if (auction.highestBidder != address(0)) {
             // Transfer the token to the highest bidder
             _transfer(ownerOf(tokenId), auction.highestBidder, tokenId);
+
             // Pay the seller the auction amount minus fee
-            uint256 fee = auction.highestBid * 2 / 100; // 2% fee
-            require(grimaceCoin.transfer(owner(), auction.highestBid - fee), "Transfer failed");
+//            uint256 fee = auction.highestBid * 2 / 100; // 2% fee
+//            require(grimaceCoin.transfer(owner(), auction.highestBid - fee), "Transfer failed");
             // Pay the fee to the contract owner
-            require(grimaceCoin.transfer(owner(), fee), "Transfer failed");
+
+            // Transfer tokens from auction to owner
+            require(grimaceCoin.transfer(owner(), auction.highestBid), "Transfer failed");
         }
 
         // Clear the auction data

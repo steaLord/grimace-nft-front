@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import GrimaceMandalasNFT from "@/nftArtifacts/GrimaceMandalaNFT.json";
+import TokenETH from "@/nftArtifacts/TokenETH.json";
 import { useMetaMask } from "metamask-react";
 import { Web3 } from "web3";
 
@@ -7,10 +8,10 @@ export interface IBlockchainAuctionData {
   nftID: number;
   initialPrice: number;
   bidStep: number;
-  timeLeftForAuction: number;
+  timeLeftForAuction: Date;
   endTime: number;
   highestBidder: string;
-  highestBid: number;
+  highestBid: number | BigInt;
 }
 
 const useAuction = ({
@@ -22,11 +23,12 @@ const useAuction = ({
 }) => {
   const { account } = useMetaMask();
   const [isLoading, setIsLoading] = useState(true);
+  const [isPendingBid, setIsPendingBid] = useState(false);
   const [auctionDetails, setAuctionDetails] = useState({
     nftID: 0,
     initialPrice: 0,
     bidStep: 0,
-    timeLeftForAuction: 0,
+    timeLeftForAuction: new Date(),
     endTime: 0,
     highestBidder: "",
     highestBid: 0,
@@ -53,11 +55,12 @@ const useAuction = ({
           4: highestBidder,
           5: highestBid,
         } = auctionDetails;
+
         setAuctionDetails({
           nftID: Number(blockchainnftID),
           initialPrice: Number(initialPrice),
           bidStep: Number(bidStep),
-          timeLeftForAuction: Number(new Date(Number(endTime) * 1000)),
+          timeLeftForAuction: new Date(Number(endTime) * 1000),
           endTime: Number(endTime),
           highestBidder,
           highestBid: Number(highestBid),
@@ -76,20 +79,61 @@ const useAuction = ({
 
   const placeBid = async () => {
     try {
+      setIsPendingBid(true);
       const web3 = new Web3(window.ethereum);
       // Create an instance of the contract using the contract ABI and address
-      const contract = new web3.eth.Contract(
+      const auctionContract = new web3.eth.Contract(
         GrimaceMandalasNFT.abi,
         contractAddress
       );
+      const tokenContract = new web3.eth.Contract(
+        TokenETH.abi,
+        process.env.NEXT_PUBLIC_TOKEN_CONTRACT_ADDRESS
+      );
+      const decimals = await tokenContract.methods.decimals().call();
+      const decimalsMultiplier = BigInt(10) ** BigInt(decimals);
+
       // Calculate the new bid amount by adding the bid step to the current highest bid
-      const newBidAmount = Number(currentHighestBid.amount) + Number(bidStep);
-      // Use the contract's method to place a bid with the calculated `newBidAmount`
-      await contract.methods
-        .placeBid(nftID, newBidAmount)
+      const newBidAmount =
+        BigInt(auctionDetails.highestBid) +
+        BigInt(auctionDetails.bidStep) * decimalsMultiplier;
+
+      const balance = await tokenContract.methods.balanceOf(account).call();
+      const approvedAmount = await tokenContract.methods
+        .allowance(account, contractAddress)
+        .call();
+
+      if (Number(approvedAmount) < Number(newBidAmount)) {
+        const convertedToTokensBidAmount = Number(
+          newBidAmount / decimalsMultiplier
+        );
+        await tokenContract.methods
+          .approve(contractAddress, convertedToTokensBidAmount)
+          .send({ from: account });
+      }
+
+      const bidAmount =
+        auctionDetails.highestBid === 0
+          ? BigInt(auctionDetails.initialPrice) * decimalsMultiplier
+          : newBidAmount;
+
+      const response = await auctionContract.methods
+        .placeBid(nftID - 1, bidAmount)
         .send({ from: account });
+
+      if (Number(response?.status) === 1) {
+        setAuctionDetails({
+          ...auctionDetails,
+          highestBid: newBidAmount,
+          highestBidder: account,
+        });
+      }
+      setIsPendingBid(false);
+
+      console.log({ response });
     } catch (error) {
       console.error("Failed to place bid:", error);
+      setIsPendingBid(false);
     }
   };
 
@@ -97,6 +141,7 @@ const useAuction = ({
     isLoading,
     placeBid,
     auctionDetails,
+    isPendingBid
   };
 };
 

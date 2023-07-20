@@ -3,8 +3,16 @@ import styled from "@emotion/styled";
 import Button from "@/components/Button";
 import Image from "next/image";
 import { IBlockchainAuctionData } from "@/app/hooks/useAuction";
+import useTimeLeft from "@/app/hooks/useTimeLeft";
+import { useMetaMask } from "metamask-react";
+import {
+  LoadingSpinner,
+  Spinner,
+} from "@/app/collection/[collectionID]/[nftID]/page";
 
 export type NFTDetailsProps = {
+  isPendingBid: boolean;
+  onPlaceBidClick: () => void;
   nftItem: {
     metadata: {
       id: string;
@@ -20,8 +28,26 @@ export type NFTDetailsProps = {
   };
 };
 
-function NFTDetails({ nftItem }: NFTDetailsProps) {
+function formatAddress(address) {
+  const prefix = address.slice(0, 2);
+  const firstFour = address.slice(2, 6);
+  const lastFour = address.slice(-4);
+
+  return `${prefix}${firstFour}...${lastFour}`;
+}
+
+const formatCurrentBid = (bidAmount: number) => {
+  const currentBid = BigInt(bidAmount) / BigInt(10) ** BigInt(18);
+  return currentBid.toString();
+};
+
+function NFTDetails({
+  nftItem,
+  onPlaceBidClick,
+  isPendingBid,
+}: NFTDetailsProps) {
   const { metadata, blockchainData } = nftItem;
+  const { account } = useMetaMask();
   const { id, collection, name, buyGrimaceHref, imageSrc, description } =
     metadata;
   const {
@@ -32,16 +58,10 @@ function NFTDetails({ nftItem }: NFTDetailsProps) {
     timeLeftForAuction,
   } = blockchainData;
   const isReleased = initialPrice !== 0;
+  const { minutes, seconds, hours, days } = useTimeLeft(timeLeftForAuction);
 
-  const formatTimeLeft = (timeInSeconds) => {
-    const days = Math.floor(timeInSeconds / (60 * 60 * 24));
-    const hours = Math.floor((timeInSeconds % (60 * 60 * 24)) / (60 * 60));
-    const minutes = Math.floor((timeInSeconds % (60 * 60)) / 60);
-    const seconds = timeInSeconds % 60;
-
-    return `${days}d ${hours}h ${minutes}m ${seconds}s`;
-  };
-
+  const isHighestBidder =
+    account?.toLowerCase() == highestBidder?.toLowerCase();
   return (
     <Root>
       <NFTImage
@@ -62,24 +82,25 @@ function NFTDetails({ nftItem }: NFTDetailsProps) {
         ></Description>
         <BidDetails>
           {isReleased && (
-            <BidStep>
-              Bid Step: {bidStep} <span>$GRIMACE</span>
-            </BidStep>
-          )}
-          {isReleased && (
             <>
-              {highestBidder && (
-                <HighestBid>
-                  <>
-                    <p>
-                      Highest Bid: {highestBid} <span>$GRIMACE</span>
-                    </p>
-                    <p>Bidder: {highestBidder}</p>
-                  </>
-                </HighestBid>
-              )}
+              <BidStep>
+                Initial price: {initialPrice} <span>$GRIMACE</span>
+              </BidStep>
+              <BidStep>
+                Bid Step: {bidStep} <span>$GRIMACE</span>
+              </BidStep>
+              <HighestBid>
+                <>
+                  <p>
+                    Highest Bid: {formatCurrentBid(highestBid)}{" "}
+                    <span>$GRIMACE</span>
+                  </p>
+                  <p>Bidder: {formatAddress(highestBidder)}</p>
+                </>
+              </HighestBid>
               <TimeLeft>
-                Time Left: {formatTimeLeft(timeLeftForAuction)}
+                Time Left: {days} Days {hours} hours {minutes} minutes {seconds}{" "}
+                seconds
               </TimeLeft>
             </>
           )}
@@ -87,12 +108,16 @@ function NFTDetails({ nftItem }: NFTDetailsProps) {
         <Buttons>
           <Button
             buttonType="filled"
-            disabled={!isReleased}
+            onClick={onPlaceBidClick}
+            disabled={!isReleased || isHighestBidder || isPendingBid}
             title={
               !isReleased ? "Wait until auction" : "Link to NFT Marketplace"
             }
           >
             Place Bid
+            {isPendingBid && (
+              <Spinner marginLeft="4px" borderWidth="3px" marginBottom="2px" width={20} height={20} />
+            )}
           </Button>
           <Button
             href={buyGrimaceHref}
@@ -172,6 +197,7 @@ const BidDetails = styled.div`
 
 const BidStep = styled.p`
   margin-bottom: 4px;
+  margin-right: 4px;
   display: inline-block;
   padding: 8px;
   border-radius: 12px;
