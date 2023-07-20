@@ -140,7 +140,6 @@ const Name = styled.h1`
   font-size: 3rem;
   font-weight: bold;
   margin-top: 0;
-
   @media (max-width: 992px) {
     margin-bottom: 12px;
   }
@@ -166,16 +165,36 @@ const BidDetails = styled.div`
   }
 `;
 
-const BidStep = styled.span`
+const BidStep = styled.p`
   margin-bottom: 4px;
+  display: inline-block;
+  padding:8px;
+  border-radius: 12px;
+  border: 1px solid #AC6CFF;
+  span{
+    display: inline-block;
+    color: #AC6CFF;
+  }
 `;
 
 const HighestBid = styled.div`
   margin-bottom: 4px;
+  max-width:fit-content;
+  padding:8px;
+  border-radius: 12px;
+  border: 1px solid #AC6CFF;
+  span{
+    display: inline-block;
+    color: #AC6CFF;
+  }
 `;
 
 const TimeLeft = styled.div`
   margin-bottom: 4px;
+  display: inline-block;
+  padding:8px;
+  border-radius: 12px;
+  border: 1px solid #AC6CFF;
 `;
 
 const Buttons = styled.div`
