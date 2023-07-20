@@ -41,8 +41,7 @@ Our third NFT in the collection ain't no walk in the park either. Gonna need you
     description: `This presented NFT is like a trial run for future unique collections. These NFTs ain't like anything you've ever copped before. Ain't no monkey pics, dogs, rocks or any of that useless stuff you got. Here, with some patience and a slice of luck, you got a shot to stack some serious coins. You gotta hustle to find and piece together the seed phrase from the wallet that's holding your reward. The count starts from the top left corner to the top right and then from left to right.
 For any questions, buyers can slide into the DMs of @TradeGuardian.
 <br>
-The fourth NFT in our collection is no less fresh than the ones before. You gotta scour every nook and cranny and nab all the words of the seed phrase to bag that much-coveted reward. Sometimes, you might feel like you've slipped up - and you'd be right on the money, keep searching!
-For any questions, buyers can slide into the DMs of @TradeGuardian.`,
+The fourth NFT in our collection is no less fresh than the ones before. You gotta scour every nook and cranny and nab all the words of the seed phrase to bag that much-coveted reward. Sometimes, you might feel like you've slipped up - and you'd be right on the money, keep searching!`,
     collection: "Believer Diamond Degen",
   },
   {

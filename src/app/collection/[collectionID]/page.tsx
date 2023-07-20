@@ -26,23 +26,23 @@ export default function NFTPage() {
       <title>{previewItem?.collection}</title>
       <H1>{previewItem?.collection}</H1>
       <CollectionGrid>
-        {nfts.map(({ id, edition }, i:number) => (
-          <div style={{ position: "relative" }}>
-            <Link href={`/collection/${collectionID}/${id}`} key={id}>
-              <PlaceholderItem src={previewItem!.imageSrc} alt={id} key={i} />
-            </Link>
-            <div
-              style={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-              }}
-            >
-              <P>{edition}</P>
-            </div>
-          </div>
-        ))}
+            {nfts.map(({ id, edition }, i:number) => (
+              <div style={{ position: "relative" }} key={i}>
+                <Link href={`/collection/${collectionID}/${id}`}>
+                  <PlaceholderItem src={previewItem!.imageSrc} alt={id} />
+                </Link>
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                  }}
+                >
+                  <P>{edition}</P>
+                </div>
+              </div>
+            ))}
       </CollectionGrid>
     </>
     // </StyledRoot>
