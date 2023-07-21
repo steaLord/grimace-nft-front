@@ -34,29 +34,28 @@ export default function MyNFTsPage() {
           </>
         )}
         {account &&
-          nftTokens.map(({ imageSrc, urlSlug, title,id }) => {
+          nftTokens.map(({ imageSrc, urlSlug, title, id }) => {
             return (
-              
-              <div style={{ position: "relative" }}>
-              <Link key={urlSlug} href={`/my-nfts/${urlSlug}`}>
-                <StyledNFTImage
-                  width={300}
-                  height={300}
-                  src={imageSrc}
-                  alt={title ?? "my-nft"}
-                />
-              </Link>
-              <div
-                style={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
-                }}
-              >
-                <P>{id}</P>
+              <div style={{ position: "relative" }} key={id}>
+                <Link key={urlSlug} href={`/my-nfts/${urlSlug}`}>
+                  <StyledNFTImage
+                    width={300}
+                    height={300}
+                    src={imageSrc}
+                    alt={title ?? "my-nft"}
+                  />
+                </Link>
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                  }}
+                >
+                  <P>{id}</P>
+                </div>
               </div>
-            </div>
             );
           })}
       </CollectionGrid>
@@ -70,13 +69,10 @@ const H1 = styled.h1`
   margin-bottom: 24px;
 `;
 const P = styled.p`
-  color: #AC6CFF;
+  color: #ac6cff;
   font-size: 32px;
   font-weight: 700;
-  text-shadow:
-    -2px -2px 0 #000,
-    2px -2px 0 #000,
-    -2px 2px 0 #000,
+  text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000,
     2px 2px 0 #000;
 `;
 const StyledNFTImage = styled(Image)`
@@ -86,7 +82,7 @@ const StyledNFTImage = styled(Image)`
   border-radius: 12px;
   transition: background 150ms ease-in-out, opacity 150ms ease-in-out,
     transform 150ms ease-in-out;
-  opacity:0.7;
+  opacity: 0.7;
   &:hover {
     cursor: pointer;
     background: var(--color-purple);
