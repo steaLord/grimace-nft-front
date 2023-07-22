@@ -9,6 +9,7 @@ import { MetaMaskProvider } from "metamask-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Head from "next/head";
+import { ToastContainer } from "react-toastify";
 
 const fredoka = Fredoka({
   subsets: ["latin"],
@@ -30,7 +31,6 @@ const MainStyled = styled.main`
   flex-grow: 1;
 `;
 
-
 export default function RootLayout({
   children,
 }: {
@@ -38,17 +38,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={fredoka.variable}>
-    <BodyStyled>
-      <MetaMaskProvider>
-        <RootStyleRegistry>
-          <Header/>
-          <MainStyled id="page-wrap">
-            {children}
-          </MainStyled>
-          <Footer/>
-        </RootStyleRegistry>
-      </MetaMaskProvider>
-    </BodyStyled>
+      <BodyStyled>
+        <MetaMaskProvider>
+          <RootStyleRegistry>
+            <Header />
+            <MainStyled id="page-wrap">{children}</MainStyled>
+            <Footer />
+          </RootStyleRegistry>
+        </MetaMaskProvider>
+      </BodyStyled>
+      <ToastContainer />
     </html>
   );
 }
