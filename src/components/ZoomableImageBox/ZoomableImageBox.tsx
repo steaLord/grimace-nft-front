@@ -100,7 +100,6 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
   });
   const [scale, setScale] = useState<number>(1);
   const [isDragging, setIsDragging] = useState<boolean>(false);
-  const [svgString, setSvgString] = useState("");
   const [isLoadingSVG, setIsLoadingSVG] = useState(true);
   const [svgWidth, setSvgWidth] = useState<number>(0);
   const [svgHeight, setSvgHeight] = useState<number>(0);
@@ -120,13 +119,24 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
             },
           }
         );
-        const svgStringResponse = await res.text();
-        setSvgString(svgStringResponse);
+        console.log("Fetched");
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch SVG file.");
+        }
+
+        const buffer = await res.arrayBuffer();
+        const uint8Array = new Uint8Array(buffer);
+        const decoder = new TextDecoder("utf-8"); // Use UTF-8 encoding
+        const svgStringResponse = decoder.decode(uint8Array);
+
+        console.log(svgStringResponse);
 
         const image = new Image();
         const blob = new Blob([svgStringResponse], { type: "image/svg+xml" });
         const url = URL.createObjectURL(blob);
         image.onload = () => {
+          console.log("On load", svgStringResponse);
           URL.revokeObjectURL(url);
           imageRef.current = image;
           setSvgWidth(image.width);
@@ -137,11 +147,11 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
         imageRef.current = image;
         image.src = url;
       } catch (e) {
+        console.error("Error loading SVG:", e.message);
         setIsLoadingSVG(false);
       }
     })();
   }, [nftID]);
-
   useEffect(() => {
     if (imageRef.current && !isLoadingSVG) {
       const canvas = canvasRef.current;
@@ -180,7 +190,6 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
     width,
     height,
     imageRef,
-    svgString,
     offset,
     scale,
     isLoadingSVG,
