@@ -34,7 +34,6 @@ const useAuction = ({
     highestBidder: "",
     highestBid: 0,
   });
-  const [fetchTrigger, setFetchTrigger] = useState(false);
 
   useEffect(() => {
     const fetchAuctionData = async () => {
@@ -78,9 +77,9 @@ const useAuction = ({
     if (nftID !== null && contractAddress) {
       fetchAuctionData();
     }
-  }, [account, contractAddress, nftID, fetchTrigger]);
+  }, [account, contractAddress, nftID]);
 
-  const placeBid = async (currentHighestBid: number) => {
+  const placeBid = async () => {
     try {
       setIsPendingBid(true);
       const web3 = new Web3(window.ethereum);
@@ -104,20 +103,16 @@ const useAuction = ({
         3: endTime,
         4: highestBidder,
         5: highestBid,
-      } = auctionDetails;
+      } = currentAuctionDetails;
       if (highestBid !== auctionDetails.highestBid) {
         setAuctionDetails(currentAuctionDetails);
-        // Do popup here
-        throw new Error("Data have changed on blockchain");
+        toast.error("Current bid has been changed");
+        throw new Error("Current bid has been changed");
       }
 
       const decimals = await tokenContract.methods.decimals().call();
       const decimalsMultiplier = BigInt(10) ** BigInt(decimals);
-      if (currentHighestBid < auctionDetails.highestBid) {
-        toast.error("Current bid has been changed");
-        setFetchTrigger(!fetchTrigger);
-        return;
-      }
+
       // Calculate the new bid amount by adding the bid step to the current highest bid
       const newBidAmount =
         BigInt(auctionDetails.highestBid) +
@@ -157,7 +152,6 @@ const useAuction = ({
 
       console.log({ response });
     } catch (error) {
-      // show error popup here too of error.msg is right
       console.error("Failed to place bid:", error);
       setIsPendingBid(false);
     }
