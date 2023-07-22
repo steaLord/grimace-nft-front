@@ -93,6 +93,24 @@ const useAuction = ({
         TokenETH.abi,
         process.env.NEXT_PUBLIC_TOKEN_CONTRACT_ADDRESS
       );
+
+      const currentAuctionDetails = await auctionContract.methods
+        .getAuctionDetails(nftID - 1)
+        .call();
+      const {
+        0: blockchainnftID,
+        1: initialPrice,
+        2: bidStep,
+        3: endTime,
+        4: highestBidder,
+        5: highestBid,
+      } = auctionDetails;
+      if (highestBid !== auctionDetails.highestBid) {
+        setAuctionDetails(currentAuctionDetails);
+        // Do popup here
+        throw new Error("Data have changed on blockchain");
+      }
+
       const decimals = await tokenContract.methods.decimals().call();
       const decimalsMultiplier = BigInt(10) ** BigInt(decimals);
       if (currentHighestBid < auctionDetails.highestBid) {
@@ -139,6 +157,7 @@ const useAuction = ({
 
       console.log({ response });
     } catch (error) {
+      // show error popup here too of error.msg is right
       console.error("Failed to place bid:", error);
       setIsPendingBid(false);
     }
