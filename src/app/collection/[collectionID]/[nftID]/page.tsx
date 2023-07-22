@@ -36,7 +36,7 @@ export default function NFTPage() {
       ) : (
         <NFTDetails
           isPendingBid={isPendingBid}
-          onPlaceBidClick={placeBid}
+          onPlaceBidClick={() => placeBid(auctionDetails.highestBid)}
           nftItem={nftItem}
         />
       )}

@@ -3,6 +3,7 @@ import GrimaceMandalasNFT from "@/nftArtifacts/GrimaceMandalaNFT.json";
 import TokenETH from "@/nftArtifacts/TokenETH.json";
 import { useMetaMask } from "metamask-react";
 import { Web3 } from "web3";
+import { toast } from "react-toastify";
 
 export interface IBlockchainAuctionData {
   nftID: number;
@@ -33,10 +34,12 @@ const useAuction = ({
     highestBidder: "",
     highestBid: 0,
   });
+  const [fetchTrigger, setFetchTrigger] = useState(false);
 
   useEffect(() => {
     const fetchAuctionData = async () => {
       try {
+        setIsLoading(true);
         const web3 = new Web3(window.ethereum);
         // Create an instance of the contract using the contract ABI and address
         const contract = new web3.eth.Contract(
@@ -75,9 +78,9 @@ const useAuction = ({
     if (nftID !== null && contractAddress) {
       fetchAuctionData();
     }
-  }, [account, contractAddress, nftID]);
+  }, [account, contractAddress, nftID, fetchTrigger]);
 
-  const placeBid = async () => {
+  const placeBid = async (currentHighestBid: number) => {
     try {
       setIsPendingBid(true);
       const web3 = new Web3(window.ethereum);
@@ -92,7 +95,11 @@ const useAuction = ({
       );
       const decimals = await tokenContract.methods.decimals().call();
       const decimalsMultiplier = BigInt(10) ** BigInt(decimals);
-
+      if (currentHighestBid < auctionDetails.highestBid) {
+        toast.error("Current bid has been changed");
+        setFetchTrigger(!fetchTrigger);
+        return;
+      }
       // Calculate the new bid amount by adding the bid step to the current highest bid
       const newBidAmount =
         BigInt(auctionDetails.highestBid) +
@@ -141,7 +148,7 @@ const useAuction = ({
     isLoading,
     placeBid,
     auctionDetails,
-    isPendingBid
+    isPendingBid,
   };
 };
 
