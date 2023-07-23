@@ -11,7 +11,7 @@ import Footer from "@/components/Footer";
 import Head from "next/head";
 import { ToastContainer } from "react-toastify";
 import { Web3Provider } from "@/app/hooks/useWeb3";
-
+import "react-toastify/dist/ReactToastify.css";
 const fredoka = Fredoka({
   subsets: ["latin"],
   weight: ["300", "400", "700"],
@@ -49,7 +49,7 @@ export default function RootLayout({
             </RootStyleRegistry>
           </MetaMaskProvider>
           <ToastContainer
-            position="top-center"
+            position="bottom-right"
             autoClose={5000}
             hideProgressBar={false}
             newestOnTop={false}

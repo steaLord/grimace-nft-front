@@ -9,6 +9,7 @@ import grimaceNFTImage from "./grimace-nft-image.png";
 import Container from "@/components/Container";
 import Countdown from "@/components/Countdown";
 import Button from "@/components/Button";
+import { toast } from "react-toastify";
 
 function getRemainingSeconds(startTime) {
   const secondsRemain = Math.floor((startTime - new Date().getTime()) / 1000);
@@ -73,6 +74,9 @@ export default function Home() {
             buttonType={"filled"}
             href={"#"}
             className={classNames("disabled", buttonStyles)}
+            onClick={() => {
+              toast.error("asd");
+            }}
           >
             Coming soon
           </Button>
