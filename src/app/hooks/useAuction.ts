@@ -98,6 +98,10 @@ const useAuction = ({ nftID }: { nftID: number }) => {
       });
 
       if (currentAuctionDetails.highestBid !== auctionDetails.highestBid) {
+        console.log(
+          currentAuctionDetails.highestBid,
+          auctionDetails.highestBid
+        );
         setAuctionDetails(currentAuctionDetails);
         toast.error("Current bid has been changed");
         throw new Error("Current bid has been changed");
