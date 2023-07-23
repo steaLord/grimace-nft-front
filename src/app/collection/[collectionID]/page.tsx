@@ -1,7 +1,7 @@
 "use client";
 import { useParams } from "next/navigation";
 import Container from "@/components/Container";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { collectionPreviewItems } from "@/app/collection/page";
 import styled from "@emotion/styled";
 import CollectionGrid from "@/components/CollectionGrid/CollectionGrid";
@@ -19,16 +19,19 @@ export default function NFTPage() {
   const previewItem = collectionPreviewItems.find(
     ({ urlSlug }) => urlSlug === collectionID
   );
-  const nfts: any = Object.values(nftsMetadata)
-    .filter(({ collection }: any) => collection === previewItem?.collection)
-    .map((e: any) => {
-      const { auctionDetails } = useAuction(e.id);
-      return {
-        ...e,
-        highestBid: Number(auctionDetails.highestBid),
-      };
-    });
-  setIsLoading(false);
+  let nfts: any;
+  useEffect(() => {
+    nfts = Object.values(nftsMetadata)
+      .filter(({ collection }: any) => collection === previewItem?.collection)
+      .map((e: any) => {
+        const { auctionDetails } = useAuction(e.id);
+        return {
+          ...e,
+          highestBid: Number(auctionDetails.highestBid),
+        };
+      });
+    setIsLoading(false);
+  });
 
   return (
     // <StyledRoot>
