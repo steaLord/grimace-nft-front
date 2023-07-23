@@ -1,7 +1,7 @@
 "use client";
 import { useParams } from "next/navigation";
 import Container from "@/components/Container";
-import React from "react";
+import React, { useState } from "react";
 import { collectionPreviewItems } from "@/app/collection/page";
 import styled from "@emotion/styled";
 import CollectionGrid from "@/components/CollectionGrid/CollectionGrid";
@@ -9,24 +9,41 @@ import Link from "next/link";
 import Image from "next/image";
 //@ts-ignore
 import nftsMetadata from "/public/NFTsMetadata.json";
+import useAuction from "@/app/hooks/useAuction";
+import { LoadingSpinner, Spinner } from "./[nftID]/page";
 
 export default function NFTPage() {
+  const [isLoading, setIsLoading] = useState(true);
   const { collectionID } = useParams() as { collectionID: string };
 
   const previewItem = collectionPreviewItems.find(
     ({ urlSlug }) => urlSlug === collectionID
   );
-  const nfts: any = Object.values(nftsMetadata).filter(
-    ({ collection }: any) => collection === previewItem?.collection
-  );
+  const nfts: any = Object.values(nftsMetadata)
+    .filter(({ collection }: any) => collection === previewItem?.collection)
+    .map((e: any) => {
+      const { auctionDetails } = useAuction(e.id);
+      return {
+        ...e,
+        highestBid: Number(auctionDetails.highestBid),
+      };
+    });
+  setIsLoading(false);
 
   return (
     // <StyledRoot>
     <>
       <title>{previewItem?.collection}</title>
       <H1>{previewItem?.collection}</H1>
-      <CollectionGrid>
-            {nfts.map(({ id, edition }, i:number) => (
+      {isLoading ? (
+        <LoadingSpinner width={300} height={300}>
+          <Spinner />
+          Loading NFT
+        </LoadingSpinner>
+      ) : (
+        <CollectionGrid>
+          {nfts.map(({ id, edition, highestBid }, i: number) => {
+            return (
               <div style={{ position: "relative" }} key={i}>
                 <Link href={`/collection/${collectionID}/${id}`}>
                   <PlaceholderItem src={previewItem!.imageSrc} alt={id} />
@@ -40,10 +57,13 @@ export default function NFTPage() {
                   }}
                 >
                   <P>{edition}</P>
+                  <P>{highestBid}</P>
                 </div>
               </div>
-            ))}
-      </CollectionGrid>
+            );
+          })}
+        </CollectionGrid>
+      )}
     </>
     // </StyledRoot>
   );
@@ -59,13 +79,10 @@ const H1 = styled.h1`
   padding-left: 24px;
 `;
 const P = styled.p`
-  color: #AC6CFF;
+  color: #ac6cff;
   font-size: 32px;
   font-weight: 700;
-  text-shadow:
-    -2px -2px 0 #000,
-    2px -2px 0 #000,
-    -2px 2px 0 #000,
+  text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000,
     2px 2px 0 #000;
 `;
 // Placeholder item that fill the space of a cell
@@ -77,7 +94,7 @@ const PlaceholderItem = styled(Image)`
   transition: background 150ms ease-in-out, opacity 150ms ease-in-out,
     transform 150ms ease-in-out;
   cursor: pointer;
-  opacity:0.7;
+  opacity: 0.7;
   &:hover {
     cursor: pointer;
     background: var(--color-purple);
