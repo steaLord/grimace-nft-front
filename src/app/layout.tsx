@@ -53,6 +53,7 @@ export default function RootLayout({
             autoClose={5000}
             hideProgressBar={false}
             newestOnTop={false}
+            theme="dark"
           />
         </BodyStyled>
       </Web3Provider>
