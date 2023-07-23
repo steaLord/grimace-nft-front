@@ -52,7 +52,7 @@ const useAuction = ({ nftID }: { nftID: number }) => {
     highestBidder: "",
     highestBid: 0,
   });
-  const auctionContractAddress = process.env.NEXT_PUBLIC_TOKEN_CONTRACT_ADDRESS;
+  const tokenContractAddress = process.env.NEXT_PUBLIC_TOKEN_CONTRACT_ADDRESS;
 
   useEffect(() => {
     const fetchAuctionData = async () => {
@@ -121,7 +121,7 @@ const useAuction = ({ nftID }: { nftID: number }) => {
         BigInt(auctionDetails.bidStep) * decimalsMultiplier;
       const balance = await tokenContract.methods.balanceOf(account).call();
       const approvedAmount = await tokenContract.methods
-        .allowance(account, auctionContractAddress)
+        .allowance(account, tokenContractAddress)
         .call();
 
       if (Number(approvedAmount) < Number(newBidAmount)) {
@@ -129,7 +129,7 @@ const useAuction = ({ nftID }: { nftID: number }) => {
           newBidAmount / decimalsMultiplier
         );
         await tokenContract.methods
-          .approve(auctionContractAddress, convertedToTokensBidAmount)
+          .approve(tokenContractAddress, convertedToTokensBidAmount)
           .send({ from: account });
       }
 
