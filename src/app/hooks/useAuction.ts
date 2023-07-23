@@ -13,7 +13,7 @@ export interface IBlockchainAuctionData {
   highestBid: number | BigInt;
 }
 
-const getAuctionDetails = async ({ nftContract, nftID }) => {
+export const getAuctionDetails = async ({ nftContract, nftID }) => {
   const auctionDetails = await nftContract.methods
     .getAuctionDetails(nftID - 1)
     .call();
@@ -82,10 +82,10 @@ const useAuction = ({ nftID }: { nftID: number }) => {
       }
     };
 
-    if (nftID !== null && contractAddress) {
+    if (nftID !== null && nftContract) {
       fetchAuctionData();
     }
-  }, [account, contractAddress, nftID]);
+  }, [account, nftContract, nftID]);
 
   const placeBid = async () => {
     try {

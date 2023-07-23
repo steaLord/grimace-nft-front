@@ -1,7 +1,6 @@
 "use client";
 import { useParams } from "next/navigation";
-import Container from "@/components/Container";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { collectionPreviewItems } from "@/app/collection/page";
 import styled from "@emotion/styled";
 import CollectionGrid from "@/components/CollectionGrid/CollectionGrid";
@@ -9,7 +8,6 @@ import Link from "next/link";
 import Image from "next/image";
 //@ts-ignore
 import nftsMetadata from "/public/NFTsMetadata.json";
-import useAuction from "@/app/hooks/useAuction";
 import { LoadingSpinner, Spinner } from "./[nftID]/page";
 import useHighestBids from "@/app/hooks/useHighestBids";
 
@@ -35,7 +33,6 @@ export default function NFTPage() {
       ) : (
         <CollectionGrid>
           {newNfts.map(({ id, edition, highestBid }, i: number) => {
-            console.log(highestBid);
             return (
               <div style={{ position: "relative" }} key={i}>
                 <Link href={`/collection/${collectionID}/${id}`}>
