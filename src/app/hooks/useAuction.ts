@@ -119,6 +119,7 @@ const useAuction = ({ nftID }: { nftID: number }) => {
       const newBidAmount =
         BigInt(auctionDetails.highestBid) +
         BigInt(auctionDetails.bidStep) * decimalsMultiplier;
+
       const balance = await tokenContract.methods.balanceOf(account).call();
       const approvedAmount = await tokenContract.methods
         .allowance(account, tokenContractAddress)
@@ -128,6 +129,11 @@ const useAuction = ({ nftID }: { nftID: number }) => {
         const convertedToTokensBidAmount = Number(
           newBidAmount / decimalsMultiplier
         );
+        console.log({
+          account,
+          convertedToTokensBidAmount,
+          tokenContractAddress,
+        });
         await tokenContract.methods
           .approve(tokenContractAddress, convertedToTokensBidAmount)
           .send({ from: account });
