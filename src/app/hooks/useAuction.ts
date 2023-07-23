@@ -96,7 +96,9 @@ const useAuction = ({ nftID }: { nftID: number }) => {
         nftContract,
         nftID,
       });
-
+      currentAuctionDetails.highestBid = BigInt(
+        currentAuctionDetails.highestBid
+      );
       if (currentAuctionDetails.highestBid !== auctionDetails.highestBid) {
         console.log(
           currentAuctionDetails.highestBid,
