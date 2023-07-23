@@ -13,60 +13,42 @@ import useAuction from "@/app/hooks/useAuction";
 import { LoadingSpinner, Spinner } from "./[nftID]/page";
 
 export default function NFTPage() {
-  const [isLoading, setIsLoading] = useState(true);
   const { collectionID } = useParams() as { collectionID: string };
 
   const previewItem = collectionPreviewItems.find(
     ({ urlSlug }) => urlSlug === collectionID
   );
-  let nfts: any;
-  useEffect(() => {
-    nfts = Object.values(nftsMetadata)
-      .filter(({ collection }: any) => collection === previewItem?.collection)
-      .map((e: any) => {
-        const { auctionDetails } = useAuction(e.id);
-        return {
-          ...e,
-          highestBid: Number(auctionDetails.highestBid),
-        };
-      });
-    setIsLoading(false);
-  });
+  const nfts: any = Object.values(nftsMetadata).filter(
+    ({ collection }: any) => collection === previewItem?.collection
+  );
 
   return (
     // <StyledRoot>
     <>
       <title>{previewItem?.collection}</title>
       <H1>{previewItem?.collection}</H1>
-      {isLoading ? (
-        <LoadingSpinner width={300} height={300}>
-          <Spinner />
-          Loading NFTs
-        </LoadingSpinner>
-      ) : (
-        <CollectionGrid>
-          {nfts.map(({ id, edition, highestBid }, i: number) => {
-            return (
-              <div style={{ position: "relative" }} key={i}>
-                <Link href={`/collection/${collectionID}/${id}`}>
-                  <PlaceholderItem src={previewItem!.imageSrc} alt={id} />
-                </Link>
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "50%",
-                    left: "50%",
-                    transform: "translate(-50%, -50%)",
-                  }}
-                >
-                  <P>{edition}</P>
-                  <P>{highestBid}</P>
-                </div>
+      <CollectionGrid>
+        {nfts.map(({ id, edition, highestBid }, i: number) => {
+          return (
+            <div style={{ position: "relative" }} key={i}>
+              <Link href={`/collection/${collectionID}/${id}`}>
+                <PlaceholderItem src={previewItem!.imageSrc} alt={id} />
+              </Link>
+              <div
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                }}
+              >
+                <P>{edition}</P>
+                <P>{highestBid}</P>
               </div>
-            );
-          })}
-        </CollectionGrid>
-      )}
+            </div>
+          );
+        })}
+      </CollectionGrid>
     </>
     // </StyledRoot>
   );
