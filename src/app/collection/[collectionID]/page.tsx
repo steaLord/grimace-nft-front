@@ -24,7 +24,6 @@ export default function NFTPage() {
   );
   const { newNfts, isLoading } = useHighestBids({ nftsValues });
   return (
-    // <StyledRoot>
     <>
       <title>{previewItem?.collection}</title>
       <H1>{previewItem?.collection}</H1>
@@ -36,35 +35,36 @@ export default function NFTPage() {
       ) : (
         <CollectionGrid>
           {newNfts.map(({ id, edition, highestBid }, i: number) => {
+            console.log(highestBid);
             return (
               <div style={{ position: "relative" }} key={i}>
                 <Link href={`/collection/${collectionID}/${id}`}>
                   <PlaceholderItem src={previewItem!.imageSrc} alt={id} />
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                    }}
+                  >
+                    <P>{edition}</P>
+                  </div>
+                  {highestBid !== 0 && (
+                    <HighestBidContainer>
+                      <HighBidP>{highestBid} $GRIMACE</HighBidP>
+                    </HighestBidContainer>
+                  )}
                 </Link>
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "50%",
-                    left: "50%",
-                    transform: "translate(-50%, -50%)",
-                  }}
-                >
-                  <P>{edition}</P>
-                  {highestBid && <P>{highestBid}</P>}
-                </div>
               </div>
             );
           })}
         </CollectionGrid>
       )}
     </>
-    // </StyledRoot>
   );
 }
 
-const StyledRoot = styled(Container)`
-  padding-top: 32px;
-`;
 const H1 = styled.h1`
   font-size: 3rem;
   font-weight: 400;
@@ -77,6 +77,35 @@ const P = styled.p`
   font-weight: 700;
   text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000,
     2px 2px 0 #000;
+  user-select: none;
+`;
+
+// #ac6cff but a bit darker for background color
+const HighestBidContainer = styled.div`
+  position: absolute;
+  top: 80%;
+  left: 5%;
+  background-color: #222222;
+  border-radius: 12px;
+  padding: 8px;
+  width: fit-content;
+  height: fit-content;
+  transition: background 150ms ease-in-out, opacity 150ms ease-in-out,
+    transform 150ms ease-in-out;
+  border: 1px solid white;
+  &:hover {
+    transform: scale(1.05);
+    // opacity: 0.9;
+  }
+`;
+const HighBidP = styled.p`
+  font-size: 19px;
+  // text-shadow: -1px -1px 0 #ac6cff, 1px -1px 0 #ac6cff, -1px 1px 0 #ac6cff,
+  //   1px 1px 0 #ac6cff;
+  margin: 0 auto;
+  color: #aa6cff;
+  display: inline-block;
+  user-select: none;
 `;
 // Placeholder item that fill the space of a cell
 const PlaceholderItem = styled(Image)`
@@ -91,7 +120,7 @@ const PlaceholderItem = styled(Image)`
   &:hover {
     cursor: pointer;
     background: var(--color-purple);
-    opacity: 0.9;
+    opacity: 0.8;
     transform: scale(1.05);
   }
 `;
