@@ -98,7 +98,8 @@ const useAuction = ({ nftID }: { nftID: number }) => {
 
       if (currentAuctionDetails.highestBid !== auctionDetails.highestBid) {
         setAuctionDetails(currentAuctionDetails);
-        return toast.error("Current bid has been changed");
+        toast.error("Current bid has been changed");
+        throw new Error("Current bid has been changed");
       }
 
       const decimals = await tokenContract.methods.decimals().call();
