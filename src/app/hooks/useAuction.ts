@@ -57,7 +57,6 @@ const useAuction = ({ nftID }: { nftID: number }) => {
     const fetchAuctionData = async () => {
       try {
         setIsLoading(true);
-        // Fetch the auction details from the nftContract
         const {
           blockchainNftID,
           bidStep,
