@@ -144,8 +144,13 @@ const useAuction = ({ nftID }: { nftID: number }) => {
           ? BigInt(auctionDetails.initialPrice) * decimalsMultiplier
           : newBidAmount;
 
+      const nftIdResponse = await nftContract?.methods
+        ?.getNFTBySequentialId(nftID - 1)
+        .call();
+
+      console.log({ nftIdResponse, bidAmount });
       const response = await nftContract.methods
-        .placeBid(nftID - 1, bidAmount)
+        .placeBid(nftIdResponse, bidAmount)
         .send({ from: account });
 
       if (Number(response?.status) === 1) {
