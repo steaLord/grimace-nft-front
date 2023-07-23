@@ -74,9 +74,6 @@ export default function Home() {
             buttonType={"filled"}
             href={"#"}
             className={classNames("disabled", buttonStyles)}
-            onClick={() => {
-              toast.error("asd");
-            }}
           >
             Coming soon
           </Button>

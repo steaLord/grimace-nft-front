@@ -30,6 +30,7 @@ const getAuctionDetails = async ({ nftContract, nftID }) => {
     blockchainNftID,
     initialPrice,
     bidStep,
+    timeLeftForAuction: new Date(Number(endTime) * 1000),
     endTime,
     highestBidder,
     highestBid,
