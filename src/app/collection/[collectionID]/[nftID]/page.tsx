@@ -15,8 +15,7 @@ export default function NFTPage() {
     placeBid,
     isPendingBid,
   } = useAuction({
-    nftID: Number(nftID),
-    contractAddress: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
+    nftID: Number(nftID)
   });
 
   const nftItem = {

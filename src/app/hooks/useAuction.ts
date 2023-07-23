@@ -36,12 +36,7 @@ const getAuctionDetails = async ({ nftContract, nftID }) => {
   };
 };
 
-const useAuction = ({
-  nftID,
-}: {
-  contractAddress: string;
-  nftID: number;
-}) => {
+const useAuction = ({ nftID }: { nftID: number }) => {
   const { account } = useMetaMask();
   const { nftContract, tokenContract } = useWeb3Context();
 
@@ -56,7 +51,7 @@ const useAuction = ({
     highestBidder: "",
     highestBid: 0,
   });
-
+  const contractAddress = process.env.NEXT_PUBLIC_TOKEN_CONTRACT_ADDRESS;
   useEffect(() => {
     const fetchAuctionData = async () => {
       try {
