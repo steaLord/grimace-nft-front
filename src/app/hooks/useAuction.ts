@@ -14,9 +14,9 @@ export interface IBlockchainAuctionData {
 }
 
 export const getAuctionDetails = async ({ nftContract, nftID }) => {
-  const auctionDetails = await nftContract.methods
-    .getAuctionDetails(nftID - 1)
-    .call();
+  const auctionDetails = await nftContract?.methods
+    ?.getAuctionDetails(nftID - 1)
+    ?.call();
   const {
     0: blockchainNftID,
     1: initialPrice,
@@ -52,7 +52,8 @@ const useAuction = ({ nftID }: { nftID: number }) => {
     highestBidder: "",
     highestBid: 0,
   });
-  const contractAddress = process.env.NEXT_PUBLIC_TOKEN_CONTRACT_ADDRESS;
+  const auctionContractAddress = process.env.NEXT_PUBLIC_TOKEN_CONTRACT_ADDRESS;
+
   useEffect(() => {
     const fetchAuctionData = async () => {
       try {
@@ -120,7 +121,7 @@ const useAuction = ({ nftID }: { nftID: number }) => {
         BigInt(auctionDetails.bidStep) * decimalsMultiplier;
       const balance = await tokenContract.methods.balanceOf(account).call();
       const approvedAmount = await tokenContract.methods
-        .allowance(account, contractAddress)
+        .allowance(account, auctionContractAddress)
         .call();
 
       if (Number(approvedAmount) < Number(newBidAmount)) {
@@ -128,7 +129,7 @@ const useAuction = ({ nftID }: { nftID: number }) => {
           newBidAmount / decimalsMultiplier
         );
         await tokenContract.methods
-          .approve(contractAddress, convertedToTokensBidAmount)
+          .approve(auctionContractAddress, convertedToTokensBidAmount)
           .send({ from: account });
       }
 
@@ -149,8 +150,6 @@ const useAuction = ({ nftID }: { nftID: number }) => {
         });
       }
       setIsPendingBid(false);
-
-      console.log({ response });
     } catch (error) {
       console.error("Failed to place bid:", error);
       setIsPendingBid(false);
