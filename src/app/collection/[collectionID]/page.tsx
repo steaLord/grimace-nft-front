@@ -38,7 +38,7 @@ export default function NFTPage() {
       {isLoading ? (
         <LoadingSpinner width={300} height={300}>
           <Spinner />
-          Loading NFT
+          Loading NFTs
         </LoadingSpinner>
       ) : (
         <CollectionGrid>
