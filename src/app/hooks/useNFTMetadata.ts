@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import GrimaceMandalasNFT from "@/nftArtifacts/GrimaceMandalaNFT.json";
 import { useMetaMask } from "metamask-react";
-import { Web3 } from "web3";
+import { useWeb3Context } from "@/app/hooks/useWeb3";
 
 interface ITokenMetadata {
   web3Id: any;
@@ -18,9 +17,11 @@ export const collectionNameToURLSlug = (collection: string) => {
 };
 
 // TODO: Set contract address from proccess.env.NEXT_PUBLIC_CONTRACT_ADDRESS
-export const useNFTMetadata = (
-  contractAddress: string
-): { nftTokens: ITokenMetadata[]; isLoading: boolean } => {
+export const useNFTMetadata = (): {
+  nftTokens: ITokenMetadata[];
+  isLoading: boolean;
+} => {
+  const { web3, tokenContract, nftContract } = useWeb3Context();
   const [nftTokens, setNFTTokens] = useState<ITokenMetadata[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { account } = useMetaMask();
@@ -32,29 +33,20 @@ export const useNFTMetadata = (
         return;
       }
       setIsLoading(true);
-
-      const web3 = new Web3(window.ethereum);
-      // Create an instance of the contract using the contract ABI and address
-      const contract = new web3.eth.Contract(
-        GrimaceMandalasNFT.abi,
-        contractAddress
-      );
-
       // Call the balanceOf function to get the number of tokens owned by the account
-      const balance = await contract.methods.balanceOf(account).call();
+      const balance = await nftContract.methods.balanceOf(account).call();
 
       // Retrieve the metadata URI for each token
       const tokens: ITokenMetadata[] = [];
-
       const fetchPromises = [];
       for (let i = 0; i < balance; i++) {
         fetchPromises.push(
           new Promise(async (resolve, rej) => {
             try {
-              const tokenId = await contract.methods
+              const tokenId = await nftContract.methods
                 .tokenOfOwnerByIndex(account, i)
                 .call();
-              const tokenURI = (await contract.methods
+              const tokenURI = (await nftContract.methods
                 .tokenURI(tokenId)
                 .call()) as string;
               const nftID = tokenURI?.split("/")?.pop();

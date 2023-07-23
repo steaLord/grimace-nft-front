@@ -10,6 +10,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Head from "next/head";
 import { ToastContainer } from "react-toastify";
+import { Web3Provider } from "@/app/hooks/useWeb3";
 
 const fredoka = Fredoka({
   subsets: ["latin"],
@@ -38,16 +39,18 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={fredoka.variable}>
-      <BodyStyled>
-        <MetaMaskProvider>
-          <RootStyleRegistry>
-            <Header />
-            <MainStyled id="page-wrap">{children}</MainStyled>
-            <Footer />
-          </RootStyleRegistry>
-        </MetaMaskProvider>
-      </BodyStyled>
-      <ToastContainer />
+      <Web3Provider>
+        <BodyStyled>
+          <MetaMaskProvider>
+            <RootStyleRegistry>
+              <Header />
+              <MainStyled id="page-wrap">{children}</MainStyled>
+              <Footer />
+            </RootStyleRegistry>
+          </MetaMaskProvider>
+        </BodyStyled>
+        <ToastContainer />
+      </Web3Provider>
     </html>
   );
 }
