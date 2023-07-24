@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
+import Pako from "pako";
 
 interface ZoomableCanvasProps {
   width: number;
@@ -126,10 +127,10 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
         }
 
         const buffer = await res.arrayBuffer();
-        const uint8Array = new Uint8Array(buffer);
+        const uint16Array = new Uint16Array(buffer);
+        const decompressedData = Pako.inflate(uint16Array);
         const decoder = new TextDecoder("utf-8"); // Use UTF-8 encoding
-        const svgStringResponse = decoder.decode(uint8Array);
-
+        const svgStringResponse = decoder.decode(decompressedData);
         console.log(svgStringResponse);
 
         const image = new Image();
