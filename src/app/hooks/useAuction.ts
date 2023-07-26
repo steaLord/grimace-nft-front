@@ -53,7 +53,6 @@ const useAuction = ({ nftID }: { nftID: number }) => {
   const {
     nftContract,
     tokenContract,
-    tokenContractAddress,
     nftContractAddress,
   } = useWeb3Context();
 
@@ -112,7 +111,6 @@ const useAuction = ({ nftID }: { nftID: number }) => {
         nftID,
       });
 
-      console.log(currentAuctionDetails.highestBid, auctionDetails.highestBid);
       if (
         BigInt(currentAuctionDetails.highestBid) !==
         BigInt(auctionDetails.highestBid)
@@ -176,16 +174,9 @@ const useAuction = ({ nftID }: { nftID: number }) => {
         .getNFTBySequentialId(nftID - 1)
         .call();
 
-      console.log(
-        { nftIdResponse, bidAmount },
-        nftIdResponse.toString(),
-        bidAmount.toString()
-      );
       const response = await nftContract.methods
         .placeBid(nftIdResponse.toString(), bidAmount.toString())
         .send({ from: account });
-
-      console.log({ response });
 
       if (Number(response?.status) === 1) {
         // Update the auction details with the new highest bid and highest bidder
