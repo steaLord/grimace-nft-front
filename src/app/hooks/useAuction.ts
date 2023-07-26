@@ -199,6 +199,7 @@ const useAuction = ({ nftID }: { nftID: number }) => {
       setIsPendingBid(false);
     } catch (error) {
       console.error("Failed to place bid:", error);
+      toast.error("Failed to place bid, please refresh page or wait");
       setIsPendingBid(false);
     }
   };
