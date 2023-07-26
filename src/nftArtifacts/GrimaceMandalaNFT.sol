@@ -111,44 +111,44 @@ contract GrimaceMandalaNFT is ERC721, ERC721URIStorage, ERC721Enumerable, Pausab
     function endAuction(uint256 tokenId) public onlyOwner {
         Auction storage auction = tokenIdToAuction[tokenId];
         require(auction.endTime > 0, "Auction does not exist for this token");
-        require(block.timestamp >= auction.endTime, "Auction has not ended yet");
+        // require(block.timestamp >= auction.endTime, "Auction has not ended yet");
 
         if (auction.highestBidder != address(0)) {
             // Transfer the token to the highest bidder
             _transfer(ownerOf(tokenId), auction.highestBidder, tokenId);
-
-            // Pay the seller the auction amount minus fee
-            //            uint256 fee = auction.highestBid * 2 / 100; // 2% fee
-            //            require(grimaceCoin.transfer(owner(), auction.highestBid - fee), "Transfer failed");
-            // Pay the fee to the contract owner
 
             // Transfer tokens from auction to owner
             require(grimaceCoin.transfer(owner(), auction.highestBid), "Transfer failed");
         }
     }
 
+    struct BidResult {
+        uint256 highestBid;
+        address highestBidder;
+    }
     /**
      * @dev Places a bid on the specified token auction.
      * @param tokenId Token ID for which the bid is placed.
      * @param bidAmount Bid amount in Grimace Coin.
      */
-    function placeBid(uint256 tokenId, uint256 bidAmount) public {
+    function placeBid(uint256 tokenId, uint256 bidAmount) public returns (BidResult memory) {
         Auction storage auction = tokenIdToAuction[tokenId];
         require(auction.endTime > 0, "Auction does not exist for this token");
         require(block.timestamp <= auction.endTime, "Auction has ended");
         require(bidAmount >= auction.highestBid + auction.bidStep, "Bid amount must be greater than current highest bid");
 
-        if (auction.highestBidder != address(0)) {
-            // Refund the previous highest bidder
-            require(grimaceCoin.transfer(auction.highestBidder, auction.highestBid), "Failed to refund previous highest bidder");
-        }
-
         // Transfer the bid amount from the bidder to the contract
-        require(grimaceCoin.transferFrom(msg.sender, address(this), bidAmount), "Failed to transfer bid amount");
+        //    require(grimaceCoin.transferFrom(msg.sender, address(this), bidAmount), "Failed to transfer bid amount");
+
+        // Refund the previous highest bidder if there was one
+        //    if (auction.highestBidder != address(0)) {
+        //    require(grimaceCoin.transfer(auction.highestBidder, auction.highestBid), "Failed to refund previous highest bidder");
+        //    }
 
         // Update auction data with the new highest bidder and bid amount
         auction.highestBidder = msg.sender;
         auction.highestBid = bidAmount;
+        return BidResult(auction.highestBid, auction.highestBidder);
     }
 
     /**

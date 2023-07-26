@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useMetaMask } from "metamask-react";
-import { toast } from "react-toastify";
 import { useWeb3Context } from "@/app/hooks/useWeb3";
 
 export interface IBlockchainAuctionData {
@@ -96,70 +95,75 @@ const useAuction = ({ nftID }: { nftID: number }) => {
         nftContract,
         nftID,
       });
-      currentAuctionDetails.blockchainNftID = Number(
-        currentAuctionDetails.blockchainNftID
-      );
-      currentAuctionDetails.bidStep = Number(currentAuctionDetails.bidStep);
-      currentAuctionDetails.initialPrice = Number(
-        currentAuctionDetails.initialPrice
-      );
-      currentAuctionDetails.endTime = Number(currentAuctionDetails.endTime);
-      currentAuctionDetails.highestBid = Number(
-        currentAuctionDetails.highestBid
-      );
-      if (currentAuctionDetails.highestBid !== auctionDetails.highestBid) {
-        setAuctionDetails(currentAuctionDetails);
-        toast.error("Current bid has been changed");
-        throw new Error("Current bid has been changed");
-      }
 
+      // Convert bidStep to actual value using decimalsMultiplier
       const decimals = await tokenContract.methods.decimals().call();
+      console.log({ decimals });
       const decimalsMultiplier = BigInt(10) ** BigInt(decimals);
-      // Calculate the new bid amount by adding the bid step to the current highest bid
-      const newBidAmount =
-        BigInt(auctionDetails.highestBid) +
-        BigInt(auctionDetails.bidStep) * decimalsMultiplier;
 
-      const balance = await tokenContract.methods.balanceOf(account).call();
-      const approvedAmount = await tokenContract.methods
-        .allowance(account, tokenContractAddress)
-        .call();
-
-      if (Number(approvedAmount) < Number(newBidAmount)) {
-        const convertedToTokensBidAmount = Number(
-          newBidAmount / decimalsMultiplier
-        );
-        console.log({
-          account,
-          convertedToTokensBidAmount,
-          tokenContractAddress,
-        });
+      // Check if the user has approved the contract to spend tokens on their behalf
+      const approvedAmount = BigInt(
         await tokenContract.methods
-          .approve(tokenContractAddress, convertedToTokensBidAmount)
+          .allowance(account, tokenContractAddress)
+          .call()
+      );
+      const balance = BigInt(
+        await tokenContract.methods.balanceOf(account).call()
+      );
+
+      const bidAmount =
+        BigInt(currentAuctionDetails.highestBid) === BigInt(0)
+          ? BigInt(auctionDetails.initialPrice)
+          : BigInt(auctionDetails.bidStep) * BigInt(2);
+
+      console.log({
+        approvedAmount,
+        approvedAmountLength: approvedAmount.toString().length,
+        balance,
+        bidAmount,
+        bidAmountLength: bidAmount.toString().length,
+        isEqual: balance === approvedAmount,
+      });
+
+      console.log(
+        "Approved:",
+        Number(approvedAmount / decimalsMultiplier),
+        "BidAmount:",
+        Number(bidAmount / decimalsMultiplier)
+      );
+
+      if (approvedAmount < bidAmount) {
+        // Convert the bid amount to token units for approval
+        await tokenContract.methods
+          .approve(tokenContractAddress, 10)
           .send({ from: account });
       }
 
-      const bidAmount =
-        auctionDetails.highestBid === 0
-          ? BigInt(auctionDetails.initialPrice) * decimalsMultiplier
-          : newBidAmount;
-
-      const nftIdResponse = await nftContract?.methods
-        ?.getNFTBySequentialId(nftID - 1)
+      // Call placeBid function on the smart contract
+      const nftIdResponse = await nftContract.methods
+        .getNFTBySequentialId(nftID - 1)
         .call();
 
-      console.log({ nftIdResponse, bidAmount });
+      console.log(
+        { nftIdResponse, bidAmount },
+        nftIdResponse.toString(),
+        bidAmount.toString()
+      );
       const response = await nftContract.methods
-        .placeBid(nftIdResponse, bidAmount)
+        .placeBid(nftIdResponse.toString(), bidAmount.toString())
         .send({ from: account });
 
+      console.log({ response });
+
       if (Number(response?.status) === 1) {
+        // Update the auction details with the new highest bid and highest bidder
         setAuctionDetails({
-          ...auctionDetails,
-          highestBid: newBidAmount,
+          ...currentAuctionDetails,
+          highestBid: bidAmount.toString(),
           highestBidder: account,
         });
       }
+
       setIsPendingBid(false);
     } catch (error) {
       console.error("Failed to place bid:", error);

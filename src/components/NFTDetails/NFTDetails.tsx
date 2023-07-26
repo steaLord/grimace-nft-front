@@ -84,10 +84,11 @@ function NFTDetails({
           {isReleased && (
             <>
               <BidStep>
-                Initial price: {initialPrice} <span>$GRIMACE</span>
+                Initial price: {formatCurrentBid(initialPrice)}{" "}
+                <span>$GRIMACE</span>
               </BidStep>
               <BidStep>
-                Bid Step: {bidStep} <span>$GRIMACE</span>
+                Bid Step: {formatCurrentBid(bidStep)} <span>$GRIMACE</span>
               </BidStep>
               <HighestBid>
                 <>
@@ -116,7 +117,13 @@ function NFTDetails({
           >
             Place Bid
             {isPendingBid && (
-              <Spinner marginLeft="4px" borderWidth="3px" marginBottom="2px" width={20} height={20} />
+              <Spinner
+                marginLeft="4px"
+                borderWidth="3px"
+                marginBottom="2px"
+                width={20}
+                height={20}
+              />
             )}
           </Button>
           <Button

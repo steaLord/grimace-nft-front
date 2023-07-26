@@ -8,7 +8,10 @@ const useHighestBids = ({ nftsValues }: { nftsValues: any[] }) => {
 
   useEffect(() => {
     const getHighestBids = async () => {
-      const decimals = await tokenContract.methods.decimals().call();
+      const decimals = await tokenContract.methods
+        .decimals()
+        .call()
+        .catch((err) => console.log("ERROR", err));
       const decimalsMultiplier = BigInt(10) ** BigInt(decimals);
       try {
         const nftsWithHighestBid = await Promise.all(
@@ -32,16 +35,17 @@ const useHighestBids = ({ nftsValues }: { nftsValues: any[] }) => {
           })
         );
         setNewNfts(nftsWithHighestBid);
+        setIsLoading(false);
       } catch (e) {
         console.log(e);
       } finally {
         setIsLoading(false);
       }
     };
-    if (nftContract && nftsValues != null && nftsValues.length > 0) {
+    if (nftContract && nftsValues && nftsValues.length > 0) {
       getHighestBids();
     }
-  }, [nftsValues, nftContract]);
+  }, [nftContract]);
 
   return { newNfts, isLoading };
 };

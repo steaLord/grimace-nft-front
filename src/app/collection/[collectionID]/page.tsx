@@ -20,7 +20,9 @@ export default function NFTPage() {
   const nftsValues: any[] = Object.values(nftsMetadata).filter(
     ({ collection }: any) => collection === previewItem?.collection
   );
+
   const { newNfts, isLoading } = useHighestBids({ nftsValues });
+
   return (
     <>
       <title>{previewItem?.collection}</title>
