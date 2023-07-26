@@ -108,39 +108,23 @@ const useAuction = ({ nftID }: { nftID: number }) => {
       // Check if the user has approved the contract to spend tokens on their behalf
       const approvedAmount = BigInt(
         await tokenContract.methods
-          .allowance(account, tokenContractAddress)
+          .allowance(account, nftContractAddress)
           .call()
       );
-      const balance = BigInt(
-        await tokenContract.methods.balanceOf(account).call()
-      );
+
+      console.log({ approvedAmount });
 
       const bidAmount =
         BigInt(currentAuctionDetails.highestBid) === BigInt(0)
           ? BigInt(auctionDetails.initialPrice)
-          : BigInt(auctionDetails.bidStep) * BigInt(2);
-
-      console.log({
-        approvedAmount,
-        approvedAmountLength: approvedAmount.toString().length,
-        balance,
-        bidAmount,
-        bidAmountLength: bidAmount.toString().length,
-        isEqual: balance === approvedAmount,
-      });
-
-      console.log(
-        "Approved:",
-        Number(approvedAmount / decimalsMultiplier),
-        "BidAmount:",
-        Number(bidAmount / decimalsMultiplier)
-      );
+          : BigInt(currentAuctionDetails.highestBid) +
+            BigInt(currentAuctionDetails.bidStep);
 
       // if (approvedAmount < bidAmount) {
-        // Convert the bid amount to token units for approval
-        await tokenContract.methods
-          .approve(nftContractAddress, Number(bidAmount / decimalsMultiplier))
-          .send({ from: account });
+      // Convert the bid amount to token units for approval
+      await tokenContract.methods
+        .approve(nftContractAddress, bidAmount.toString())
+        .send({ from: account });
       // }
 
       // Call placeBid function on the smart contract
