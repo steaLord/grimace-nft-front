@@ -14,6 +14,8 @@ const Web3Context = createContext({
   web3: null,
   nftContract: null,
   tokenContract: null,
+  tokenContractAddress: null,
+  nftContractAddress: null,
 });
 
 const Web3Provider = ({ children }) => {
@@ -48,16 +50,24 @@ const Web3Provider = ({ children }) => {
   }, []);
 
   return (
-    <Web3Context.Provider value={{ web3, nftContract, tokenContract }}>
+    <Web3Context.Provider
+      value={{
+        web3,
+        nftContract,
+        tokenContract,
+        tokenContractAddress: process.env.NEXT_PUBLIC_TOKEN_CONTRACT_ADDRESS,
+        nftContractAddress: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
+      }}
+    >
       {children}
     </Web3Context.Provider>
   );
 };
 
 const useWeb3Context = () => {
-  const { web3, nftContract, tokenContract } = useContext(Web3Context);
+  const { web3, nftContract, tokenContract, tokenContractAddress, nftContractAddress } = useContext(Web3Context);
 
-  return { web3, nftContract, tokenContract };
+  return { web3, nftContract, tokenContract, tokenContractAddress, nftContractAddress };
 };
 
 export { Web3Provider, useWeb3Context };

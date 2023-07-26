@@ -38,7 +38,12 @@ export const getAuctionDetails = async ({ nftContract, nftID }) => {
 
 const useAuction = ({ nftID }: { nftID: number }) => {
   const { account } = useMetaMask();
-  const { nftContract, tokenContract } = useWeb3Context();
+  const {
+    nftContract,
+    tokenContract,
+    tokenContractAddress,
+    nftContractAddress,
+  } = useWeb3Context();
 
   const [isLoading, setIsLoading] = useState(true);
   const [isPendingBid, setIsPendingBid] = useState(false);
@@ -51,7 +56,6 @@ const useAuction = ({ nftID }: { nftID: number }) => {
     highestBidder: "",
     highestBid: 0,
   });
-  const tokenContractAddress = process.env.NEXT_PUBLIC_TOKEN_CONTRACT_ADDRESS;
 
   useEffect(() => {
     const fetchAuctionData = async () => {
@@ -132,12 +136,12 @@ const useAuction = ({ nftID }: { nftID: number }) => {
         Number(bidAmount / decimalsMultiplier)
       );
 
-      if (approvedAmount < bidAmount) {
+      // if (approvedAmount < bidAmount) {
         // Convert the bid amount to token units for approval
         await tokenContract.methods
-          .approve(tokenContractAddress, 10)
+          .approve(nftContractAddress, Number(bidAmount / decimalsMultiplier))
           .send({ from: account });
-      }
+      // }
 
       // Call placeBid function on the smart contract
       const nftIdResponse = await nftContract.methods
