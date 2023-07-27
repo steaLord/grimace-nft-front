@@ -49,12 +49,11 @@ export default function NFTPage() {
                   >
                     <P>{edition}</P>
                   </div>
-                  {highestBid !== 0 &&
-                    highestBid(
-                      <HighestBidContainer>
-                        <HighBidP>{highestBid} $GRIMACE</HighBidP>
-                      </HighestBidContainer>
-                    )}
+                  {highestBid !== 0 && highestBid && (
+                    <HighestBidContainer>
+                      <HighBidP>{highestBid} $GRIMACE</HighBidP>
+                    </HighestBidContainer>
+                  )}
                   {Number(endTime) <=
                     Math.floor(new Date().getTime() / 1000) && (
                     <HighestBidContainer>
