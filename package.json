@@ -38,7 +38,8 @@
     "web3": "^4.0.2",
     "web3-utils": "^4.0.3",
     "webpack-node-externals": "^3.0.0",
-    "ws": "^8.13.0"
+    "ws": "^8.13.0",
+    "zlib": "^1.0.5"
   },
   "devDependencies": {
     "@types/jsdom": "^21.1.1",
