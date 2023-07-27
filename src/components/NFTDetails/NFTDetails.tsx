@@ -62,6 +62,7 @@ function NFTDetails({
     highestBid,
     bidStep,
     timeLeftForAuction,
+    endTime,
   } = blockchainData;
   const isReleased = initialPrice !== 0;
   const { minutes, seconds, hours } = useTimeLeft(timeLeftForAuction);
@@ -69,21 +70,8 @@ function NFTDetails({
   const isHighestBidder =
     account?.toLowerCase() == highestBidder?.toLowerCase();
 
-  const getMockBids = () => {
-    const res: any[] = [];
+  const isEnded = Number(endTime) <= Math.floor(new Date().getTime() / 1000);
 
-    for (let i = 0; i < 150; i++) {
-      let bid = {
-        id: i,
-        time: 1627392000,
-        amount: 50,
-        address: "0xqwerty00000000000000000000000000zxcvbn",
-      };
-      res.push(bid);
-    }
-    return res;
-  };
-  const bids = getMockBids();
   return (
     <>
       <Root>
@@ -114,13 +102,19 @@ function NFTDetails({
             {collection} {id}
           </Name>
           <Subheading>
-            {isReleased ? "Auction started" : "Wait for auction"}
+            {isReleased
+              ? isEnded
+                ? "Auction Ended"
+                : "Auction started"
+              : "Wait for auction"}
           </Subheading>
           <Buttons>
             <Button
               buttonType="filled"
               onClick={onPlaceBidClick}
-              disabled={!isReleased || isHighestBidder || isPendingBid}
+              disabled={
+                !isReleased || isHighestBidder || isPendingBid || isEnded
+              }
               title={
                 !isReleased ? "Wait until auction" : "Link to NFT Marketplace"
               }
@@ -146,7 +140,7 @@ function NFTDetails({
             </Button>
           </Buttons>
 
-          {isReleased && (
+          {isReleased && !isEnded && (
             <>
               <BidsContainer>
                 <Bid>

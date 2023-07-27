@@ -34,7 +34,7 @@ export default function NFTPage() {
         </LoadingSpinner>
       ) : (
         <CollectionGrid>
-          {newNfts.map(({ id, edition, highestBid }, i: number) => {
+          {newNfts.map(({ id, edition, highestBid, endTime }, i: number) => {
             return (
               <div style={{ position: "relative" }} key={i}>
                 <Link href={`/collection/${collectionID}/${id}`}>
@@ -52,6 +52,12 @@ export default function NFTPage() {
                   {highestBid !== 0 && (
                     <HighestBidContainer>
                       <HighBidP>{highestBid} $GRIMACE</HighBidP>
+                    </HighestBidContainer>
+                  )}
+                  {Number(endTime) <=
+                    Math.floor(new Date().getTime() / 1000) && (
+                    <HighestBidContainer>
+                      <HighBidP>SOLD</HighBidP>
                     </HighestBidContainer>
                   )}
                 </Link>
