@@ -4,10 +4,11 @@ import styled from "@emotion/styled";
 import { css } from "@emotion/css";
 
 export type CountdownBoxProps = {
-  text: string
-}
+  text: string;
+  fontSize: number;
+};
 
-function CountdownBox({ text }: CountdownBoxProps) {
+function CountdownBox({ text, fontSize }: CountdownBoxProps) {
   const [textTop, setTextTop] = useState(text);
   const [textBottom, setTextBottom] = useState("");
   const [isSwitching, setIsSwitching] = useState<boolean>(false);
@@ -38,18 +39,22 @@ function CountdownBox({ text }: CountdownBoxProps) {
       onExit={handleEnd}
       nodeRef={nodeRef}
     >
-      <Box ref={nodeRef}>
-        <Char className="text-top">{textTop}</Char>
-        <Char className="text-bottom">{textBottom}</Char>
+      <Box fontSize={fontSize} ref={nodeRef}>
+        <Char fontSize={fontSize} className="text-top">
+          {textTop}
+        </Char>
+        <Char fontSize={fontSize} className="text-bottom">
+          {textBottom}
+        </Char>
       </Box>
     </CSSTransition>
   );
 }
 
 const Box = styled.div`
-  width: 60px;
-  height: 80px;
-  font-size: 80px;
+  width: ${({ fontSize }) => (fontSize / 4) * 3 + "px"};
+  height: ${({ fontSize }) => fontSize + "px"};
+  font-size: ${({ fontSize }) => fontSize + "px"};
   position: relative;
   border-radius: 10px;
   background-color: var(--color-white);
@@ -57,9 +62,9 @@ const Box = styled.div`
   overflow: hidden;
 
   @media (max-width: 768px) {
-    width: 40px;
-    height: 60px;
-    font-size: 60px;
+    width: ${({ fontSize }) => fontSize / 2 + "px"};
+    height: ${({ fontSize }) => (fontSize / 4) * 3 + "px"};
+    font-size: ${({ fontSize }) => (fontSize / 4) * 3 + "px"};
     border-radius: 8px;
   }
 `;
@@ -96,8 +101,8 @@ const boxStyleEnterDone = css`
 
 const Char = styled.span`
   position: absolute;
-  width: 60px;
-  height: 80px;
+  width: ${({ fontSize }) => (fontSize / 4) * 3 + "px"};
+  height: ${({ fontSize }) => fontSize + "px"};
   text-align: center;
   vertical-align: middle;
   line-height: 1;
@@ -105,8 +110,8 @@ const Char = styled.span`
   top: 0;
 
   @media (max-width: 768px) {
-    width: 40px;
-    height: 60px;
+    width: ${({ fontSize }) => fontSize / 2 + "px"};
+    height: ${({ fontSize }) => (fontSize * 4) / 3 + "px"};
   }
 `;
 
