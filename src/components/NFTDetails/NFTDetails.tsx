@@ -172,6 +172,9 @@ function NFTDetails({
                   num3={seconds}
                   gap={3}
                   fontSize={60}
+                  label1="Hours"
+                  label2="Minutes"
+                  label3="Seconds"
                 />
               </TimeLeftContainer>
             </>

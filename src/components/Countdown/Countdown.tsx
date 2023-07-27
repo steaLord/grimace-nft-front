@@ -6,6 +6,9 @@ export type CountdownProps = HTMLAttributes<HTMLDivElement> & {
   num1: number;
   num2: number;
   num3: number;
+  label1: string;
+  label2: string;
+  label3: string;
   gap: number;
   fontSize: number;
 };
@@ -39,6 +42,9 @@ function Countdown({
   num1,
   num2,
   num3,
+  label1,
+  label2,
+  label3,
   gap,
   fontSize,
   ...rest
@@ -49,21 +55,21 @@ function Countdown({
         fontSize={fontSize}
         text2={(num1 % 10).toString()}
         text1={(Math.floor(num1 / 10) % 10).toString()}
-        label="Days"
+        label={label1}
       />
       <Separator fontSize={fontSize}>:</Separator>
       <CountDownBoxWrapper
         fontSize={fontSize}
         text2={(num2 % 10).toString()}
         text1={(Math.floor(num2 / 10) % 10).toString()}
-        label="Hours"
+        label={label2}
       />
       <Separator fontSize={fontSize}>:</Separator>
       <CountDownBoxWrapper
         fontSize={fontSize}
         text2={(num3 % 10).toString()}
         text1={(Math.floor(num3 / 10) % 10).toString()}
-        label="Minutes"
+        label={label3}
       />
       {/*<CountdownBoxRoot>
         <CountdownTimeWrapper>

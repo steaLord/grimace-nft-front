@@ -64,7 +64,16 @@ export default function Home() {
         The first collection with sense
       </Subheading>
       {!isReleased && (
-        <StartCountdown num1={dd} num2={hh} num3={mm} gap={8} fontSize={80} />
+        <StartCountdown
+          num1={dd}
+          num2={hh}
+          num3={mm}
+          gap={8}
+          fontSize={80}
+          label1="Days"
+          label2="Hours"
+          label3="Minutes"
+        />
       )}
       <Buttons>
         {isReleased ? (
