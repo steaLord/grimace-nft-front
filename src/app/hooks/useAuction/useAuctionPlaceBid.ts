@@ -1,17 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { toast } from "react-toastify";
 import { useMetaMask } from "metamask-react";
 import { useWeb3Context } from "@/app/hooks/useWeb3";
-import { toast } from "react-toastify";
-
-export interface IBlockchainAuctionData {
-  nftID: number;
-  initialPrice: number;
-  bidStep: number;
-  timeLeftForAuction: Date;
-  endTime: number;
-  highestBidder: string;
-  highestBid: number | BigInt;
-}
+import useBidsHistory from "@/app/hooks/useAuction/useBidsHistory";
 
 const getApprovedAmount = async ({
   tokenContract,
@@ -48,61 +39,19 @@ export const getAuctionDetails = async ({ nftContract, nftID }) => {
   };
 };
 
-const useAuction = ({ nftID }: { nftID: number }) => {
+const useAuctionPlaceBid = ({ nftID }: { nftID: number }) => {
   const { account } = useMetaMask();
+  const { nftContract, tokenContract, nftContractAddress } = useWeb3Context();
+
   const {
-    nftContract,
-    tokenContract,
-    nftContractAddress,
-  } = useWeb3Context();
+    isLoading: isBidsLoading,
+    pushBid,
+    bidsHistory,
+  } = useBidsHistory(nftID - 1);
 
-  const [isLoading, setIsLoading] = useState(true);
   const [isPendingBid, setIsPendingBid] = useState(false);
-  const [auctionDetails, setAuctionDetails] = useState({
-    nftID: 0,
-    initialPrice: 0,
-    bidStep: 0,
-    timeLeftForAuction: new Date(),
-    endTime: 0,
-    highestBidder: "",
-    highestBid: 0,
-  });
 
-  useEffect(() => {
-    const fetchAuctionData = async () => {
-      try {
-        setIsLoading(true);
-        const {
-          blockchainNftID,
-          bidStep,
-          highestBid,
-          highestBidder,
-          endTime,
-          initialPrice,
-        } = await getAuctionDetails({ nftContract, nftID });
-
-        setAuctionDetails({
-          nftID: Number(blockchainNftID),
-          initialPrice: Number(initialPrice),
-          bidStep: Number(bidStep),
-          timeLeftForAuction: new Date(Number(endTime) * 1000),
-          endTime: Number(endTime),
-          highestBidder,
-          highestBid: Number(highestBid),
-        });
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Failed to fetch auction data:", error);
-        setIsLoading(false);
-      }
-    };
-
-    if (nftID !== null && nftContract) {
-      fetchAuctionData();
-    }
-  }, [account, nftContract, nftID]);
-
-  const placeBid = async () => {
+  const placeBid = async (auctionDetails, setAuctionDetails) => {
     try {
       setIsPendingBid(true);
 
@@ -115,7 +64,6 @@ const useAuction = ({ nftID }: { nftID: number }) => {
         BigInt(currentAuctionDetails.highestBid) !==
         BigInt(auctionDetails.highestBid)
       ) {
-        setAuctionDetails(currentAuctionDetails);
         toast.error("Current bid has been changed");
         throw new Error("Current bid has been changed");
       }
@@ -179,7 +127,12 @@ const useAuction = ({ nftID }: { nftID: number }) => {
         .send({ from: account });
 
       if (Number(response?.status) === 1) {
-        // Update the auction details with the new highest bid and highest bidder
+        // Update the bids history with the new bid
+        pushBid({
+          bidAmount: bidAmount.toString(),
+          bidder: account,
+          timestamp: Date.now(),
+        });
         setAuctionDetails({
           ...currentAuctionDetails,
           highestBid: bidAmount.toString(),
@@ -196,11 +149,11 @@ const useAuction = ({ nftID }: { nftID: number }) => {
   };
 
   return {
-    isLoading,
-    placeBid,
-    auctionDetails,
     isPendingBid,
+    placeBid,
+    isBidsLoading,
+    bidsHistory,
   };
 };
 
-export default useAuction;
+export default useAuctionPlaceBid;

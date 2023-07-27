@@ -35,6 +35,15 @@ contract GrimaceMandalaNFT is ERC721, ERC721URIStorage, ERC721Enumerable, Pausab
 
     mapping(uint256 => Auction) private tokenIdToAuction;
 
+    // New mapping to store bids for each token ID
+    mapping(uint256 => Bid[]) public tokenBids;
+    // Struct representing a bid
+    struct Bid {
+        uint256 bidAmount;
+        address bidder;
+        uint256 timestamp;
+    }
+
     /**
      * @dev Contract constructor.
      * @param _grimaceCoinAddress Address of the Grimace Coin ERC20 token.
@@ -138,17 +147,30 @@ contract GrimaceMandalaNFT is ERC721, ERC721URIStorage, ERC721Enumerable, Pausab
         require(bidAmount >= auction.highestBid + auction.bidStep, "Bid amount must be greater than current highest bid");
 
         // Transfer the bid amount from the bidder to the contract
-        //    require(grimaceCoin.transferFrom(msg.sender, address(this), bidAmount), "Failed to transfer bid amount");
+        require(grimaceCoin.transferFrom(msg.sender, address(this), bidAmount), "Failed to transfer bid amount");
 
         // Refund the previous highest bidder if there was one
-        //    if (auction.highestBidder != address(0)) {
-        //    require(grimaceCoin.transfer(auction.highestBidder, auction.highestBid), "Failed to refund previous highest bidder");
-        //    }
+        if (auction.highestBidder != address(0)) {
+            require(grimaceCoin.transfer(auction.highestBidder, auction.highestBid), "Failed to refund previous highest bidder");
+        }
 
         // Update auction data with the new highest bidder and bid amount
         auction.highestBidder = msg.sender;
         auction.highestBid = bidAmount;
+
+        // Store the bid in the tokenBids mapping
+        tokenBids[tokenId].push(Bid(bidAmount, msg.sender, block.timestamp));
+
         return BidResult(auction.highestBid, auction.highestBidder);
+    }
+
+    /**
+     * @dev Retrieves the bid history for the specified token ID.
+     * @param tokenId Token ID for which the bid history is retrieved.
+     * @return bids An array of Bid structs representing the bid history.
+     */
+    function getBidHistory(uint256 tokenId) public view returns (Bid[] memory bids) {
+        return tokenBids[tokenId];
     }
 
     /**
