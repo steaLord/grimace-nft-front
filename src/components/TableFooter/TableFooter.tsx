@@ -21,15 +21,22 @@ const TableFooter = ({
   }, [slice, page, setPage]);
   return (
     <Container>
+      <NextPrevButton
+        disabled={page === 1}
+        onClick={() => setPage(page - 1)}
+        width={117.5}
+      >
+        Previous
+      </NextPrevButton>
       {range != null && range[0] != null && (
-        <Button disabled={page === 1} onClick={() => setPage(1)}>
+        <Button disabled={page === 1} onClick={() => setPage(1)} width={30}>
           {1}
         </Button>
       )}
       {range.slice(1, -1).map((num, index) => {
         if (
-          range.slice(1, -1).length !== 5 &&
-          (page - num > 2 || page - num < -2)
+          range.slice(1, -1).length !== 3 &&
+          (page - num > 1 || page - num < -1)
         ) {
           return null;
         }
@@ -38,34 +45,59 @@ const TableFooter = ({
             key={index}
             disabled={page === num}
             onClick={() => setPage(num)}
+            width={30}
           >
             {num}
           </Button>
         );
       })}
 
-      {range != null && range[range.length - 1] != null && (
+      {range != null && range.length > 1 && range[range.length - 1] != null && (
         <Button
           disabled={page === range[range.length - 1]}
           onClick={() => setPage(range[range.length - 1])}
+          width={30}
         >
           {range[range.length - 1]}
         </Button>
       )}
+      <NextPrevButton
+        disabled={page === range[range.length - 1]}
+        onClick={() => setPage(page + 1)}
+        width={117.5}
+      >
+        Next
+      </NextPrevButton>
     </Container>
   );
 };
 
 const Container = styled.div`
+  //   width: 100%;
   display: flex;
   justify-content: space-between;
   gap: 3px;
   align-items: center;
 `;
+const NextPrevButton = styled.button`
+  font-size: 18px;
+  font-weight: 700;
+  padding: 2px 6px;
+  width: ${({ width }) => width + "px"};
+  color: #ffffff;
+  background-color: #1a1a1a;
+  border-radius: 4px;
+  outline: none;
+  border: 1px solid #ffffff;
+  &:disabled {
+    opacity: 0.5;
+  }
+`;
 const Button = styled.button`
   font-size: 18px;
+  font-weight: 700;
   padding: 2px 6px;
-  width: 30px;
+  width: ${({ width }) => width + "px"};
   color: #ffffff;
   background-color: #1a1a1a;
   border-radius: 4px;
