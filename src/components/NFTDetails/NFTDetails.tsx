@@ -66,20 +66,22 @@ function NFTDetails({
 
   const isHighestBidder =
     account?.toLowerCase() == highestBidder?.toLowerCase();
-  const bids = [
-    {
-      id: 0,
-      time: 1627392000,
-      amount: 50,
-      address: "0xqwerty00000000000000000000000000zxcvbn",
-    },
-    {
-      id: 1,
-      time: 1627392000,
-      amount: 50,
-      address: "0x0000000000000000000000000000000000000000",
-    },
-  ];
+
+  const getMockBids = () => {
+    const res: any[] = [];
+
+    for (let i = 0; i < 150; i++) {
+      let bid = {
+        id: i,
+        time: 1627392000,
+        amount: 50,
+        address: "0xqwerty00000000000000000000000000zxcvbn",
+      };
+      res.push(bid);
+    }
+    return res;
+  };
+  const bids = getMockBids();
   return (
     <>
       <Root>
@@ -176,7 +178,7 @@ function NFTDetails({
       </Root>
       <DescriptionTitle>Description</DescriptionTitle>
       <Description>{description}</Description>
-      {isReleased && <BidsHistory bids={bids} />}
+      {isReleased && <BidsHistory allBids={bids} />}
     </>
   );
 }

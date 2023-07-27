@@ -1,8 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
+import useTable from "@/app/hooks/useTable";
+import TableFooter from "../TableFooter/TableFooter";
 
-const BidsHistory = ({ bids }) => {
-  function formatUnixTime(unixTime: number): string {
+const BidsHistory = ({ allBids }) => {
+  const [page, setPage] = useState(1);
+  const { slice, range } = useTable({
+    data: allBids,
+    page: page,
+    rowsPerPage: 5,
+  });
+
+  const formatUnixTime = (unixTime: number): string => {
     const date = new Date(unixTime * 1000); // Convert Unix timestamp to milliseconds
     const day = date.getUTCDate().toString().padStart(2, "0"); // Extract day and pad with leading zero if necessary
     const month = (date.getUTCMonth() + 1).toString().padStart(2, "0"); // Extract month and pad with leading zero if necessary
@@ -12,7 +21,7 @@ const BidsHistory = ({ bids }) => {
     const second = date.getUTCSeconds().toString().padStart(2, "0"); // Extract second and pad with leading zero if necessary
     const formattedTime = `${day}.${month}.${year} ${hour}:${minute}:${second}`; // Combine extracted values into desired format
     return formattedTime;
-  }
+  };
 
   return (
     <Container>
@@ -28,7 +37,7 @@ const BidsHistory = ({ bids }) => {
             </tr>
           </thead>
           <tbody>
-            {bids.map((bid) => (
+            {slice.map((bid) => (
               <tr key={bid.id}>
                 <td>
                   <b>{bid.id}</b>
@@ -42,7 +51,15 @@ const BidsHistory = ({ bids }) => {
             ))}
           </tbody>
         </Table>
-        <Footer></Footer>
+        <Footer>
+          <TotalBids>{allBids.length} BIDS</TotalBids>
+          <TableFooter
+            slice={slice}
+            page={page}
+            range={range}
+            setPage={setPage}
+          />
+        </Footer>
       </div>
     </Container>
   );
@@ -55,7 +72,11 @@ const Footer = styled.div`
   height: 40px;
   display: flex;
   justify-content: space-between;
-  background-color: #eee;
+  // background-color: #eee;
+`;
+const TotalBids = styled.p`
+  color: #59575c;
+  padding: 8px;
 `;
 const Container = styled.div`
   display: flex;
