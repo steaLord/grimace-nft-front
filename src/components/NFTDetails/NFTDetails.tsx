@@ -39,7 +39,7 @@ function formatAddress(address) {
   return `${prefix}${firstFour}...${lastFour}`;
 }
 
-export const formatBidAmountToDecimals = (bidAmount: BigInt) => {
+export const formatBidAmountToDecimals = (bidAmount: BigInt = BigInt(0)) => {
   const currentBid = BigInt(bidAmount) / BigInt(10) ** BigInt(18);
   return currentBid.toString();
 };
