@@ -21,7 +21,7 @@ export default function NFTPage() {
   const nftItem = {
     metadata: {
       ...nftsMetadata?.[nftID],
-      buyGrimaceHref: "https://coinmarketcap.com/currencies/grimace-top/",
+      buyGrimaceHref: "https://www.mexc.com/exchange/GRIMACE_USDT",
     },
     blockchainData: auctionDetails,
   };

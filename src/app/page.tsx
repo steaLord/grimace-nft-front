@@ -80,7 +80,7 @@ export default function Home() {
         )}
         <Button
           target="__blank"
-          href="https://coinmarketcap.com/currencies/grimace-top/"
+          href="https://www.mexc.com/exchange/GRIMACE_USDT"
           className={buttonStyles}
         >
           Buy Grimace
