@@ -4,12 +4,12 @@ import { getAuctionDetails } from "@/app/hooks/useAuction/useAuctionPlaceBid";
 
 export interface IBlockchainAuctionData {
   nftID: number;
-  initialPrice: number;
-  bidStep: number;
+  initialPrice: BigInt;
+  bidStep: BigInt;
   timeLeftForAuction: Date;
   endTime: number;
   highestBidder: string;
-  highestBid: number | BigInt;
+  highestBid: BigInt;
 }
 
 const useAuctionDetails = ({ nftID }: { nftID: number }) => {
@@ -41,12 +41,12 @@ const useAuctionDetails = ({ nftID }: { nftID: number }) => {
 
         setAuctionDetails({
           nftID: Number(blockchainNftID),
-          initialPrice: Number(initialPrice),
-          bidStep: Number(bidStep),
+          initialPrice: BigInt(initialPrice),
+          bidStep: BigInt(bidStep),
           timeLeftForAuction: new Date(Number(endTime) * 1000),
           endTime: Number(endTime),
           highestBidder,
-          highestBid: Number(highestBid),
+          highestBid: BigInt(highestBid),
         });
         setIsLoading(false);
       } catch (error) {

@@ -39,7 +39,7 @@ function formatAddress(address) {
   return `${prefix}${firstFour}...${lastFour}`;
 }
 
-export const formatBidAmountToDecimals = (bidAmount: number) => {
+export const formatBidAmountToDecimals = (bidAmount: BigInt) => {
   const currentBid = BigInt(bidAmount) / BigInt(10) ** BigInt(18);
   return currentBid.toString();
 };
@@ -152,14 +152,14 @@ function NFTDetails({
                 <Bid>
                   Current bid:{" "}
                   <span style={{ fontSize: "1.5rem" }}>
-                    {formatBidAmountToDecimals(Number(highestBid))}
+                    {formatBidAmountToDecimals(highestBid)}
                   </span>{" "}
                   <span style={{ fontSize: "0.9rem" }}>$GRIMACE</span>
                 </Bid>
                 <Bid>
                   Min Bid Step:{" "}
                   <span style={{ fontSize: "1.2rem" }}>
-                    {formatBidAmountToDecimals(Number(bidStep))}
+                    {formatBidAmountToDecimals(bidStep)}
                   </span>{" "}
                   <span style={{ fontSize: "0.9rem" }}>$GRIMACE</span>
                 </Bid>

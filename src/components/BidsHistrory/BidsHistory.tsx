@@ -3,11 +3,11 @@ import styled from "@emotion/styled";
 import useTable from "@/app/hooks/useTable";
 import TableFooter from "../TableFooter/TableFooter";
 import { formatBidAmountToDecimals } from "@/components/NFTDetails/NFTDetails";
-import {IBid} from "@/app/hooks/useAuction/useBidsHistory";
+import { IBid } from "@/app/hooks/useAuction/useBidsHistory";
 
 const BidsHistory = ({ allBids }) => {
   const [page, setPage] = useState(1);
-  const { slice, range } = useTable<{allBids: IBid[]}>({
+  const { slice, range } = useTable<{ allBids: IBid[] }>({
     data: allBids,
     page: page,
     rowsPerPage: 5,
@@ -25,6 +25,7 @@ const BidsHistory = ({ allBids }) => {
     return formattedTime;
   };
 
+  console.log({ allBids });
   return (
     <Container>
       <div>

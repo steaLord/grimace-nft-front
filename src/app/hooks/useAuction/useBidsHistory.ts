@@ -42,7 +42,7 @@ const useBidsHistory = (tokenId: number) => {
           id: index,
           amount: Number(bid.bidAmount),
           address: bid.bidder,
-          time: Number(bid.timestamp),
+          timestamp: Number(bid.timestamp),
         } as IBid)
     );
     parsedBids.reverse()
