@@ -72,6 +72,8 @@ function NFTDetails({
 
   const isEnded = Number(endTime) <= Math.floor(new Date().getTime() / 1000);
 
+  const formattedHighestBid = formatBidAmountToDecimals(highestBid);
+  const formattedInitialPrice = formatBidAmountToDecimals(initialPrice);
   return (
     <>
       <Root>
@@ -146,7 +148,9 @@ function NFTDetails({
                 <Bid>
                   Current bid:{" "}
                   <span style={{ fontSize: "1.5rem" }}>
-                    {formatBidAmountToDecimals(highestBid)}
+                    {formattedHighestBid > formattedInitialPrice
+                      ? formattedHighestBid
+                      : formattedInitialPrice}
                   </span>{" "}
                   <span style={{ fontSize: "0.9rem" }}>$GRIMACE</span>
                 </Bid>

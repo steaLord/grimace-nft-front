@@ -34,36 +34,45 @@ export default function NFTPage() {
         </LoadingSpinner>
       ) : (
         <CollectionGrid>
-          {newNfts.map(({ id, edition, highestBid, endTime }, i: number) => {
-            return (
-              <div style={{ position: "relative" }} key={i}>
-                <Link href={`/collection/${collectionID}/${id}`}>
-                  <PlaceholderItem src={previewItem!.imageSrc} alt={id} />
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: "50%",
-                      left: "50%",
-                      transform: "translate(-50%, -50%)",
-                    }}
-                  >
-                    <P>{edition}</P>
-                  </div>
-                  {highestBid !== 0 && highestBid && (
-                    <HighestBidContainer>
-                      <HighBidP>{highestBid} $GRIMACE</HighBidP>
-                    </HighestBidContainer>
-                  )}
-                  {Number(endTime) <=
-                    Math.floor(new Date().getTime() / 1000) && (
-                    <HighestBidContainer>
-                      <HighBidP>SOLD</HighBidP>
-                    </HighestBidContainer>
-                  )}
-                </Link>
-              </div>
-            );
-          })}
+          {newNfts.map(
+            ({ id, edition, highestBid, endTime, initialPrice }, i: number) => {
+              const isEnded =
+                Number(endTime) <= Math.floor(new Date().getTime() / 1000);
+
+              return (
+                <div style={{ position: "relative" }} key={i}>
+                  <Link href={`/collection/${collectionID}/${id}`}>
+                    <PlaceholderItem src={previewItem!.imageSrc} alt={id} />
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                      }}
+                    >
+                      <P>{edition}</P>
+                    </div>
+                    {!isEnded && (highestBid !== 0 || initialPrice !== 0) && (
+                      <HighestBidContainer>
+                        <HighBidP>
+                          {highestBid >= initialPrice
+                            ? highestBid
+                            : initialPrice}{" "}
+                          $GRIMACE
+                        </HighBidP>
+                      </HighestBidContainer>
+                    )}
+                    {isEnded && (
+                      <HighestBidContainer>
+                        <HighBidP>SOLD</HighBidP>
+                      </HighestBidContainer>
+                    )}
+                  </Link>
+                </div>
+              );
+            }
+          )}
         </CollectionGrid>
       )}
     </>
