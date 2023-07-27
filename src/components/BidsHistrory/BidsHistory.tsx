@@ -3,10 +3,11 @@ import styled from "@emotion/styled";
 import useTable from "@/app/hooks/useTable";
 import TableFooter from "../TableFooter/TableFooter";
 import { formatBidAmountToDecimals } from "@/components/NFTDetails/NFTDetails";
+import {IBid} from "@/app/hooks/useAuction/useBidsHistory";
 
 const BidsHistory = ({ allBids }) => {
   const [page, setPage] = useState(1);
-  const { slice, range } = useTable({
+  const { slice, range } = useTable<{allBids: IBid[]}>({
     data: allBids,
     page: page,
     rowsPerPage: 5,
@@ -38,13 +39,13 @@ const BidsHistory = ({ allBids }) => {
             </tr>
           </thead>
           <tbody>
-            {slice.map((bid) => (
-              <tr key={bid.id}>
+            {slice.map((bid: IBid, index) => (
+              <tr key={bid.timestamp}>
                 <td>
-                  <b>{bid.id}</b>
+                  <b>{index + 1}</b>
                 </td>
-                <td>{formatUnixTime(bid.time)}</td>
-                <td>{formatBidAmountToDecimals(bid.amount)} GRIMACE</td>
+                <td>{formatUnixTime(bid.timestamp)}</td>
+                <td>{formatBidAmountToDecimals(bid?.amount ?? 0)} GRIMACE</td>
                 <td>
                   {bid.address.slice(0, 6) + "....." + bid.address.slice(-5)}
                 </td>

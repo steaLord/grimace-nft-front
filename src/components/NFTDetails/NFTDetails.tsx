@@ -183,7 +183,9 @@ function NFTDetails({
       </Root>
       <DescriptionTitle>Description</DescriptionTitle>
       <Description dangerouslySetInnerHTML={{ __html: description }} />
-      {isReleased && !isBidsLoading && <BidsHistory allBids={bidsHistory} />}
+      {isReleased && !isBidsLoading && bidsHistory?.length > 0 && (
+        <BidsHistory allBids={bidsHistory} />
+      )}
     </>
   );
 }

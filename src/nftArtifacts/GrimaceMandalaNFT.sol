@@ -95,24 +95,22 @@ contract GrimaceMandalaNFT is ERC721, ERC721URIStorage, ERC721Enumerable, Pausab
      * @param tokenId Token ID for which the auction will be started.
      * @param initialPrice Initial price for the auction.
      * @param bidStep Bid increment for each bid.
-     * @param auctionDurationInDays Duration of the auction in days.
+     * @param auctionDurationInSeconds Duration of the auction in seconds.
      */
     function startAuction(
         uint256 tokenId,
         uint256 initialPrice,
         uint256 bidStep,
-        uint256 auctionDurationInDays
+        uint256 auctionDurationInSeconds
     ) public onlyOwner {
         require(ownerOf(tokenId) == owner(), "You can only start an auction for your own NFT");
         require(tokenIdToAuction[tokenId].endTime == 0, "Auction already exists for this token");
 
-        uint256 auctionDuration = auctionDurationInDays * 1 days;
-        uint256 endTime = block.timestamp + auctionDuration;
+        uint256 endTime = block.timestamp + auctionDurationInSeconds;
 
         Auction memory newAuction = Auction(tokenId, initialPrice, bidStep, endTime, address(0), 0);
         tokenIdToAuction[tokenId] = newAuction;
     }
-
     /**
      * @dev Ends an ongoing auction for the specified token.
      * @param tokenId Token ID for which the auction will be ended.

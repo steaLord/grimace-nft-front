@@ -2,7 +2,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { useMetaMask } from "metamask-react";
 import { useWeb3Context } from "@/app/hooks/useWeb3";
-import useBidsHistory from "@/app/hooks/useAuction/useBidsHistory";
+import useBidsHistory, { IBid } from "@/app/hooks/useAuction/useBidsHistory";
 
 const getApprovedAmount = async ({
   tokenContract,
@@ -129,10 +129,11 @@ const useAuctionPlaceBid = ({ nftID }: { nftID: number }) => {
       if (Number(response?.status) === 1) {
         // Update the bids history with the new bid
         pushBid({
-          bidAmount: bidAmount.toString(),
-          bidder: account,
-          timestamp: Date.now(),
-        });
+          amount: bidAmount.toString(),
+          address: account,
+          timestamp: Math.floor(new Date().getTime() / 1000),
+          id: Math.random().toString(),
+        } as IBid);
         setAuctionDetails({
           ...currentAuctionDetails,
           highestBid: bidAmount.toString(),
