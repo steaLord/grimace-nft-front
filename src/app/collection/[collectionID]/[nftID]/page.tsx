@@ -14,8 +14,10 @@ export default function NFTPage() {
     auctionDetails,
     placeBid,
     isPendingBid,
+    bidsHistory,
+    isBidsLoading,
   } = useAuction({
-    nftID: Number(nftID)
+    nftID: Number(nftID),
   });
 
   const nftItem = {
@@ -34,6 +36,8 @@ export default function NFTPage() {
         </LoadingSpinner>
       ) : (
         <NFTDetails
+          bidsHistory={bidsHistory}
+          isBidsLoading={isBidsLoading}
           isPendingBid={isPendingBid}
           onPlaceBidClick={placeBid}
           nftItem={nftItem}

@@ -2,18 +2,18 @@ import React, { useState } from "react";
 import styled from "@emotion/styled";
 import Button from "@/components/Button";
 import Image from "next/image";
-import { IBlockchainAuctionData } from "@/app/hooks/useAuction";
 import useTimeLeft from "@/app/hooks/useTimeLeft";
 import { useMetaMask } from "metamask-react";
-import {
-  LoadingSpinner,
-  Spinner,
-} from "@/app/collection/[collectionID]/[nftID]/page";
+import { Spinner } from "@/app/collection/[collectionID]/[nftID]/page";
 import { keyframes } from "@emotion/css";
 import Countdown from "../Countdown/Countdown";
 import BidsHistory from "../BidsHistrory/BidsHistory";
+import { IBid } from "@/app/hooks/useAuction/useBidsHistory";
+import { IBlockchainAuctionData } from "@/app/hooks/useAuction/useAuctionDetails";
 
 export type NFTDetailsProps = {
+  isBidsLoading: boolean;
+  bidsHistory: IBid[];
   isPendingBid: boolean;
   onPlaceBidClick: () => void;
   nftItem: {
@@ -39,7 +39,7 @@ function formatAddress(address) {
   return `${prefix}${firstFour}...${lastFour}`;
 }
 
-const formatCurrentBid = (bidAmount: number) => {
+export const formatBidAmountToDecimals = (bidAmount: number) => {
   const currentBid = BigInt(bidAmount) / BigInt(10) ** BigInt(18);
   return currentBid.toString();
 };
@@ -48,6 +48,8 @@ function NFTDetails({
   nftItem,
   onPlaceBidClick,
   isPendingBid,
+  isBidsLoading,
+  bidsHistory,
 }: NFTDetailsProps) {
   const [isImgLoading, setIsImgLoading] = useState(true);
   const { metadata, blockchainData } = nftItem;
@@ -150,14 +152,14 @@ function NFTDetails({
                 <Bid>
                   Current bid:{" "}
                   <span style={{ fontSize: "1.5rem" }}>
-                    {formatCurrentBid(Number(highestBid))}
+                    {formatBidAmountToDecimals(Number(highestBid))}
                   </span>{" "}
                   <span style={{ fontSize: "0.9rem" }}>$GRIMACE</span>
                 </Bid>
                 <Bid>
                   Min Bid Step:{" "}
                   <span style={{ fontSize: "1.2rem" }}>
-                    {formatCurrentBid(Number(bidStep))}
+                    {formatBidAmountToDecimals(Number(bidStep))}
                   </span>{" "}
                   <span style={{ fontSize: "0.9rem" }}>$GRIMACE</span>
                 </Bid>
@@ -178,7 +180,7 @@ function NFTDetails({
       </Root>
       <DescriptionTitle>Description</DescriptionTitle>
       <Description>{description}</Description>
-      {isReleased && <BidsHistory allBids={bids} />}
+      {isReleased && !isBidsLoading && <BidsHistory allBids={bidsHistory} />}
     </>
   );
 }

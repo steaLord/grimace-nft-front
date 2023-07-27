@@ -3,8 +3,9 @@ import { useWeb3Context } from "@/app/hooks/useWeb3";
 import { toast } from "react-toastify";
 
 export interface IBid {
-  bidAmount: number | BigInt;
-  bidder: string;
+  id: string;
+  amount: number | BigInt;
+  address: string;
   timestamp: number;
 }
 
@@ -35,11 +36,16 @@ const useBidsHistory = (tokenId: number) => {
 
   const getBidsHistory = async ({ nftContract, tokenId }) => {
     const bids = await nftContract.methods.getBidHistory(tokenId).call();
-    const parsedBids = bids.map((bid) => ({
-      bidAmount: Number(bid.bidAmount),
-      bidder: bid.bidder,
-      timestamp: Number(bid.timestamp),
-    }));
+    const parsedBids: IBid[] = bids.map(
+      (bid, index) =>
+        ({
+          id: index,
+          amount: Number(bid.bidAmount),
+          address: bid.bidder,
+          time: Number(bid.timestamp),
+        } as IBid)
+    );
+    parsedBids.reverse()
     return parsedBids;
   };
 

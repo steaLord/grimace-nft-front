@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import useTable from "@/app/hooks/useTable";
 import TableFooter from "../TableFooter/TableFooter";
+import { formatBidAmountToDecimals } from "@/components/NFTDetails/NFTDetails";
 
 const BidsHistory = ({ allBids }) => {
   const [page, setPage] = useState(1);
@@ -43,7 +44,7 @@ const BidsHistory = ({ allBids }) => {
                   <b>{bid.id}</b>
                 </td>
                 <td>{formatUnixTime(bid.time)}</td>
-                <td>{bid.amount} GRIMACE</td>
+                <td>{formatBidAmountToDecimals(bid.amount)} GRIMACE</td>
                 <td>
                   {bid.address.slice(0, 6) + "....." + bid.address.slice(-5)}
                 </td>
