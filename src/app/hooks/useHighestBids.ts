@@ -24,6 +24,8 @@ const useHighestBids = ({ nftsValues }: { nftsValues: any[] }) => {
               return {
                 ...nft,
                 highestBid: Number(details.highestBid / decimalsMultiplier),
+                endTime: details.endTime,
+                initialPrice: details.initialPrice,
               };
             } catch (e) {
               console.error(e);

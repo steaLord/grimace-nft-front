@@ -62,6 +62,7 @@ function NFTDetails({
     highestBid,
     bidStep,
     timeLeftForAuction,
+    endTime,
   } = blockchainData;
   const isReleased = initialPrice !== 0;
   const { minutes, seconds, hours } = useTimeLeft(timeLeftForAuction);
@@ -69,21 +70,6 @@ function NFTDetails({
   const isHighestBidder =
     account?.toLowerCase() == highestBidder?.toLowerCase();
 
-  const getMockBids = () => {
-    const res: any[] = [];
-
-    for (let i = 0; i < 150; i++) {
-      let bid = {
-        id: i,
-        time: 1627392000,
-        amount: 50,
-        address: "0xqwerty00000000000000000000000000zxcvbn",
-      };
-      res.push(bid);
-    }
-    return res;
-  };
-  const bids = getMockBids();
   return (
     <>
       <Root>
@@ -114,13 +100,22 @@ function NFTDetails({
             {collection} {id}
           </Name>
           <Subheading>
-            {isReleased ? "Auction started" : "Wait for auction"}
+            {isReleased
+              ? Number(endTime) <= Math.floor(new Date().getTime() / 1000)
+                ? "Auction Ended"
+                : "Auction started"
+              : "Wait for auction"}
           </Subheading>
           <Buttons>
             <Button
               buttonType="filled"
               onClick={onPlaceBidClick}
-              disabled={!isReleased || isHighestBidder || isPendingBid}
+              disabled={
+                !isReleased ||
+                isHighestBidder ||
+                isPendingBid ||
+                Number(endTime) <= Math.floor(new Date().getTime() / 1000)
+              }
               title={
                 !isReleased ? "Wait until auction" : "Link to NFT Marketplace"
               }
@@ -146,39 +141,40 @@ function NFTDetails({
             </Button>
           </Buttons>
 
-          {isReleased && (
-            <>
-              <BidsContainer>
-                <Bid>
-                  Current bid:{" "}
-                  <span style={{ fontSize: "1.5rem" }}>
-                    {formatBidAmountToDecimals(Number(highestBid))}
-                  </span>{" "}
-                  <span style={{ fontSize: "0.9rem" }}>$GRIMACE</span>
-                </Bid>
-                <Bid>
-                  Min Bid Step:{" "}
-                  <span style={{ fontSize: "1.2rem" }}>
-                    {formatBidAmountToDecimals(Number(bidStep))}
-                  </span>{" "}
-                  <span style={{ fontSize: "0.9rem" }}>$GRIMACE</span>
-                </Bid>
-              </BidsContainer>
-              <TimeLeftContainer>
-                <TimeLeft>Time Left:</TimeLeft>
-                <Countdown
-                  num1={hours}
-                  num2={minutes}
-                  num3={seconds}
-                  gap={3}
-                  fontSize={60}
-                  label1="Hours"
-                  label2="Minutes"
-                  label3="Seconds"
-                />
-              </TimeLeftContainer>
-            </>
-          )}
+          {isReleased &&
+            !(Number(endTime) <= Math.floor(new Date().getTime() / 1000)) && (
+              <>
+                <BidsContainer>
+                  <Bid>
+                    Current bid:{" "}
+                    <span style={{ fontSize: "1.5rem" }}>
+                      {formatBidAmountToDecimals(Number(highestBid))}
+                    </span>{" "}
+                    <span style={{ fontSize: "0.9rem" }}>$GRIMACE</span>
+                  </Bid>
+                  <Bid>
+                    Min Bid Step:{" "}
+                    <span style={{ fontSize: "1.2rem" }}>
+                      {formatBidAmountToDecimals(Number(bidStep))}
+                    </span>{" "}
+                    <span style={{ fontSize: "0.9rem" }}>$GRIMACE</span>
+                  </Bid>
+                </BidsContainer>
+                <TimeLeftContainer>
+                  <TimeLeft>Time Left:</TimeLeft>
+                  <Countdown
+                    num1={hours}
+                    num2={minutes}
+                    num3={seconds}
+                    gap={3}
+                    fontSize={60}
+                    label1="Hours"
+                    label2="Minutes"
+                    label3="Seconds"
+                  />
+                </TimeLeftContainer>
+              </>
+            )}
         </Content>
       </Root>
       <DescriptionTitle>Description</DescriptionTitle>
