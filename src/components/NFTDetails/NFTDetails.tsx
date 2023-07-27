@@ -10,6 +10,8 @@ import {
   Spinner,
 } from "@/app/collection/[collectionID]/[nftID]/page";
 import { keyframes } from "@emotion/css";
+import Countdown from "../Countdown/Countdown";
+import BidsHistory from "../BidsHistrory/BidsHistory";
 
 export type NFTDetailsProps = {
   isPendingBid: boolean;
@@ -60,101 +62,124 @@ function NFTDetails({
     timeLeftForAuction,
   } = blockchainData;
   const isReleased = initialPrice !== 0;
-  const { minutes, seconds, hours, days } = useTimeLeft(timeLeftForAuction);
+  const { minutes, seconds, hours } = useTimeLeft(timeLeftForAuction);
 
   const isHighestBidder =
     account?.toLowerCase() == highestBidder?.toLowerCase();
-  return (
-    <Root>
-      <div style={{ position: "relative", height: "500px", width: "500px" }}>
-        {isImgLoading ? (
-          <div
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-            }}
-          >
-            <StyledNFTSkeleton height={500} width={500} />
-          </div>
-        ) : null}
-        <NFTImage
-          src={imageSrc}
-          alt={typeof name === "string" ? name : "NFT"}
-          width={500}
-          height={500}
-          onLoad={() => setIsImgLoading(false)}
-        />
-      </div>
 
-      <Content>
-        <Name>
-          {collection} {id}
-        </Name>
-        <Subheading>
-          {isReleased ? "Auction started" : "Wait for auction"}
-        </Subheading>
-        <Description
-          dangerouslySetInnerHTML={{ __html: description }}
-        ></Description>
-        <BidDetails>
+  const getMockBids = () => {
+    const res: any[] = [];
+
+    for (let i = 0; i < 150; i++) {
+      let bid = {
+        id: i,
+        time: 1627392000,
+        amount: 50,
+        address: "0xqwerty00000000000000000000000000zxcvbn",
+      };
+      res.push(bid);
+    }
+    return res;
+  };
+  const bids = getMockBids();
+  return (
+    <>
+      <Root>
+        <div style={{ position: "relative" }}>
+          {isImgLoading ? (
+            <div
+              style={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+              }}
+            >
+              <StyledNFTSkeleton height={500} width={500} />
+            </div>
+          ) : null}
+          <NFTImage
+            src={imageSrc}
+            alt={typeof name === "string" ? name : "NFT"}
+            width={500}
+            height={500}
+            onLoad={() => setIsImgLoading(false)}
+          />
+        </div>
+
+        <Content>
+          <Name>
+            {collection} {id}
+          </Name>
+          <Subheading>
+            {isReleased ? "Auction started" : "Wait for auction"}
+          </Subheading>
+          <Buttons>
+            <Button
+              buttonType="filled"
+              onClick={onPlaceBidClick}
+              disabled={!isReleased || isHighestBidder || isPendingBid}
+              title={
+                !isReleased ? "Wait until auction" : "Link to NFT Marketplace"
+              }
+            >
+              Place Bid
+              {isPendingBid && (
+                <Spinner
+                  marginLeft="4px"
+                  borderWidth="3px"
+                  marginBottom="2px"
+                  width={20}
+                  height={20}
+                />
+              )}
+            </Button>
+            <Button
+              href={buyGrimaceHref}
+              buttonType="outlined"
+              target={"__blank"}
+              title={buyGrimaceHref}
+            >
+              Buy Grimace
+            </Button>
+          </Buttons>
+
           {isReleased && (
             <>
-              <BidStep>
-                Initial price: {formatCurrentBid(initialPrice)}{" "}
-                <span>$GRIMACE</span>
-              </BidStep>
-              <BidStep>
-                Bid Step: {formatCurrentBid(bidStep)} <span>$GRIMACE</span>
-              </BidStep>
-              <HighestBid>
-                <>
-                  <p>
-                    Highest Bid: {formatCurrentBid(highestBid)}{" "}
-                    <span>$GRIMACE</span>
-                  </p>
-                  <p>Bidder: {formatAddress(highestBidder)}</p>
-                </>
-              </HighestBid>
-              <TimeLeft>
-                Time Left: {days} Days {hours} hours {minutes} minutes {seconds}{" "}
-                seconds
-              </TimeLeft>
+              <BidsContainer>
+                <Bid>
+                  Current bid:{" "}
+                  <span style={{ fontSize: "1.5rem" }}>
+                    {formatCurrentBid(Number(highestBid))}
+                  </span>{" "}
+                  <span style={{ fontSize: "0.9rem" }}>$GRIMACE</span>
+                </Bid>
+                <Bid>
+                  Min Bid Step:{" "}
+                  <span style={{ fontSize: "1.2rem" }}>
+                    {formatCurrentBid(Number(bidStep))}
+                  </span>{" "}
+                  <span style={{ fontSize: "0.9rem" }}>$GRIMACE</span>
+                </Bid>
+              </BidsContainer>
+              <TimeLeftContainer>
+                <TimeLeft>Time Left:</TimeLeft>
+                <Countdown
+                  num1={hours}
+                  num2={minutes}
+                  num3={seconds}
+                  gap={3}
+                  fontSize={60}
+                />
+              </TimeLeftContainer>
             </>
           )}
-        </BidDetails>
-        <Buttons>
-          <Button
-            buttonType="filled"
-            onClick={onPlaceBidClick}
-            disabled={!isReleased || isHighestBidder || isPendingBid}
-            title={
-              !isReleased ? "Wait until auction" : "Link to NFT Marketplace"
-            }
-          >
-            Place Bid
-            {isPendingBid && (
-              <Spinner
-                marginLeft="4px"
-                borderWidth="3px"
-                marginBottom="2px"
-                width={20}
-                height={20}
-              />
-            )}
-          </Button>
-          <Button
-            href={buyGrimaceHref}
-            buttonType="outlined"
-            target={"__blank"}
-            title={buyGrimaceHref}
-          >
-            Buy Grimace
-          </Button>
-        </Buttons>
-      </Content>
-    </Root>
+        </Content>
+      </Root>
+      <DescriptionTitle>Description</DescriptionTitle>
+      <Description>{description}</Description>
+      {isReleased && <BidsHistory allBids={bids} />}
+    </>
   );
 }
 
@@ -165,6 +190,7 @@ const Root = styled.div`
   @media (max-width: 992px) {
     max-width: 500px;
     flex-direction: column;
+    margin: 0 auto;
   }
 `;
 
@@ -185,7 +211,8 @@ const Content = styled.div`
   flex-direction: column;
   margin-left: 24px;
   flex: 1;
-
+  text-align: right;
+  padding: 0 50px;
   @media (max-width: 992px) {
     margin-left: 0;
   }
@@ -193,7 +220,7 @@ const Content = styled.div`
 
 const Name = styled.h1`
   font-size: 3rem;
-  font-weight: bold;
+  font-weight: normal;
   margin-top: 0;
   @media (max-width: 992px) {
     margin-bottom: 12px;
@@ -201,56 +228,45 @@ const Name = styled.h1`
 `;
 
 const Subheading = styled.h3`
-  font-size: 1.5rem;
-  font-weight: 400;
-  margin-bottom: 12px;
+  margin-top: 12px;
 `;
-
+const DescriptionTitle = styled.p`
+  margin-top: 24px;
+  text-align: center;
+  font-size: 2rem;
+`;
 const Description = styled.p`
+  margin-top: 18px;
   font-size: 0.9rem;
   font-weight: 400;
-`;
-
-const BidDetails = styled.div`
-  margin-top: 12px;
-  font-size: 1rem;
-
-  span {
-    display: block;
+  text-align: center;
+  @media (max-width: 992px) {
+    max-width: 500px;
+    margin: auto;
   }
 `;
-
-const BidStep = styled.p`
+const BidsContainer = styled.div`
+  margin-top: 24px;
+  margin-bottom: 24px;
+`;
+const Bid = styled.p`
   margin-bottom: 4px;
   margin-right: 4px;
-  display: inline-block;
-  padding: 8px;
-  border-radius: 12px;
-  border: 1px solid #ac6cff;
+  // display: inline-block;
+  font-size: 1.2rem;
   span {
     display: inline-block;
     color: #ac6cff;
   }
 `;
-
-const HighestBid = styled.div`
-  margin-bottom: 4px;
-  max-width: fit-content;
-  padding: 8px;
-  border-radius: 12px;
-  border: 1px solid #ac6cff;
-  span {
-    display: inline-block;
-    color: #ac6cff;
-  }
+const TimeLeftContainer = styled.div`
+  width: 377px;
 `;
-
 const TimeLeft = styled.div`
-  margin-bottom: 4px;
-  max-width: fit-content;
-  padding: 8px;
-  border-radius: 12px;
-  border: 1px solid #ac6cff;
+  font-size: 1.5rem;
+  font-weight: 400;
+  text-align: left;
+  margin-bottom: 8px;
 `;
 
 const Buttons = styled.div`

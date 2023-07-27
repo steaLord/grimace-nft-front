@@ -6,6 +6,8 @@ export type CountdownProps = HTMLAttributes<HTMLDivElement> & {
   num1: number;
   num2: number;
   num3: number;
+  gap: number;
+  fontSize: number;
 };
 
 const CountdownBoxRoot = styled.div`
@@ -17,38 +19,48 @@ const CountdownBoxRoot = styled.div`
 const CountdownTimeWrapper = styled.div`
   display: flex;
   div:first-child {
-    margin-right: 8px;
+    margin-right: ${({ fontSize }) => fontSize / 10 + "px"};
   }
 `;
 
-const CountDownBoxWrapper = ({ text1, text2, label }) => {
+const CountDownBoxWrapper = ({ text1, text2, label, fontSize }) => {
   return (
     <CountdownBoxRoot>
-      <CountdownTimeWrapper>
-        <CountdownBox text={text1} />
-        <CountdownBox text={text2} />
+      <CountdownTimeWrapper fontSize={fontSize}>
+        <CountdownBox fontSize={fontSize} text={text1} />
+        <CountdownBox fontSize={fontSize} text={text2} />
       </CountdownTimeWrapper>
       <div>{label}</div>
     </CountdownBoxRoot>
   );
 };
 
-function Countdown({ num1, num2, num3, ...rest }: CountdownProps) {
+function Countdown({
+  num1,
+  num2,
+  num3,
+  gap,
+  fontSize,
+  ...rest
+}: CountdownProps) {
   return (
-    <Root {...rest}>
+    <Root gap={gap} {...rest}>
       <CountDownBoxWrapper
+        fontSize={fontSize}
         text2={(num1 % 10).toString()}
         text1={(Math.floor(num1 / 10) % 10).toString()}
         label="Days"
       />
-      <Separator>:</Separator>
+      <Separator fontSize={fontSize}>:</Separator>
       <CountDownBoxWrapper
+        fontSize={fontSize}
         text2={(num2 % 10).toString()}
         text1={(Math.floor(num2 / 10) % 10).toString()}
         label="Hours"
       />
-      <Separator>:</Separator>
+      <Separator fontSize={fontSize}>:</Separator>
       <CountDownBoxWrapper
+        fontSize={fontSize}
         text2={(num3 % 10).toString()}
         text1={(Math.floor(num3 / 10) % 10).toString()}
         label="Minutes"
@@ -66,22 +78,22 @@ function Countdown({ num1, num2, num3, ...rest }: CountdownProps) {
 
 const Root = styled.div`
   display: flex;
-  gap: 8px;
+  gap: ${({ gap }) => gap + "px"};
   align-items: center;
   user-select: none;
 
   @media (max-width: 768px) {
-    gap: 4px;
+    gap: ${({ gap }) => gap / 2 + "px"};
   }
 `;
 
 const Separator = styled.span`
-  font-size: 80px;
+  font-size: ${({ fontSize }) => fontSize + "px"};
   line-height: 1;
   transform: translateY(-25%); // Font line height fix
 
   @media (max-width: 768px) {
-    font-size: 60px;
+    font-size: ${({ fontSize }) => (fontSize / 4) * 3 + "px"};
   }
 `;
 

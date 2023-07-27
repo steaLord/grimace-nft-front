@@ -63,7 +63,9 @@ export default function Home() {
       <Subheading className={isReleased ? "released" : ""}>
         The first collection with sense
       </Subheading>
-      {!isReleased && <StartCountdown num1={dd} num2={hh} num3={mm} />}
+      {!isReleased && (
+        <StartCountdown num1={dd} num2={hh} num3={mm} gap={8} fontSize={80} />
+      )}
       <Buttons>
         {isReleased ? (
           <Button buttonType={"filled"} href={"#"} className={buttonStyles}>
