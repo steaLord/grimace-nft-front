@@ -34,10 +34,7 @@ const TableFooter = ({
         </Button>
       )}
       {range.slice(1, -1).map((num, index) => {
-        if (
-          range.slice(1, -1).length !== 3 &&
-          (page - num > 1 || page - num < -1)
-        ) {
+        if (page - num > 1 || page - num < -1) {
           return null;
         }
         return (
