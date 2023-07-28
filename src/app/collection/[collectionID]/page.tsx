@@ -13,7 +13,7 @@ import useHighestBids from "@/app/hooks/useHighestBids";
 import useCheckConnection from "@/app/hooks/useCheckConnection";
 
 export default function NFTPage() {
-  const { ok: isConnectionOk } = useCheckConnection();
+  const { isMetamaskInstalled } = useCheckConnection();
 
   const { collectionID } = useParams() as { collectionID: string };
 
@@ -33,7 +33,9 @@ export default function NFTPage() {
       {isLoading ? (
         <LoadingSpinner width={300} height={300}>
           <Spinner />
-          {isConnectionOk ? "Loading NFTs" : "Awaiting for MetaMask connection"}
+          {isMetamaskInstalled
+            ? "Loading NFTs"
+            : "Awaiting for MetaMask installation..."}
         </LoadingSpinner>
       ) : (
         <CollectionGrid>

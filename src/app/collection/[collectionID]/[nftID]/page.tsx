@@ -9,7 +9,7 @@ import useAuction from "@/app/hooks/useAuction";
 import useCheckConnection from "@/app/hooks/useCheckConnection";
 
 export default function NFTPage() {
-  useCheckConnection();
+  const { isMetamaskInstalled } = useCheckConnection();
   const { nftID } = useParams() as { nftID: string };
   const {
     isLoading: isAuctionLoading,
@@ -34,7 +34,9 @@ export default function NFTPage() {
       {isAuctionLoading ? (
         <LoadingSpinner width={300} height={300}>
           <Spinner />
-          Loading NFT
+          {isMetamaskInstalled
+            ? "Loading NFT"
+            : "Awaiting for MetaMask installation..."}
         </LoadingSpinner>
       ) : (
         <NFTDetails
