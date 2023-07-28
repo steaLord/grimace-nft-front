@@ -197,6 +197,14 @@ const Root = styled.div`
     flex-direction: column;
     margin: 0 auto;
   }
+  @media (max-width: 600px) {
+    max-width: 400px;
+    flex-direction: column;
+    margin: 0 auto;
+  }
+  @media (max-width: 480px) {
+    max-width: 300px;
+  }
 `;
 
 const NFTImage = styled(Image)`
@@ -247,7 +255,12 @@ const Description = styled.p`
   text-align: center;
   @media (max-width: 992px) {
     max-width: 500px;
-    margin: auto;
+  }
+  @media (max-width: 600px) {
+    max-width: 400px;
+  }
+  @media (max-width: 480px) {
+    max-width: 300px;
   }
 `;
 const BidsContainer = styled.div`

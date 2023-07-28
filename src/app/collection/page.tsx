@@ -70,9 +70,14 @@ export default function CollectionPage() {
       <title>Collection</title>
       <H1>Browse Collection</H1>
       <CollectionGrid>
-        {collectionPreviewItems.map(({ imageSrc, urlSlug, description }, i) => (
+        {collectionPreviewItems.map(({ imageSrc, urlSlug }, i) => (
           <Link href={`/collection/${urlSlug}`} key={urlSlug}>
-            <PlaceholderItem src={imageSrc} key={i} />
+            <PlaceholderItem
+              src={imageSrc}
+              key={i}
+              alt={urlSlug}
+              placeholder="blur"
+            />
           </Link>
         ))}
       </CollectionGrid>
