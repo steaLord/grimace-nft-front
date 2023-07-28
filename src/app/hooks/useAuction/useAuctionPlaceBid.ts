@@ -140,7 +140,7 @@ const useAuctionPlaceBid = ({ nftID }: { nftID: number }) => {
           highestBidder: account,
         });
       }
-
+      toast.success("Bid placed successfully");
       setIsPendingBid(false);
     } catch (error) {
       console.error("Failed to place bid:", error);

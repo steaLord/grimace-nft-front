@@ -25,7 +25,6 @@ const BidsHistory = ({ allBids }) => {
     return formattedTime;
   };
 
-  console.log({ allBids });
   return (
     <Container>
       <div>

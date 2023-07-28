@@ -45,13 +45,13 @@ const useBidsHistory = (tokenId: number) => {
           timestamp: Number(bid.timestamp),
         } as IBid)
     );
-    parsedBids.reverse()
+    parsedBids.reverse();
     return parsedBids;
   };
 
   // Function to push a new bid to the bids history state
   const pushBid = (bid: IBid) => {
-    setBidsHistory((prevBids) => [...prevBids, bid]);
+    setBidsHistory((prevBids) => [bid, ...prevBids]);
   };
 
   return {
