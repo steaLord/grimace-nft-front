@@ -16,12 +16,18 @@ const useCheckConnection = () => {
         //@ts-ignore
         if (status === "unavailable") {
           // MetaMask is not installed
+          setIsMetamaskInstalled(false);
           toast.info("Please install MetaMask");
         } else if (status === "notConnected") {
           // User is not connected to MetaMask
+          setIsMetamaskInstalled(true);
+          setIsConnected(false);
+          setIsOnRightChain(false);
           toast.info("Please connect to MetaMask");
         } else if (chainId !== targetChainId) {
           // User is connected to MetaMask but not on the right chain
+          setIsMetamaskInstalled(true);
+          setIsConnected(true);
           setIsOnRightChain(false);
           toast.info("Please connect to the DogeChain");
           switchChain(targetChainId);
@@ -31,8 +37,8 @@ const useCheckConnection = () => {
             toast.success("You're all set!");
           }
           setIsMetamaskInstalled(true);
-          setIsOnRightChain(true);
           setIsConnected(true);
+          setIsOnRightChain(true);
         }
       })();
     }
