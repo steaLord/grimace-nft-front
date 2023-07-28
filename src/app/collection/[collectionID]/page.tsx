@@ -10,8 +10,11 @@ import Image from "next/image";
 import nftsMetadata from "/public/NFTsMetadata.json";
 import { LoadingSpinner, Spinner } from "./[nftID]/page";
 import useHighestBids from "@/app/hooks/useHighestBids";
+import useCheckConnection from "@/app/hooks/useCheckConnection";
 
 export default function NFTPage() {
+  const { ok: isConnectionOk } = useCheckConnection();
+
   const { collectionID } = useParams() as { collectionID: string };
 
   const previewItem = collectionPreviewItems.find(
@@ -30,7 +33,7 @@ export default function NFTPage() {
       {isLoading ? (
         <LoadingSpinner width={300} height={300}>
           <Spinner />
-          Loading NFTs
+          {isConnectionOk ? "Loading NFTs" : "Awaiting for MetaMask connection"}
         </LoadingSpinner>
       ) : (
         <CollectionGrid>

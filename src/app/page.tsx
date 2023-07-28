@@ -9,7 +9,7 @@ import grimaceNFTImage from "./grimace-nft-image.png";
 import Container from "@/components/Container";
 import Countdown from "@/components/Countdown";
 import Button from "@/components/Button";
-import { toast } from "react-toastify";
+import useCheckConnection from "./hooks/useCheckConnection";
 
 function getRemainingSeconds(startTime) {
   const secondsRemain = Math.floor((startTime - new Date().getTime()) / 1000);
@@ -41,6 +41,8 @@ function getRemainingTime(remainingSeconds: number) {
 }
 
 export default function Home() {
+  useCheckConnection();
+
   const { isReleased, hh, mm, dd } = useRemainingTime(
     process.env["TIMER_END_ISO_DATE"]
   );

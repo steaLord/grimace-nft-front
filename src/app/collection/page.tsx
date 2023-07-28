@@ -11,6 +11,7 @@ import nft5 from "../../../public/golden-degen-dick.jpg";
 import nft6 from "../../../public/silver-soldier-of-the-odyssey.jpg";
 import Image from "next/image";
 import Link from "next/link";
+import useCheckConnection from "../hooks/useCheckConnection";
 
 export const collectionPreviewItems = [
   {
@@ -65,6 +66,8 @@ The final NFT in our collection is one with a twist. Besides the seed phrase, th
 ];
 
 export default function CollectionPage() {
+  useCheckConnection();
+
   return (
     <>
       <title>Collection</title>

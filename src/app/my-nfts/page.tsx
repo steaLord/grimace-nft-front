@@ -7,8 +7,11 @@ import styled from "@emotion/styled";
 import CollectionGrid from "@/components/CollectionGrid";
 import { keyframes } from "@emotion/css";
 import React from "react";
+import useCheckConnection from "../hooks/useCheckConnection";
 
 export default function MyNFTsPage() {
+  useCheckConnection();
+
   const { nftTokens, isLoading } = useNFTMetadata(
     process.env.NEXT_PUBLIC_CONTRACT_ADDRESS
   );

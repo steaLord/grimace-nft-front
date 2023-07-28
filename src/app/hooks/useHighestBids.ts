@@ -37,7 +37,6 @@ const useHighestBids = ({ nftsValues }: { nftsValues: any[] }) => {
           })
         );
         setNewNfts(nftsWithHighestBid);
-        setIsLoading(false);
       } catch (e) {
         console.log(e);
       } finally {
