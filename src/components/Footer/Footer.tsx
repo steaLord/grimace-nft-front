@@ -5,6 +5,7 @@ import DiscordIcon from "@/components/icons/DiscordIcon";
 import TelegramIcon from "@/components/icons/TelegramIcon";
 import TwitterIcon from "@/components/icons/TwitterIcon";
 import Container from "@/components/Container";
+import FAQSections from "@/components/FAQSections/FAQSections";
 
 const socialIconStyles = css`
   width: 36px;
@@ -15,6 +16,7 @@ const Root = styled.footer`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   color: var(--color-text);
   gap: 20px;
   margin: 36px 0;
@@ -81,22 +83,19 @@ function Footer() {
             href="https://discord.com/invite/grimacedoge"
             target="_blank"
           >
-            <DiscordIcon className={socialIconStyles}/>
+            <DiscordIcon className={socialIconStyles} />
           </LinkIcon>
-          <LinkIcon
-            href="https://t.me/grimacecommunity"
-            target="_blank"
-          >
-            <TelegramIcon className={socialIconStyles}/>
+          <LinkIcon href="https://t.me/grimacecommunity" target="_blank">
+            <TelegramIcon className={socialIconStyles} />
           </LinkIcon>
-          <LinkIcon
-            href="https://twitter.com/Grimacedogchain"
-            target="_blank"
-          >
-            <TwitterIcon className={socialIconStyles}/>
+          <LinkIcon href="https://twitter.com/Grimacedogchain" target="_blank">
+            <TwitterIcon className={socialIconStyles} />
           </LinkIcon>
         </SocialLinksContainer>
-        <TextLink href="https://whitepaper.grimacedoge.com/">Whitepaper</TextLink>
+        <TextLink href="https://whitepaper.grimacedoge.com/">
+          Whitepaper
+        </TextLink>
+        <FAQSections />
       </LinksContainer>
       <Copyright>&copy; Grimace Coin 2023</Copyright>
     </Root>

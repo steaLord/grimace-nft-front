@@ -6,12 +6,12 @@ import { Fredoka } from "next/font/google";
 import RootStyleRegistry from "@/app/emotion";
 import styled from "@emotion/styled";
 import { MetaMaskProvider } from "metamask-react";
-import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import Head from "next/head";
 import { ToastContainer } from "react-toastify";
 import { Web3Provider } from "@/app/hooks/useWeb3";
 import "react-toastify/dist/ReactToastify.css";
+import Header from "@/components/Header";
+
 const fredoka = Fredoka({
   subsets: ["latin"],
   weight: ["300", "400", "700"],
