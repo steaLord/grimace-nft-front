@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
-import Pako from "pako";
 
 interface ZoomableCanvasProps {
   width: number;
@@ -126,12 +125,7 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
           throw new Error("Failed to fetch SVG file.");
         }
 
-        const buffer = await res.arrayBuffer();
-        const uint16Array = new Uint16Array(buffer);
-        const decompressedData = Pako.inflate(uint16Array);
-        const decoder = new TextDecoder("utf-8"); // Use UTF-8 encoding
-        const svgStringResponse = decoder.decode(decompressedData);
-        console.log(svgStringResponse);
+        const svgStringResponse = await res.text();
 
         const image = new Image();
         const blob = new Blob([svgStringResponse], { type: "image/svg+xml" });
