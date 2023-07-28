@@ -2,13 +2,39 @@
 import { useParams } from "next/navigation";
 import NFTDetails from "@/components/NFTDetails";
 import Container from "@/components/Container";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import nftsMetadata from "/public/NFTsMetadata.json";
 import styled from "@emotion/styled";
 import useAuction from "@/app/hooks/useAuction";
+import { useMetaMask } from "metamask-react";
+import { toast } from "react-toastify";
 
 export default function NFTPage() {
   const { nftID } = useParams() as { nftID: string };
+  const { status, chainId, switchChain } = useMetaMask();
+  const [wrongChain, setWrongChain] = useState(false);
+  const targetChainId = "0x238";
+  //testnet chainid
+  useEffect(() => {
+    if (status === "unavailable") {
+      // MetaMask is not installed
+      toast.info("Please install MetaMask");
+    } else if (status === "notConnected") {
+      // User is not connected to MetaMask
+      toast.info("Please connect to MetaMask");
+    } else if (chainId !== targetChainId) {
+      // User is connected to MetaMask but not on the right chain
+      setWrongChain(true);
+      toast.info("Please connect to the DogeChain");
+      switchChain(targetChainId);
+    } else {
+      // User is connected to MetaMask and on the right chain
+      if (wrongChain) {
+        toast.success("You're all set!");
+        setWrongChain(false);
+      }
+    }
+  }, [status, chainId]);
   const {
     isLoading: isAuctionLoading,
     auctionDetails,
