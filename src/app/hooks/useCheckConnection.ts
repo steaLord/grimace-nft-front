@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 const useCheckConnection = () => {
-  const { status, chainId, switchChain } = useMetaMask();
+  const { status, chainId, switchChain, account } = useMetaMask();
   const [isOnRightChain, setIsOnRightChain] = useState(false);
   const [isMetamaskInstalled, setIsMetamaskInstalled] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
@@ -33,16 +33,16 @@ const useCheckConnection = () => {
           switchChain(targetChainId);
         } else {
           // User is connected to MetaMask and on the right chain
-          if (!isOnRightChain) {
+          if (!isOnRightChain && account) {
             toast.success("You're all set!");
+            setIsConnected(true);
           }
           setIsMetamaskInstalled(true);
-          setIsConnected(true);
           setIsOnRightChain(true);
         }
       })();
     }
-  }, [status, chainId]);
+  }, [status, chainId, account]);
 
   return {
     isMetamaskInstalled,
