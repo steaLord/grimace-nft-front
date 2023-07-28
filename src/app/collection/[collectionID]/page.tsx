@@ -33,9 +33,7 @@ export default function NFTPage() {
       {isLoading ? (
         <LoadingSpinner width={300} height={300}>
           <Spinner />
-          {isMetamaskInstalled
-            ? "Loading NFTs"
-            : "Awaiting for MetaMask installation..."}
+          {isMetamaskInstalled ? "Loading NFTs" : "Awaiting for MetaMask..."}
         </LoadingSpinner>
       ) : (
         <CollectionGrid>
