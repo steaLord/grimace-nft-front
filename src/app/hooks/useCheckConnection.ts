@@ -4,9 +4,9 @@ import { toast } from "react-toastify";
 
 const useCheckConnection = () => {
   const { status, chainId, switchChain, account } = useMetaMask();
-  const [isOnRightChain, setIsOnRightChain] = useState(false);
-  const [isMetamaskInstalled, setIsMetamaskInstalled] = useState(false);
-  const [isConnected, setIsConnected] = useState(false);
+  const [isOnRightChain, setIsOnRightChain] = useState(true);
+  const [isMetamaskInstalled, setIsMetamaskInstalled] = useState(true);
+  const [isConnected, setIsConnected] = useState(true);
   //testnet chainid
   const targetChainId = "0x238";
   //testnet chainid
@@ -22,21 +22,17 @@ const useCheckConnection = () => {
           // User is not connected to MetaMask
           setIsMetamaskInstalled(true);
           setIsConnected(false);
-          setIsOnRightChain(false);
           toast.info("Please connect to MetaMask");
         } else if (chainId !== targetChainId) {
           // User is connected to MetaMask but not on the right chain
           setIsMetamaskInstalled(true);
-          setIsConnected(true);
+          setIsConnected(false);
           setIsOnRightChain(false);
           toast.info("Please connect to the DogeChain");
           switchChain(targetChainId);
         } else {
           // User is connected to MetaMask and on the right chain
-          if (!isOnRightChain && account) {
-            toast.success("You're all set!");
-            setIsConnected(true);
-          }
+          setIsConnected(true);
           setIsMetamaskInstalled(true);
           setIsOnRightChain(true);
         }
