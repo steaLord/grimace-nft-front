@@ -9,28 +9,33 @@ import {
   questionBoxElongate,
   wrapper,
 } from "./FAQSections.module.scss";
+import Link from "next/link";
 
-const questionaire = [
+const nftMarketplaceFAQ = [
   {
-    question: "What is the maximum number of members allowed in a team?",
-    answer:
-      "Minimum of 3 members and maximum of 4 members are allowed in a team",
+    question: "How to make bids?",
+    Answer:
+      "To make a bid, you need to have a connected wallet with sufficient funds. Navigate to the NFT you want to bid on, allow our contract to use your GRIMACE coin balance (enter amount you allow our smart contract to spend on your behalf), and confirm the transaction through your wallet provider. If your bid becomes the highest, you'll be in the running to purchase the NFT.",
   },
   {
-    question: "How long is the hackathon going to last?",
-    answer: "The hackathon will be a 36 hour long hackathon",
+    question: "What does this collection represent?",
+    Answer:
+      "This collection represents a curated set of unique digital assets known as Non-Fungible Tokens (NFTs). Each NFT in the collection is one-of-a-kind and holds distinct value and ownership, often associated with art, music, videos, virtual real estate, and more.",
   },
   {
-    question: "What are the perks every participants is going to get?",
-    answer:
-      "Participants will get official HackOverflow swags and goodies such as t-shirts and stickers",
-  },
-  {
-    question: "What is the transport facilities for the out-of state students",
-    answer:
-      "For out of state students, bus facility will be provided from Pillais Panvel campus and personal pickups from railway-station/airport will also be facilitated",
+    question: "How to view purchased NFTs?",
+    Answer: (
+      <div>
+        Once you won the auction, you can navigate to{" "}
+        <Link style={{ color: "var(--color-purple)", textDecoration: "underline" }} href="/my-nfts">
+          /my-nfts
+        </Link>{" "}
+        page and view NFT through our viewer that will allow you to explore NFT
+      </div>
+    ),
   },
 ];
+
 const FAQSections = ({}) => {
   const [isOpen, setIsOpen] = useState(false);
   const handleOpenSection = () => {
@@ -53,7 +58,7 @@ const FAQSections = ({}) => {
         <div className={wrapper} onClick={handleCloseSection}>
           <div className={faqBox}>
             <div>
-              {questionaire.map((faq, index) => {
+              {nftMarketplaceFAQ.map((faq, index) => {
                 return (
                   <>
                     <div
@@ -75,14 +80,10 @@ const FAQSections = ({}) => {
                 );
               })}
             </div>
-            {questionaire.map((faq, index) => {
+            {nftMarketplaceFAQ.map((faq, index) => {
               if (activeQuestion === index) {
                 return (
-                  <>
-                    <div className={answerBox}>
-                      {active && <p>{faq.answer}</p>}
-                    </div>
-                  </>
+                  <>{active && <div className={answerBox}>{faq.Answer}</div>}</>
                 );
               }
               return "";
