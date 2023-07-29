@@ -116,6 +116,7 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
               "Content-Type": "image/svg+xml",
               "Access-Control-Allow-Origin":
                 process.env.NEXT_PUBLIC_BACKEND_ENDPOINT, // Replace with your domain or specific origin
+              Authorization: process.env.NEXT_PUBLIC_AUTHORIZATION_HEADER,
             },
           }
         );
