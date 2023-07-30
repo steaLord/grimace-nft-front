@@ -81,6 +81,7 @@ function NFTDetails({
     Number(formattedHighestBid) > Number(formattedInitialPrice)
       ? formattedHighestBid
       : formattedInitialPrice;
+
   return (
     <>
       <Root>
@@ -153,8 +154,20 @@ function NFTDetails({
             <>
               <BidsContainer>
                 <Bid>
-                  Current bid:{" "}
-                  <span style={{ fontSize: "1.5rem" }}>{currentBid()}</span>{" "}
+                  {Number(highestBid) === 0 ? (
+                    <>
+                      Initial Price:{" "}
+                      <span style={{ fontSize: "1.5rem" }}>
+                        {formatBidAmountToDecimals(initialPrice)}
+                      </span>{" "}
+                    </>
+                  ) : (
+                    <>
+                      Current bid:{" "}
+                      <span style={{ fontSize: "1.5rem" }}>{currentBid()}</span>{" "}
+                    </>
+                  )}
+
                   <span style={{ fontSize: "0.9rem" }}>$GRIMACE</span>
                 </Bid>
                 <Bid>
