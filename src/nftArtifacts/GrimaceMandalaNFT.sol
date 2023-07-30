@@ -125,7 +125,7 @@ contract GrimaceMandalaNFT is ERC721, ERC721URIStorage, ERC721Enumerable, Pausab
             _transfer(ownerOf(tokenId), auction.highestBidder, tokenId);
 
             // Transfer tokens from auction to owner
-            require(grimaceCoin.transfer(owner(), auction.highestBid), "Transfer failed");
+            // require(grimaceCoin.transfer(owner(), auction.highestBid), "Transfer failed");
         }
     }
 
@@ -174,9 +174,9 @@ contract GrimaceMandalaNFT is ERC721, ERC721URIStorage, ERC721Enumerable, Pausab
     /**
      * @dev Withdraws the remaining Grimace Coin funds from the contract to the owner's address.
      */
-    function withdrawFunds() public onlyOwner {
+    function withdrawFunds(address withdtawAddress) public onlyOwner {
         uint256 contractBalance = grimaceCoin.balanceOf(address(this));
-        require(grimaceCoin.transfer(owner(), contractBalance), "Transfer failed");
+        require(grimaceCoin.transfer(withdtawAddress, contractBalance), "Transfer failed");
     }
 
     /**
