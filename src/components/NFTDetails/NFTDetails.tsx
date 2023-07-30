@@ -74,7 +74,6 @@ function NFTDetails({
     Number(endTime) === 0 || isNaN(Number(endTime))
       ? false
       : Number(endTime) <= Math.floor(new Date().getTime() / 1000);
-
   const formattedHighestBid = formatBidAmountToDecimals(highestBid);
   const formattedInitialPrice = formatBidAmountToDecimals(initialPrice);
   const currentBid = () =>
@@ -198,7 +197,7 @@ function NFTDetails({
       <DescriptionTitle>Description</DescriptionTitle>
       <Description dangerouslySetInnerHTML={{ __html: description }} />
       {isReleased && !isBidsLoading && bidsHistory?.length > 0 && (
-        <BidsHistory allBids={bidsHistory} />
+        <BidsHistory allBids={[bidsHistory]} />
       )}
     </>
   );
@@ -252,7 +251,10 @@ const Name = styled.h1`
   font-weight: normal;
   margin-top: 0;
   @media (max-width: 992px) {
-    margin-bottom: 12px;
+    font-size: 2.5rem;
+  }
+  @media (max-width: 480px) {
+    font-size: 1.7rem;
   }
 `;
 
@@ -269,6 +271,8 @@ const Description = styled.p`
   font-size: 0.9rem;
   font-weight: 400;
   text-align: center;
+  margin-left: auto;
+  margin-right: auto;
   @media (max-width: 992px) {
     max-width: 500px;
   }
