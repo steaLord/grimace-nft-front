@@ -39,8 +39,11 @@ export default function NFTPage() {
         <CollectionGrid>
           {newNfts.map(
             ({ id, edition, highestBid, endTime, initialPrice }, i: number) => {
+              console.log(Number(endTime));
               const isEnded =
-                Number(endTime) <= Math.floor(new Date().getTime() / 1000);
+                Number(endTime) === 0 || isNaN(Number(endTime))
+                  ? false
+                  : Number(endTime) <= Math.floor(new Date().getTime() / 1000);
 
               return (
                 <div style={{ position: "relative" }} key={i}>

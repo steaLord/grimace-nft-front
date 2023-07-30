@@ -64,13 +64,16 @@ function NFTDetails({
     timeLeftForAuction,
     endTime,
   } = blockchainData;
-  const isReleased = initialPrice !== 0;
+  const isReleased = Number(initialPrice) !== 0;
   const { minutes, seconds, hours } = useTimeLeft(timeLeftForAuction);
 
   const isHighestBidder =
     account?.toLowerCase() == highestBidder?.toLowerCase();
 
-  const isEnded = Number(endTime) <= Math.floor(new Date().getTime() / 1000);
+  const isEnded =
+    Number(endTime) === 0 || isNaN(Number(endTime))
+      ? false
+      : Number(endTime) <= Math.floor(new Date().getTime() / 1000);
 
   const formattedHighestBid = formatBidAmountToDecimals(highestBid);
   const formattedInitialPrice = formatBidAmountToDecimals(initialPrice);
