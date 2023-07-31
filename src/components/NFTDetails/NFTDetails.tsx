@@ -10,6 +10,7 @@ import Countdown from "../Countdown/Countdown";
 import BidsHistory from "../BidsHistrory/BidsHistory";
 import { IBid } from "@/app/hooks/useAuction/useBidsHistory";
 import { IBlockchainAuctionData } from "@/app/hooks/useAuction/useAuctionDetails";
+import ProgressLoader from "@/components/ProgressLoader";
 
 export type NFTDetailsProps = {
   isBidsLoading: boolean;
@@ -199,6 +200,7 @@ function NFTDetails({
       {isReleased && !isBidsLoading && bidsHistory?.length > 0 && (
         <BidsHistory allBids={[bidsHistory]} />
       )}
+      <ProgressLoader />
     </>
   );
 }

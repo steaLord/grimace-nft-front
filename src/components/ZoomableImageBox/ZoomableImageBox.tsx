@@ -49,7 +49,7 @@ const ZoomButton = styled.button`
   }
 `;
 
-const LoadingSpinner = styled.div`
+export const LoadingSpinner = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;

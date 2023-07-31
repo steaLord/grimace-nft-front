@@ -11,6 +11,7 @@ import { ToastContainer } from "react-toastify";
 import { Web3Provider } from "@/app/hooks/useWeb3";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "@/components/Header";
+import { ProgressLoaderProvider } from "@/components/ProgressLoader/ProgressLoader";
 
 const fredoka = Fredoka({
   subsets: ["latin"],
@@ -39,24 +40,26 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={fredoka.variable}>
-      <Web3Provider>
-        <BodyStyled>
-          <MetaMaskProvider>
-            <RootStyleRegistry>
-              <Header />
-              <MainStyled id="page-wrap">{children}</MainStyled>
-              <Footer />
-            </RootStyleRegistry>
-          </MetaMaskProvider>
-          <ToastContainer
-            position="bottom-right"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            theme="dark"
-          />
-        </BodyStyled>
-      </Web3Provider>
+      <ProgressLoaderProvider>
+        <Web3Provider>
+          <BodyStyled>
+            <MetaMaskProvider>
+              <RootStyleRegistry>
+                <Header />
+                <MainStyled id="page-wrap">{children}</MainStyled>
+                <Footer />
+              </RootStyleRegistry>
+            </MetaMaskProvider>
+            <ToastContainer
+              position="bottom-right"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              theme="dark"
+            />
+          </BodyStyled>
+        </Web3Provider>
+      </ProgressLoaderProvider>
     </html>
   );
 }

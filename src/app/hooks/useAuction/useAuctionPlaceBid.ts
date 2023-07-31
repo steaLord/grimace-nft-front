@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { useMetaMask } from "metamask-react";
 import { useWeb3Context } from "@/app/hooks/useWeb3";
 import useBidsHistory, { IBid } from "@/app/hooks/useAuction/useBidsHistory";
+import { useProgressLoader } from "@/components/ProgressLoader/ProgressLoader";
 
 const getApprovedAmount = async ({
   tokenContract,
@@ -19,6 +20,7 @@ export const getAuctionDetails = async ({ nftContract, nftID }) => {
   const auctionDetails = await nftContract?.methods
     ?.getAuctionDetails(nftID - 1)
     ?.call();
+
   const {
     0: blockchainNftID,
     1: initialPrice,
@@ -42,6 +44,7 @@ export const getAuctionDetails = async ({ nftContract, nftID }) => {
 const useAuctionPlaceBid = ({ nftID }: { nftID: number }) => {
   const { account } = useMetaMask();
   const { nftContract, tokenContract, nftContractAddress } = useWeb3Context();
+  const { handleWaitTransaction } = useProgressLoader();
 
   const {
     isLoading: isBidsLoading,
@@ -54,6 +57,12 @@ const useAuctionPlaceBid = ({ nftID }: { nftID: number }) => {
   const placeBid = async (auctionDetails, setAuctionDetails) => {
     try {
       setIsPendingBid(true);
+      handleWaitTransaction({
+        transaction: {
+          preAcceptMessage: "Checking blockchain for most recent bids",
+        },
+        isProcessing: true,
+      });
 
       const currentAuctionDetails = await getAuctionDetails({
         nftContract,
@@ -73,6 +82,13 @@ const useAuctionPlaceBid = ({ nftID }: { nftID: number }) => {
       const decimalsMultiplier = BigInt(10) ** BigInt(decimals);
 
       // Check if the user has approved the contract to spend tokens on their behalf
+      handleWaitTransaction({
+        transaction: {
+          preAcceptMessage:
+            "Checking if we allowed to use your GRIMACE token with our contract",
+        },
+        isProcessing: true,
+      });
       const { approvedAmount } = await getApprovedAmount({
         tokenContract,
         account,
@@ -92,12 +108,26 @@ const useAuctionPlaceBid = ({ nftID }: { nftID: number }) => {
       }
 
       if (approvedAmount < bidAmount) {
-        await tokenContract.methods
+        handleWaitTransaction({
+          transaction: {
+            preAcceptMessage: `Please approve spending of ${bidAmount} GRIMACE tokens to place bid`,
+          },
+          isProcessing: true,
+        });
+        const transaction = await tokenContract.methods
           .approve(
             nftContractAddress,
             (bidAmount / decimalsMultiplier).toString()
           )
           .send({ from: account });
+        handleWaitTransaction({
+          transaction: {
+            preAcceptMessage: ``,
+            hash: transaction.hash,
+            message: `Approving spending of ${bidAmount} GRIMACE to place bid`,
+          },
+          isProcessing: true,
+        });
         const { approvedAmount } = await getApprovedAmount({
           tokenContract,
           account,
@@ -122,9 +152,22 @@ const useAuctionPlaceBid = ({ nftID }: { nftID: number }) => {
         .getNFTBySequentialId(nftID - 1)
         .call();
 
+      handleWaitTransaction({
+        transaction: {
+          preAcceptMessage: `Please approve placing a bid of ${bidAmount} GRIMACE`,
+        },
+        isProcessing: true,
+      });
       const response = await nftContract.methods
         .placeBid(nftIdResponse.toString(), bidAmount.toString())
         .send({ from: account });
+      handleWaitTransaction({
+        transaction: {
+          hash: response.hash,
+          message: "Placing bid...",
+        },
+        isProcessing: true,
+      });
 
       if (Number(response?.status) === 1) {
         // Update the bids history with the new bid
@@ -139,9 +182,13 @@ const useAuctionPlaceBid = ({ nftID }: { nftID: number }) => {
           highestBid: bidAmount.toString(),
           highestBidder: account,
         });
+        toast.success("Bid placed successfully");
+        setIsPendingBid(false);
+        handleWaitTransaction({
+          transaction: {},
+          isProcessing: false,
+        });
       }
-      toast.success("Bid placed successfully");
-      setIsPendingBid(false);
     } catch (error) {
       console.error("Failed to place bid:", error);
       toast.error("Failed to place bid, please refresh page or wait");
