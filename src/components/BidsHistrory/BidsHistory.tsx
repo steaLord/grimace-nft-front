@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
 import useTable from "@/app/hooks/useTable";
 import TableFooter from "../TableFooter/TableFooter";
@@ -39,18 +39,22 @@ const BidsHistory = ({ allBids }) => {
             </tr>
           </thead>
           <tbody>
-            {slice.map((bid: IBid, index) => (
-              <tr key={bid.timestamp}>
-                <td>
-                  <b>{index + 1}</b>
-                </td>
-                <td>{formatUnixTime(bid.timestamp)}</td>
-                <td>{formatBidAmountToDecimals(bid?.amount ?? 0)} GRIMACE</td>
-                <td>
-                  {bid.address.slice(0, 6) + "....." + bid.address.slice(-5)}
-                </td>
-              </tr>
-            ))}
+            {slice.map((bid: IBid, index) => {
+              return (
+                <tr key={bid.timestamp}>
+                  <td>
+                    <b>{index + 1}</b>
+                  </td>
+                  <td>{formatUnixTime(bid.timestamp)}</td>
+                  <td>{formatBidAmountToDecimals(bid?.amount ?? 0)} GRIMACE</td>
+                  <td>
+                    {bid?.address?.slice(0, 6) +
+                      "....." +
+                      bid?.address?.slice(-5)}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </Table>
         <Footer>
