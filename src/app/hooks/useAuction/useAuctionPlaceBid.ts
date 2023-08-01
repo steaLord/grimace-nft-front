@@ -159,7 +159,9 @@ const useAuctionPlaceBid = ({ nftID }: { nftID: number }) => {
 
       handleWaitTransaction({
         transaction: {
-          preAcceptMessage: `Please approve placing a bid of ${formatBidAmountToDecimals(bidAmount)} GRIMACE`,
+          preAcceptMessage: `Please approve placing a bid of ${formatBidAmountToDecimals(
+            bidAmount
+          )} GRIMACE`,
         },
         isProcessing: true,
       });

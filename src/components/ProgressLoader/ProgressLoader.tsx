@@ -58,7 +58,7 @@ export const useProgressLoader = () => {
 export interface ILoadingStateProps {}
 
 const StyledWrapper = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   display: flex;
