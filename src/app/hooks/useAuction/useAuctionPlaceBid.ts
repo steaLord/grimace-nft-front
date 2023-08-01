@@ -4,6 +4,7 @@ import { useMetaMask } from "metamask-react";
 import { useWeb3Context } from "@/app/hooks/useWeb3";
 import useBidsHistory, { IBid } from "@/app/hooks/useAuction/useBidsHistory";
 import { useProgressLoader } from "@/components/ProgressLoader/ProgressLoader";
+import { formatBidAmountToDecimals } from "@/components/NFTDetails/NFTDetails";
 
 const getApprovedAmount = async ({
   tokenContract,
@@ -110,7 +111,9 @@ const useAuctionPlaceBid = ({ nftID }: { nftID: number }) => {
       if (approvedAmount < bidAmount) {
         handleWaitTransaction({
           transaction: {
-            preAcceptMessage: `Please approve spending of ${bidAmount} GRIMACE tokens to place bid`,
+            preAcceptMessage: `Please approve spending of at least ${formatBidAmountToDecimals(
+              bidAmount
+            )} GRIMACE tokens to place bid`,
           },
           isProcessing: true,
         });
@@ -124,7 +127,9 @@ const useAuctionPlaceBid = ({ nftID }: { nftID: number }) => {
           transaction: {
             preAcceptMessage: ``,
             hash: transaction.hash,
-            message: `Approving spending of ${bidAmount} GRIMACE to place bid`,
+            message: `Approving spending of ${formatBidAmountToDecimals(
+              bidAmount
+            )} GRIMACE to place bid`,
           },
           isProcessing: true,
         });
@@ -154,7 +159,7 @@ const useAuctionPlaceBid = ({ nftID }: { nftID: number }) => {
 
       handleWaitTransaction({
         transaction: {
-          preAcceptMessage: `Please approve placing a bid of ${bidAmount} GRIMACE`,
+          preAcceptMessage: `Please approve placing a bid of ${formatBidAmountToDecimals(bidAmount)} GRIMACE`,
         },
         isProcessing: true,
       });
@@ -193,6 +198,10 @@ const useAuctionPlaceBid = ({ nftID }: { nftID: number }) => {
       console.error("Failed to place bid:", error);
       toast.error("Failed to place bid, please refresh page or wait");
       setIsPendingBid(false);
+      handleWaitTransaction({
+        transaction: {},
+        isProcessing: false,
+      });
     }
   };
 

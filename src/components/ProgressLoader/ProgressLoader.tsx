@@ -75,6 +75,9 @@ const StyledWrapper = styled.div`
 
 export const Text = styled.p`
   word-break: break-word;
+  margin-bottom: ${({ marginBottom }) => marginBottom};
+  font-weight: ${({ fontWeight }) => fontWeight};
+  text-align: ${({ textAlign }) => textAlign};
 `;
 
 /**
@@ -92,7 +95,7 @@ function ProgressLoader(props: ILoadingStateProps) {
         <Text
           textAlign="center"
           color="white"
-          marginBottom="8px"
+          marginBottom="10px"
           fontWeight="100"
         >
           {transactionMessage?.preAcceptMessage}
@@ -112,12 +115,12 @@ function ProgressLoader(props: ILoadingStateProps) {
         color="white"
         marginBottom="8px"
         fontSize="32px"
-        fontWeight="900"
+        fontWeight="100"
         textAlign="center"
       >
         {transactionMessage?.message}
       </Text>
-      <Spinner />
+      <Spinner height="50" width="50" />
     </StyledWrapper>
   );
 }
