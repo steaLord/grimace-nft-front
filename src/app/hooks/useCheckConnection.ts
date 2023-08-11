@@ -7,9 +7,11 @@ const useCheckConnection = () => {
   const [isOnRightChain, setIsOnRightChain] = useState(true);
   const [isMetamaskInstalled, setIsMetamaskInstalled] = useState(true);
   const [isConnected, setIsConnected] = useState(true);
-  //testnet chainid
-  const targetChainId = "0x238";
-  //testnet chainid
+  const chainIds = {
+    'development': '0x238',
+    'production': '0x7d0'
+  }
+  const targetChainId = chainIds[process.env.NODE_ENV];
   useEffect(() => {
     if (status !== "initializing") {
       (() => {
