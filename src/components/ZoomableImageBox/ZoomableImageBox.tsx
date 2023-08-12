@@ -20,7 +20,7 @@ const StyledCanvas = styled.canvas`
   max-width: ${({ width }) => width + "px"};
   max-height: ${({ height }) => height + "px"};
   border-radius: 16px;
-  background: #a9a9a9;
+  background: #ffffff;
   box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.4);
 `;
 
