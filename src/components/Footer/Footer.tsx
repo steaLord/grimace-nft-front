@@ -8,8 +8,8 @@ import Container from "@/components/Container";
 import FAQSections from "@/components/FAQSections/FAQSections";
 
 const socialIconStyles = css`
-  width: 36px;
-  height: 36px;
+  width: 27px;
+  height: 27px;
 `;
 
 const Root = styled.footer`
@@ -39,7 +39,7 @@ const LinksContainer = styled(Container)`
 const TextLink = styled(Link)`
   text-transform: uppercase;
   font-weight: 300;
-  font-size: 1.5rem;
+  font-size: 1rem;
   color: var(--color-text);
   transition-timing-function: ease;
   transition-duration: 150ms;
