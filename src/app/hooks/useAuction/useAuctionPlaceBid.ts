@@ -6,15 +6,39 @@ import useBidsHistory, { IBid } from "@/app/hooks/useAuction/useBidsHistory";
 import { useProgressLoader } from "@/components/ProgressLoader/ProgressLoader";
 import { formatBidAmountToDecimals } from "@/components/NFTDetails/NFTDetails";
 
+function wait(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
+
+async function waitForTransactionReceipt({ web3, transactionHash }) {
+  console.log({ transactionHash });
+  while (true) {
+    try {
+      const receipt = await web3.eth.getTransactionReceipt(transactionHash);
+      if (receipt !== null) {
+        console.log("Transaction mined:", receipt);
+        // You can perform additional actions here after the transaction is mined
+        break;
+      }
+      await new Promise((resolve) => setTimeout(resolve, 300)); // Poll every 300 ms
+    } catch (error) {
+      console.error("Error waiting for transaction:", error);
+      break;
+    }
+  }
+}
+
 const getApprovedAmount = async ({
   tokenContract,
   account,
   nftContractAddress,
 }) => {
-  const approvedAmount = BigInt(
-    await tokenContract.methods.allowance(account, nftContractAddress).call()
-  );
-  return { approvedAmount };
+  const approvedAmount = await tokenContract.methods
+    .allowance(account, nftContractAddress)
+    .call();
+  return { approvedAmount: BigInt(approvedAmount) };
 };
 
 export const getAuctionDetails = async ({ nftContract, nftID }) => {
@@ -44,7 +68,8 @@ export const getAuctionDetails = async ({ nftContract, nftID }) => {
 
 const useAuctionPlaceBid = ({ nftID }: { nftID: number }) => {
   const { account } = useMetaMask();
-  const { nftContract, tokenContract, nftContractAddress } = useWeb3Context();
+  const { nftContract, tokenContract, nftContractAddress, web3 } =
+    useWeb3Context();
   const { handleWaitTransaction } = useProgressLoader();
 
   const {
@@ -108,7 +133,7 @@ const useAuctionPlaceBid = ({ nftID }: { nftID: number }) => {
         throw new Error(`You don't have enough GRIMACE to place bid`);
       }
 
-      console.log({ approvedAmount, bidAmount });
+      console.log({ approvedAmount, bidAmount }, approvedAmount < bidAmount);
       if (approvedAmount < bidAmount) {
         handleWaitTransaction({
           transaction: {
@@ -124,22 +149,30 @@ const useAuctionPlaceBid = ({ nftID }: { nftID: number }) => {
             (bidAmount / decimalsMultiplier).toString()
           )
           .send({ from: account });
+
         handleWaitTransaction({
           transaction: {
             preAcceptMessage: ``,
-            hash: transaction.hash,
+            hash: transaction.transactionHash,
             message: `Approving spending of ${formatBidAmountToDecimals(
               bidAmount
             )} GRIMACE to place bid`,
           },
           isProcessing: true,
         });
-        const { approvedAmount } = await getApprovedAmount({
+        await waitForTransactionReceipt({
+          transactionHash: transaction.transactionHash,
+          web3,
+        });
+        await wait(25000);
+
+        const { approvedAmount: newApprovedAmount } = await getApprovedAmount({
           tokenContract,
           account,
           nftContractAddress,
         });
-        if (approvedAmount < bidAmount) {
+        console.log({ newApprovedAmount, bidAmount });
+        if (newApprovedAmount < bidAmount) {
           toast.error(
             `You need to approve to spend minimum ${
               bidAmount / decimalsMultiplier
@@ -171,7 +204,7 @@ const useAuctionPlaceBid = ({ nftID }: { nftID: number }) => {
         .send({ from: account });
       handleWaitTransaction({
         transaction: {
-          hash: response.hash,
+          hash: response.transactionHash,
           message: "Placing bid...",
         },
         isProcessing: true,

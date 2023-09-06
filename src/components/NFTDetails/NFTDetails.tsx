@@ -43,7 +43,7 @@ function formatAddress(address) {
 export const formatBidAmountToDecimals = (bidAmount: BigInt = BigInt(0)) => {
   // Divide the bidAmount by 10^18 and round it to 3 decimal places
   const currentBid = Number(
-    (Number(bidAmount) / Number(10n ** 18n)).toFixed(4)
+    (Number(bidAmount) / Number(10n ** 18n)).toFixed(5)
   );
   return currentBid.toString();
 };
