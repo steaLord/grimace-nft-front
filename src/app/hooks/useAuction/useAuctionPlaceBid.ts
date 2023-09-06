@@ -108,6 +108,7 @@ const useAuctionPlaceBid = ({ nftID }: { nftID: number }) => {
         throw new Error(`You don't have enough GRIMACE to place bid`);
       }
 
+      console.log({ approvedAmount, bidAmount });
       if (approvedAmount < bidAmount) {
         handleWaitTransaction({
           transaction: {

@@ -41,7 +41,10 @@ function formatAddress(address) {
 }
 
 export const formatBidAmountToDecimals = (bidAmount: BigInt = BigInt(0)) => {
-  const currentBid = BigInt(bidAmount) / BigInt(10) ** BigInt(18);
+  // Divide the bidAmount by 10^18 and round it to 3 decimal places
+  const currentBid = Number(
+    (Number(bidAmount) / Number(10n ** 18n)).toFixed(4)
+  );
   return currentBid.toString();
 };
 
@@ -81,7 +84,6 @@ function NFTDetails({
     Number(formattedHighestBid) > Number(formattedInitialPrice)
       ? formattedHighestBid
       : formattedInitialPrice;
-
   return (
     <>
       <Root>
