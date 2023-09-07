@@ -232,7 +232,7 @@ const useAuctionPlaceBid = ({ nftID }: { nftID: number }) => {
       }
     } catch (error) {
       console.error("Failed to place bid:", error);
-      toast.error("Failed to place bid, please refresh page or wait");
+      toast.error("Failed to place bid, please refresh page or wait" + error.toString());
       setIsPendingBid(false);
       handleWaitTransaction({
         transaction: {},
