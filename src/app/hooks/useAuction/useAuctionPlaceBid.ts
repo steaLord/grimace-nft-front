@@ -143,12 +143,22 @@ const useAuctionPlaceBid = ({ nftID }: { nftID: number }) => {
           },
           isProcessing: true,
         });
+
+        const gasEstimate = await tokenContract.methods
+          .approve(
+            nftContractAddress,
+            (bidAmount / decimalsMultiplier).toString()
+          )
+          .estimateGas({ from: account });
+        toast.info("Gas estimate " + gasEstimate.toString());
+        const gasLimit = Number(gasEstimate) * 2; // You can adjust this multiplier as needed
+        console.log({ gasEstimate, gasLimit });
         const transaction = await tokenContract.methods
           .approve(
             nftContractAddress,
             (bidAmount / decimalsMultiplier).toString()
           )
-          .send({ from: account });
+          .send({ from: account, gas: gasLimit });
 
         handleWaitTransaction({
           transaction: {
@@ -232,7 +242,9 @@ const useAuctionPlaceBid = ({ nftID }: { nftID: number }) => {
       }
     } catch (error) {
       console.error("Failed to place bid:", error);
-      toast.error("Failed to place bid, please refresh page or wait" + error.toString());
+      toast.error(
+        "Failed to place bid, please refresh page or wait" + error.toString()
+      );
       setIsPendingBid(false);
       handleWaitTransaction({
         transaction: {},
