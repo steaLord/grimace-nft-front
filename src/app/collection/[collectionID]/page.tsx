@@ -39,7 +39,6 @@ export default function NFTPage() {
         <CollectionGrid>
           {newNfts.map(
             ({ id, edition, highestBid, endTime, initialPrice }, i: number) => {
-              console.log(Number(endTime));
               const isEnded =
                 Number(endTime) === 0 || isNaN(Number(endTime))
                   ? false

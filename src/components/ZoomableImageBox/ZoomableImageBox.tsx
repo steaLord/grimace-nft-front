@@ -120,7 +120,6 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
             },
           }
         );
-        console.log("Fetched");
 
         if (!res.ok) {
           throw new Error("Failed to fetch SVG file.");
@@ -132,12 +131,10 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
         const blob = new Blob([svgStringResponse], { type: "image/svg+xml" });
         const url = URL.createObjectURL(blob);
         image.onload = () => {
-          console.log("On load", svgStringResponse);
           URL.revokeObjectURL(url);
           imageRef.current = image;
           setSvgWidth(image.width);
           setSvgHeight(image.height);
-          console.log({ image, width: image.width, height: image.height });
           setIsLoadingSVG(false);
         };
         imageRef.current = image;

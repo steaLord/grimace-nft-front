@@ -13,16 +13,14 @@ function wait(ms) {
 }
 
 async function waitForTransactionReceipt({ web3, transactionHash }) {
-  console.log({ transactionHash });
   while (true) {
     try {
       const receipt = await web3.eth.getTransactionReceipt(transactionHash);
       if (receipt !== null) {
-        console.log("Transaction mined:", receipt);
         // You can perform additional actions here after the transaction is mined
         break;
       }
-      await new Promise((resolve) => setTimeout(resolve, 300)); // Poll every 300 ms
+      await wait(300); // Poll every 300 ms
     } catch (error) {
       console.error("Error waiting for transaction:", error);
       break;
@@ -39,6 +37,35 @@ const getApprovedAmount = async ({
     .allowance(account, nftContractAddress)
     .call();
   return { approvedAmount: BigInt(approvedAmount) };
+};
+
+// every second get approved amount
+const waitForNewAllowanceUpdate = ({
+  previousAllowance,
+  tokenContract,
+  account,
+  nftContractAddress,
+}) => {
+  return new Promise(async (res, rej) => {
+    const checkInterval = 1000;
+    while (true) {
+      try {
+        const approvedAmount = await getApprovedAmount({
+          tokenContract,
+          account,
+          nftContractAddress,
+        });
+        if (approvedAmount.toString() !== previousAllowance.toString()) {
+          res(approvedAmount);
+          break;
+        }
+        await wait(checkInterval);
+      } catch (e) {
+        rej(e);
+        break;
+      }
+    }
+  });
 };
 
 export const getAuctionDetails = async ({ nftContract, nftID }) => {
@@ -133,7 +160,6 @@ const useAuctionPlaceBid = ({ nftID }: { nftID: number }) => {
         throw new Error(`You don't have enough GRIMACE to place bid`);
       }
 
-      console.log({ approvedAmount, bidAmount }, approvedAmount < bidAmount);
       if (approvedAmount < bidAmount) {
         handleWaitTransaction({
           transaction: {
@@ -150,9 +176,7 @@ const useAuctionPlaceBid = ({ nftID }: { nftID: number }) => {
             (bidAmount / decimalsMultiplier).toString()
           )
           .estimateGas({ from: account });
-        toast.info("Gas estimate " + gasEstimate.toString());
         const gasLimit = Number(gasEstimate) * 2; // You can adjust this multiplier as needed
-        console.log({ gasEstimate, gasLimit });
         const transaction = await tokenContract.methods
           .approve(
             nftContractAddress,
@@ -174,14 +198,14 @@ const useAuctionPlaceBid = ({ nftID }: { nftID: number }) => {
           transactionHash: transaction.transactionHash,
           web3,
         });
-        await wait(25000);
 
-        const { approvedAmount: newApprovedAmount } = await getApprovedAmount({
+        const newApprovedAmount = await waitForNewAllowanceUpdate({
           tokenContract,
           account,
           nftContractAddress,
+          previousAllowance: approvedAmount,
         });
-        console.log({ newApprovedAmount, bidAmount });
+
         if (newApprovedAmount < bidAmount) {
           toast.error(
             `You need to approve to spend minimum ${
