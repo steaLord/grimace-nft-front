@@ -17,7 +17,7 @@ function getRemainingSeconds(startTime) {
 }
 
 export function useRemainingTime(startDate: string) {
-  const startTime = new Date(startDate ?? "2023-10-01T00:00:00.000Z").getTime();
+  const startTime = new Date(startDate ?? "2023-09-11T16:00:00.000Z").getTime();
   const [remainingSeconds, setRemainingSeconds] = useState(
     getRemainingSeconds(startTime)
   );
@@ -44,7 +44,7 @@ export default function Home() {
   useCheckConnection();
 
   const { isReleased, hh, mm, dd } = useRemainingTime(
-    process.env["TIMER_END_ISO_DATE"]
+    process.env.NEXT_PUBLIC_TIMER_END_ISO_DATE
   );
 
   return (
