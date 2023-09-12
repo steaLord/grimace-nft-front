@@ -67,9 +67,9 @@ export default function Home() {
       </Subheading>
       {!isReleased && (
         <StartCountdown
-          num1={dd}
-          num2={hh}
-          num3={mm}
+          num1={"00"}
+          num2={"6"}
+          num3={"66"}
           gap={8}
           fontSize={80}
           label1="Days"
