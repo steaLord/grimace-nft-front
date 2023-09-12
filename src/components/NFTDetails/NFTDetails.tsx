@@ -11,6 +11,7 @@ import BidsHistory from "../BidsHistrory/BidsHistory";
 import { IBid } from "@/app/hooks/useAuction/useBidsHistory";
 import { IBlockchainAuctionData } from "@/app/hooks/useAuction/useAuctionDetails";
 import ProgressLoader from "@/components/ProgressLoader";
+import { useRemainingTime } from "@/app/page";
 
 export type NFTDetailsProps = {
   isBidsLoading: boolean;
@@ -70,6 +71,8 @@ function NFTDetails({
   } = blockchainData;
   const isReleased = Number(initialPrice) !== 0;
   const { minutes, seconds, hours } = useTimeLeft(timeLeftForAuction);
+  const { dd, hh, mm } = useRemainingTime(timeLeftForAuction.toISOString());
+  console.log({ dd, hh, mm });
 
   const isHighestBidder =
     account?.toLowerCase() == highestBidder?.toLowerCase();
@@ -183,14 +186,14 @@ function NFTDetails({
               <TimeLeftContainer>
                 <TimeLeft>Time Left:</TimeLeft>
                 <Countdown
-                  num1={hours}
-                  num2={minutes}
-                  num3={seconds}
+                  num1={dd}
+                  num2={hh}
+                  num3={mm}
                   gap={3}
                   fontSize={60}
-                  label1="Hours"
-                  label2="Minutes"
-                  label3="Seconds"
+                  label1="Days"
+                  label2="Hours"
+                  label3="Minutes"
                 />
               </TimeLeftContainer>
             </>
