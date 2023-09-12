@@ -68,8 +68,8 @@ export default function Home() {
       {!isReleased && (
         <StartCountdown
           num1={"00"}
-          num2={"04"}
-          num3={"20"}
+          num2={"07"}
+          num3={"77"}
           gap={8}
           fontSize={80}
           label1="Days"
