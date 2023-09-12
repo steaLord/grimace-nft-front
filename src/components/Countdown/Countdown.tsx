@@ -3,9 +3,9 @@ import styled from "@emotion/styled";
 import CountdownBox from "@/components/Countdown/CountdownBox";
 
 export type CountdownProps = HTMLAttributes<HTMLDivElement> & {
-  num1: number;
-  num2: number;
-  num3: number;
+  num1: number | string;
+  num2: number | string;
+  num3: number | string;
   label1: string;
   label2: string;
   label3: string;
@@ -53,22 +53,28 @@ function Countdown({
     <Root gap={gap} {...rest}>
       <CountDownBoxWrapper
         fontSize={fontSize}
-        text2={(num1 % 10).toString()}
-        text1={(Math.floor(num1 / 10) % 10).toString()}
+        text1={num1?.split(".")[0]}
+        text2={num1?.split(".")[1]}
+        // text2={(num1 % 10).toString()}
+        // text1={(Math.floor(num1 / 10) % 10).toString()}
         label={label1}
       />
       <Separator fontSize={fontSize}>:</Separator>
       <CountDownBoxWrapper
         fontSize={fontSize}
-        text2={(num2 % 10).toString()}
-        text1={(Math.floor(num2 / 10) % 10).toString()}
+        text1={num2?.split(".")[0]}
+        text2={num2?.split(".")[1]}
+        // text2={(num2 % 10).toString()}
+        // text1={(Math.floor(num2 / 10) % 10).toString()}
         label={label2}
       />
       <Separator fontSize={fontSize}>:</Separator>
       <CountDownBoxWrapper
         fontSize={fontSize}
-        text2={(num3 % 10).toString()}
-        text1={(Math.floor(num3 / 10) % 10).toString()}
+        text1={num3?.split(".")[0]}
+        text2={num3?.split(".")[1]}
+        // text2={(num3 % 10).toString()}
+        // text1={(Math.floor(num3 / 10) % 10).toString()}
         label={label3}
       />
       {/*<CountdownBoxRoot>
