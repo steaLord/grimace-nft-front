@@ -40,8 +40,39 @@ function getRemainingTime(remainingSeconds: number) {
   return { dd, hh, mm };
 }
 
+const useGrimacePrice = () => {
+  const [price, setPrice] = useState("-i.dk");
+  useEffect(() => {
+    const getPriceInfo = async () => {
+      try {
+        const res = await fetch(
+          "https://api.coingecko.com/api/v3/coins/grimace?tickers=false&community_data=false&developer_data=false&sparkline=false\n"
+        );
+        const jsonData = await res.json();
+        console.log({ jsonData });
+        const usdPrice = jsonData?.market_data?.current_price?.usd;
+        setPrice(usdPrice.toFixed(2).toString());
+      } catch (e) {
+        setPrice("-i.dk");
+      }
+    };
+
+    getPriceInfo();
+    const interval = setInterval(() => {
+      getPriceInfo();
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, [setPrice]);
+
+  return { price };
+};
+
 export default function Home() {
   useCheckConnection();
+
+  const { price } = useGrimacePrice();
+  const [firstPrice, secondPrice] = price.split(".");
 
   const { isReleased, hh, mm, dd } = useRemainingTime(
     process.env.NEXT_PUBLIC_TIMER_END_ISO_DATE
@@ -67,14 +98,14 @@ export default function Home() {
       </Subheading>
       {!isReleased && (
         <StartCountdown
-          num1={"0.0"}
-          num2={"0.i"}
-          num3={"d.k"}
+          num1={"$.$"}
+          num2={`${firstPrice[0]}.${firstPrice[1]}`}
+          num3={`${secondPrice[0]}.${secondPrice[1]}`}
           gap={8}
           fontSize={80}
-          label1="Days"
-          label2="Hours"
-          label3="Minutes"
+          label1=""
+          label2=""
+          label3=""
         />
       )}
       <Buttons>
