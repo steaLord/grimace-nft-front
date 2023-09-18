@@ -11,7 +11,7 @@ const useHighestBids = ({ nftsValues }: { nftsValues: any[] }) => {
       const decimals = await tokenContract.methods
         .decimals()
         .call()
-        .catch((err) => console.log("ERROR", err));
+        .catch((err) => console.log("ERROR", err)) ?? 18;
       const decimalsMultiplier = BigInt(10) ** BigInt(decimals);
       try {
         const nftsWithHighestBid = await Promise.all(
