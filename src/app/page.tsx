@@ -71,9 +71,6 @@ const useGrimacePrice = () => {
 export default function Home() {
   useCheckConnection();
 
-  const { price } = useGrimacePrice();
-  const [firstPrice, secondPrice] = price.split(".");
-
   const { isReleased, hh, mm, dd } = useRemainingTime(
     process.env.NEXT_PUBLIC_TIMER_END_ISO_DATE
   );
@@ -98,14 +95,14 @@ export default function Home() {
       </Subheading>
       {!isReleased && (
         <StartCountdown
-          num1={"$.$"}
-          num2={`${firstPrice[0]}.${firstPrice[1]}`}
-          num3={`${secondPrice[0]}.${secondPrice[1]}`}
+          num1={dd}
+          num2={hh}
+          num3={mm}
           gap={8}
           fontSize={80}
-          label1=""
-          label2=""
-          label3=""
+          label1="Days"
+          label2="Hours"
+          label3="Minutes"
         />
       )}
       <Buttons>

@@ -53,28 +53,28 @@ function Countdown({
     <Root gap={gap} {...rest}>
       <CountDownBoxWrapper
         fontSize={fontSize}
-        text1={num1?.split(".")[0]}
-        text2={num1?.split(".")[1]}
-        // text2={(num1 % 10).toString()}
-        // text1={(Math.floor(num1 / 10) % 10).toString()}
+        // text1={num1?.split(".")[0]}
+        // text2={num1?.split(".")[1]}
+        text2={(num1 % 10).toString()}
+        text1={(Math.floor(num1 / 10) % 10).toString()}
         label={label1}
       />
       <Separator fontSize={fontSize}>:</Separator>
       <CountDownBoxWrapper
         fontSize={fontSize}
-        text1={num2?.split(".")[0]}
-        text2={num2?.split(".")[1]}
-        // text2={(num2 % 10).toString()}
-        // text1={(Math.floor(num2 / 10) % 10).toString()}
+        // text1={num2?.split(".")[0]}
+        // text2={num2?.split(".")[1]}
+        text2={(num2 % 10).toString()}
+        text1={(Math.floor(num2 / 10) % 10).toString()}
         label={label2}
       />
       <Separator fontSize={fontSize}>:</Separator>
       <CountDownBoxWrapper
         fontSize={fontSize}
-        text1={num3?.split(".")[0]}
-        text2={num3?.split(".")[1]}
-        // text2={(num3 % 10).toString()}
-        // text1={(Math.floor(num3 / 10) % 10).toString()}
+        // text1={num3?.split(".")[0]}
+        // text2={num3?.split(".")[1]}
+        text2={(num3 % 10).toString()}
+        text1={(Math.floor(num3 / 10) % 10).toString()}
         label={label3}
       />
       {/*<CountdownBoxRoot>

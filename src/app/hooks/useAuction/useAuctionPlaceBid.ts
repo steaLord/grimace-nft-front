@@ -157,7 +157,7 @@ const useAuctionPlaceBid = ({ nftID }: { nftID: number }) => {
       const balance = await tokenContract.methods.balanceOf(account).call();
       if (balance < bidAmount) {
         toast.error(`You don't have enough GRIMACE to place bid`);
-        throw new Error(`You don't have enough GRIMACE to place bid`);
+        throw new Error(``);
       }
 
       if (approvedAmount < bidAmount) {
@@ -266,9 +266,11 @@ const useAuctionPlaceBid = ({ nftID }: { nftID: number }) => {
       }
     } catch (error) {
       console.error("Failed to place bid:", error);
-      toast.error(
-        "Failed to place bid, please refresh page or wait" + error.toString()
-      );
+      if (error?.message?.toString() !== "") {
+        toast.error(
+          "Failed to place bid, please refresh page or wait" + error.toString()
+        );
+      }
       setIsPendingBid(false);
       handleWaitTransaction({
         transaction: {},
