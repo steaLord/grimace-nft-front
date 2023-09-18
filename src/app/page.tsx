@@ -107,7 +107,7 @@ export default function Home() {
       )}
       <Buttons>
         {isReleased ? (
-          <Button buttonType={"filled"} href={"#"} className={buttonStyles}>
+          <Button buttonType={"filled"} href={"/collection"} className={buttonStyles}>
             Explore
           </Button>
         ) : (
