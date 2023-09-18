@@ -22,7 +22,7 @@ const nftMarketplaceFAQ = [
     Answer: (
       <div>
         Once you connected your metamask and choose DogeChain network, in
-        Metamask click on "Import Tokens", in Token Contract Address paste
+        Metamask click on &quot;Import Tokens&quot;, in Token Contract Address paste
         0x2f90907fD1DC1B7a484b6f31Ddf012328c2baB28 (token contract address) and
         you will see GRIMACE in Token Symbol automatically
       </div>
