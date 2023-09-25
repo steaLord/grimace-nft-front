@@ -70,16 +70,14 @@ const useGrimacePrice = () => {
 };
 
 export default function Home() {
-  const { isRealUser } = useRealUser();
   useCheckConnection();
-
-  if (!isRealUser) {
-    return "Not Real Address";
-  }
-
   const { isReleased, hh, mm, dd } = useRemainingTime(
     process.env.NEXT_PUBLIC_TIMER_END_ISO_DATE
   );
+  const { isRealUser } = useRealUser();
+  if (!isRealUser) {
+    return "Not Real Address";
+  }
 
   return (
     <Root>
