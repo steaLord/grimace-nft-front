@@ -59,7 +59,6 @@ function NFTDetails({
 }: NFTDetailsProps) {
   const [isImgLoading, setIsImgLoading] = useState(true);
   const { metadata, blockchainData } = nftItem;
-  const {MMSDK} = useWeb3Context()
   const { account } = useMetaMask();
   const { id, collection, name, buyGrimaceHref, imageSrc, description } =
     metadata;

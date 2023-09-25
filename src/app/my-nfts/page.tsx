@@ -12,15 +12,14 @@ import { useRealUser } from "@/app/layout";
 
 export default function MyNFTsPage() {
   useCheckConnection();
-  const { isRealUser } = useRealUser();
-  if (!isRealUser) {
-    return "Not Real Address";
-  }
-
   const { nftTokens, isLoading } = useNFTMetadata(
     process.env.NEXT_PUBLIC_CONTRACT_ADDRESS
   );
   const { account } = useMetaMask();
+  const { isRealUser } = useRealUser();
+  if (!isRealUser) {
+    return "Not Real Address";
+  }
 
   return (
     <>
