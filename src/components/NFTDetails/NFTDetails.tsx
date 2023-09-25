@@ -185,7 +185,7 @@ function NFTDetails({
               <TimeLeftContainer>
                 <TimeLeft>Time Left:</TimeLeft>
                 <Countdown
-                  num1="00"
+                  num1="42"
                   num2="04"
                   num3="20"
                   gap={3}
