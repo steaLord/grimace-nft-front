@@ -8,9 +8,14 @@ import CollectionGrid from "@/components/CollectionGrid";
 import { keyframes } from "@emotion/css";
 import React from "react";
 import useCheckConnection from "../hooks/useCheckConnection";
+import { useRealUser } from "@/app/layout";
 
 export default function MyNFTsPage() {
   useCheckConnection();
+  const { isRealUser } = useRealUser();
+  if (!isRealUser) {
+    return "Not Real Address";
+  }
 
   const { nftTokens, isLoading } = useNFTMetadata(
     process.env.NEXT_PUBLIC_CONTRACT_ADDRESS

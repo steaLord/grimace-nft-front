@@ -7,6 +7,7 @@ import nftsMetadata from "/public/NFTsMetadata.json";
 import styled from "@emotion/styled";
 import useAuction from "@/app/hooks/useAuction";
 import useCheckConnection from "@/app/hooks/useCheckConnection";
+import { useRealUser } from "@/app/layout";
 
 export default function NFTPage() {
   const { isMetamaskInstalled } = useCheckConnection();
@@ -29,6 +30,10 @@ export default function NFTPage() {
     },
     blockchainData: auctionDetails,
   };
+  const { isRealUser } = useRealUser();
+  if (!isRealUser) {
+    return "Not Real Address";
+  }
   return (
     <StyledRoot>
       {isAuctionLoading ? (

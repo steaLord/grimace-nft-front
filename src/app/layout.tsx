@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import "./globals.css";
 import { Fredoka } from "next/font/google";
 import RootStyleRegistry from "@/app/emotion";
@@ -8,7 +8,7 @@ import styled from "@emotion/styled";
 import { MetaMaskProvider } from "metamask-react";
 import Footer from "@/components/Footer";
 import { ToastContainer } from "react-toastify";
-import { Web3Provider } from "@/app/hooks/useWeb3";
+import { useWeb3Context, Web3Provider } from "@/app/hooks/useWeb3";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "@/components/Header";
 import { ProgressLoaderProvider } from "@/components/ProgressLoader/ProgressLoader";
@@ -32,6 +32,17 @@ const MainStyled = styled.main`
   align-items: center;
   flex-grow: 1;
 `;
+
+export const useRealUser = () => {
+  const { isRealUser, setIsRealUser } = useWeb3Context();
+  useEffect(() => {
+    if (window?.ethereum?.isImpersonator) {
+      setIsRealUser(false);
+    }
+  }, [isRealUser]);
+
+  return { isRealUser };
+};
 
 export default function RootLayout({
   children,

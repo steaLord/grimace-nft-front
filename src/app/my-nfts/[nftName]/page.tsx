@@ -4,6 +4,7 @@ import ZoomableImageBox from "@/components/ZoomableImageBox";
 import styled from "@emotion/styled";
 import { useMetaMask } from "metamask-react";
 import { useNFTMetadata } from "@/app/hooks/useNFTMetadata";
+import { useRealUser } from "@/app/layout";
 
 const StyledWrapper = styled.div`
   display: flex;
@@ -29,6 +30,10 @@ export default function MyNFTPage(props) {
   const { nftTokens, isLoading } = useNFTMetadata(
     process.env.NEXT_PUBLIC_CONTRACT_ADDRESS
   );
+  const { isRealUser } = useRealUser();
+  if (!isRealUser) {
+    return "Not Real Address";
+  }
 
   if (!account) {
     return (

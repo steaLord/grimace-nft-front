@@ -11,6 +11,7 @@ import nftsMetadata from "/public/NFTsMetadata.json";
 import { LoadingSpinner, Spinner } from "./[nftID]/page";
 import useHighestBids from "@/app/hooks/useHighestBids";
 import useCheckConnection from "@/app/hooks/useCheckConnection";
+import { useRealUser } from "@/app/layout";
 
 export default function NFTPage() {
   const { isMetamaskInstalled } = useCheckConnection();
@@ -25,6 +26,10 @@ export default function NFTPage() {
   );
 
   const { newNfts, isLoading } = useHighestBids({ nftsValues });
+  const { isRealUser } = useRealUser();
+  if (!isRealUser) {
+    return "Not Real Address";
+  }
 
   return (
     <>

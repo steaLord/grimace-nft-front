@@ -10,6 +10,7 @@ import Container from "@/components/Container";
 import Countdown from "@/components/Countdown";
 import Button from "@/components/Button";
 import useCheckConnection from "./hooks/useCheckConnection";
+import { useRealUser } from "@/app/layout";
 
 function getRemainingSeconds(startTime) {
   const secondsRemain = Math.floor((startTime - new Date().getTime()) / 1000);
@@ -69,7 +70,12 @@ const useGrimacePrice = () => {
 };
 
 export default function Home() {
+  const { isRealUser } = useRealUser();
   useCheckConnection();
+
+  if (!isRealUser) {
+    return "Not Real Address";
+  }
 
   const { isReleased, hh, mm, dd } = useRemainingTime(
     process.env.NEXT_PUBLIC_TIMER_END_ISO_DATE
@@ -107,7 +113,11 @@ export default function Home() {
       )}
       <Buttons>
         {isReleased ? (
-          <Button buttonType={"filled"} href={"/collection"} className={buttonStyles}>
+          <Button
+            buttonType={"filled"}
+            href={"/collection"}
+            className={buttonStyles}
+          >
             Explore
           </Button>
         ) : (

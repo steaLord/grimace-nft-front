@@ -12,6 +12,7 @@ import { IBid } from "@/app/hooks/useAuction/useBidsHistory";
 import { IBlockchainAuctionData } from "@/app/hooks/useAuction/useAuctionDetails";
 import ProgressLoader from "@/components/ProgressLoader";
 import { useRemainingTime } from "@/app/page";
+import { useWeb3Context } from "@/app/hooks/useWeb3";
 
 export type NFTDetailsProps = {
   isBidsLoading: boolean;
@@ -58,6 +59,7 @@ function NFTDetails({
 }: NFTDetailsProps) {
   const [isImgLoading, setIsImgLoading] = useState(true);
   const { metadata, blockchainData } = nftItem;
+  const {MMSDK} = useWeb3Context()
   const { account } = useMetaMask();
   const { id, collection, name, buyGrimaceHref, imageSrc, description } =
     metadata;

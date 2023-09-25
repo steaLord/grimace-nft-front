@@ -4,6 +4,7 @@ import { AbiItem } from "web3-utils";
 
 import GrimaceMandalasNFT from "@/nftArtifacts/GrimaceMandalaNFT.json";
 import TokenETH from "@/nftArtifacts/TokenETH.json";
+import { MetaMaskSDK } from "@metamask/sdk";
 
 // Create a type for the contract methods
 type TokenContractMethods = {
@@ -16,9 +17,12 @@ const Web3Context = createContext({
   tokenContract: null,
   tokenContractAddress: null,
   nftContractAddress: null,
+  isRealUser: null,
+  setIsRealUser: null,
 });
 
 const Web3Provider = ({ children }) => {
+  const [isRealUser, setIsRealUser] = useState(false);
   const [web3, setWeb3] = useState(null);
   const [nftContract, setnftContract] = useState(null);
   const [tokenContract, setTokenContract] = useState(null);
@@ -57,6 +61,8 @@ const Web3Provider = ({ children }) => {
         tokenContract,
         tokenContractAddress: process.env.NEXT_PUBLIC_TOKEN_CONTRACT_ADDRESS,
         nftContractAddress: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
+        isRealUser,
+        setIsRealUser,
       }}
     >
       {children}
@@ -65,9 +71,25 @@ const Web3Provider = ({ children }) => {
 };
 
 const useWeb3Context = () => {
-  const { web3, nftContract, tokenContract, tokenContractAddress, nftContractAddress } = useContext(Web3Context);
+  const {
+    web3,
+    nftContract,
+    tokenContract,
+    tokenContractAddress,
+    nftContractAddress,
+    isRealUser,
+    setIsRealUser,
+  } = useContext(Web3Context);
 
-  return { web3, nftContract, tokenContract, tokenContractAddress, nftContractAddress };
+  return {
+    web3,
+    nftContract,
+    tokenContract,
+    tokenContractAddress,
+    nftContractAddress,
+    isRealUser,
+    setIsRealUser,
+  };
 };
 
 export { Web3Provider, useWeb3Context };
