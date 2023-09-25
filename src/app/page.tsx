@@ -10,7 +10,6 @@ import Container from "@/components/Container";
 import Countdown from "@/components/Countdown";
 import Button from "@/components/Button";
 import useCheckConnection from "./hooks/useCheckConnection";
-import { useRealUser } from "@/app/layout";
 
 function getRemainingSeconds(startTime) {
   const secondsRemain = Math.floor((startTime - new Date().getTime()) / 1000);
@@ -74,10 +73,6 @@ export default function Home() {
   const { isReleased, hh, mm, dd } = useRemainingTime(
     process.env.NEXT_PUBLIC_TIMER_END_ISO_DATE
   );
-  const { isRealUser } = useRealUser();
-  if (!isRealUser) {
-    return "Not Real Address";
-  }
 
   return (
     <Root>

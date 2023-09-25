@@ -5,7 +5,7 @@ import "./globals.css";
 import { Fredoka } from "next/font/google";
 import RootStyleRegistry from "@/app/emotion";
 import styled from "@emotion/styled";
-import { MetaMaskProvider } from "metamask-react";
+import { MetaMaskProvider, useMetaMask } from "metamask-react";
 import Footer from "@/components/Footer";
 import { ToastContainer } from "react-toastify";
 import { useWeb3Context, Web3Provider } from "@/app/hooks/useWeb3";
@@ -35,11 +35,44 @@ const MainStyled = styled.main`
 
 export const useRealUser = () => {
   const { isRealUser, setIsRealUser } = useWeb3Context();
+  const { account, ethereum } = useMetaMask();
   useEffect(() => {
-    if (window?.ethereum?.isImpersonator) {
+    (async () => {
+      try {
+        if (account && ethereum) {
+          const messageToSign = "Sign this message to prove NFT hold";
+          const signature = await ethereum.request({
+            method: "personal_sign",
+            params: [messageToSign, account],
+          });
+          if (signature) {
+            setIsRealUser(true);
+          }
+        }
+      } catch (e) {
+        setIsRealUser(false);
+        console.log(e);
+      }
+    })();
+
+    console.log(
+      window.ethereum,
+      typeof window?.ethereum?._sendSync,
+      typeof window?.ethereum?._sendSync !== "function",
+      window?.ethereum?.isImpersonator,
+      window?.ethereum?._jsonRpcConnection
+    );
+    if (
+      window?.ethereum?.isImpersonator ||
+      !window?.ethereum?._jsonRpcConnection ||
+      typeof window?.ethereum?._sendSync !== "function" ||
+      typeof window?.ethereum?._sendSync !== "function" ||
+      typeof window?.ethereum?._rpcRequest !== "function"
+    ) {
+      console.log(window.ethereum);
       setIsRealUser(false);
     }
-  }, [isRealUser]);
+  }, [isRealUser, ethereum, account]);
 
   return { isRealUser };
 };

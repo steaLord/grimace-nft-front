@@ -26,10 +26,6 @@ export default function NFTPage() {
   );
 
   const { newNfts, isLoading } = useHighestBids({ nftsValues });
-  const { isRealUser } = useRealUser();
-  if (!isRealUser) {
-    return "Not Real Address";
-  }
 
   return (
     <>

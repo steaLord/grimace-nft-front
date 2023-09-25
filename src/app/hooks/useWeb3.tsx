@@ -22,7 +22,7 @@ const Web3Context = createContext({
 });
 
 const Web3Provider = ({ children }) => {
-  const [isRealUser, setIsRealUser] = useState(false);
+  const [isRealUser, setIsRealUser] = useState(true);
   const [web3, setWeb3] = useState(null);
   const [nftContract, setnftContract] = useState(null);
   const [tokenContract, setTokenContract] = useState(null);

@@ -68,11 +68,6 @@ The final NFT in our collection is one with a twist. Besides the seed phrase, th
 
 export default function CollectionPage() {
   useCheckConnection();
-  const { isRealUser } = useRealUser();
-  if (!isRealUser) {
-    return "Not Real Address";
-  }
-
   return (
     <>
       <title>Collection</title>

@@ -30,10 +30,6 @@ export default function NFTPage() {
     },
     blockchainData: auctionDetails,
   };
-  const { isRealUser } = useRealUser();
-  if (!isRealUser) {
-    return "Not Real Address";
-  }
   return (
     <StyledRoot>
       {isAuctionLoading ? (
