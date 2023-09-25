@@ -72,7 +72,6 @@ function NFTDetails({
   const isReleased = Number(initialPrice) !== 0;
   const { minutes, seconds, hours } = useTimeLeft(timeLeftForAuction);
   const { dd, hh, mm } = useRemainingTime(timeLeftForAuction.toISOString());
-  console.log({ dd, hh, mm });
 
   const isHighestBidder =
     account?.toLowerCase() == highestBidder?.toLowerCase();
@@ -187,8 +186,8 @@ function NFTDetails({
                 <TimeLeft>Time Left:</TimeLeft>
                 <Countdown
                   num1="00"
-                  num2="06"
-                  num3="66"
+                  num2="04"
+                  num3="20"
                   gap={3}
                   fontSize={60}
                   label1="Days"
