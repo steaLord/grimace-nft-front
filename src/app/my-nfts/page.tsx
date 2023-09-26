@@ -8,7 +8,7 @@ import CollectionGrid from "@/components/CollectionGrid";
 import { keyframes } from "@emotion/css";
 import React from "react";
 import useCheckConnection from "../hooks/useCheckConnection";
-import { useRealUser } from "@/app/layout";
+import { useRealUser } from "@/app/hooks/useRealUser";
 
 export default function MyNFTsPage() {
   useCheckConnection();

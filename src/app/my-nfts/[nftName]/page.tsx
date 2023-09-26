@@ -4,7 +4,7 @@ import ZoomableImageBox from "@/components/ZoomableImageBox";
 import styled from "@emotion/styled";
 import { useMetaMask } from "metamask-react";
 import { useNFTMetadata } from "@/app/hooks/useNFTMetadata";
-import { useRealUser } from "@/app/layout";
+import { useRealUser } from "@/app/hooks/useRealUser";
 
 const StyledWrapper = styled.div`
   display: flex;

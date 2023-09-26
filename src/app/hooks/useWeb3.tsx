@@ -19,10 +19,14 @@ const Web3Context = createContext({
   nftContractAddress: null,
   isRealUser: null,
   setIsRealUser: null,
+  signature: "",
+  setSignature: null,
 });
 
 const Web3Provider = ({ children }) => {
   const [isRealUser, setIsRealUser] = useState(false);
+  const [signature, setSignature] = useState("");
+
   const [web3, setWeb3] = useState(null);
   const [nftContract, setnftContract] = useState(null);
   const [tokenContract, setTokenContract] = useState(null);
@@ -63,6 +67,8 @@ const Web3Provider = ({ children }) => {
         nftContractAddress: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
         isRealUser,
         setIsRealUser,
+        signature,
+        setSignature,
       }}
     >
       {children}
@@ -79,6 +85,8 @@ const useWeb3Context = () => {
     nftContractAddress,
     isRealUser,
     setIsRealUser,
+    signature,
+    setSignature,
   } = useContext(Web3Context);
 
   return {
@@ -89,6 +97,8 @@ const useWeb3Context = () => {
     nftContractAddress,
     isRealUser,
     setIsRealUser,
+    signature,
+    setSignature,
   };
 };
 

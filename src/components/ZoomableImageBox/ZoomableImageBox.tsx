@@ -1,5 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
+import { useWeb3Context } from "@/app/hooks/useWeb3";
+import { useMetaMask } from "metamask-react";
+import { SIGNATURE_MESSAGE } from "@/app/hooks/useRealUser";
 
 interface ZoomableCanvasProps {
   width: number;
@@ -104,6 +107,8 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
   const [svgWidth, setSvgWidth] = useState<number>(0);
   const [svgHeight, setSvgHeight] = useState<number>(0);
   const imageRef = useRef<HTMLImageElement>();
+  const { signature } = useWeb3Context();
+  const { account } = useMetaMask();
 
   useEffect(() => {
     (async () => {
@@ -116,8 +121,12 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
               "Content-Type": "image/svg+xml",
               "Access-Control-Allow-Origin":
                 process.env.NEXT_PUBLIC_BACKEND_ENDPOINT, // Replace with your domain or specific origin
-              Authorization: process.env.NEXT_PUBLIC_AUTHORIZATION_HEADER,
             },
+            body: JSON.stringify({
+              signature,
+              account,
+              message: SIGNATURE_MESSAGE,
+            }),
           }
         );
 
