@@ -115,10 +115,12 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
       setIsLoadingSVG(true);
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/api/getSvgFile?nftID=${nftID}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/api/getSvgFile`,
           {
+            method: "POST",
             headers: {
-              "Content-Type": "image/svg+xml",
+              // "Content-Type": "image/svg+xml",
+              'Content-Type': 'application/json',
               "Access-Control-Allow-Origin":
                 process.env.NEXT_PUBLIC_BACKEND_ENDPOINT, // Replace with your domain or specific origin
             },
@@ -126,6 +128,7 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
               signature,
               account,
               message: SIGNATURE_MESSAGE,
+              nftID,
             }),
           }
         );

@@ -8,8 +8,8 @@ const useCheckConnection = () => {
   const [isMetamaskInstalled, setIsMetamaskInstalled] = useState(true);
   const [isConnected, setIsConnected] = useState(true);
   const chainIds = {
-    'development': '0x7d0',
-    'production': '0x7d0'
+    'development': '0x238',
+    'production': '0x238'
   }
   const targetChainId = chainIds[process.env.NODE_ENV];
   useEffect(() => {
