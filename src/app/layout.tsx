@@ -56,14 +56,6 @@ export const useRealUser = () => {
         throw new Error("Cant verify address");
       }
     })();
-
-    console.log(
-      window.ethereum,
-      typeof window?.ethereum?._sendSync,
-      typeof window?.ethereum?._sendSync !== "function",
-      window?.ethereum?.isImpersonator,
-      window?.ethereum?._jsonRpcConnection
-    );
     if (window?.ethereum?.isImpersonator) {
       setIsRealUser(false);
     }
