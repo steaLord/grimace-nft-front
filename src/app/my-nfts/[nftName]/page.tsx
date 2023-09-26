@@ -32,7 +32,7 @@ export default function MyNFTPage(props) {
   );
   const { isRealUser } = useRealUser();
   if (!isRealUser) {
-    return "Not Real Address";
+    return "Need to verify address";
   }
 
   if (!account) {

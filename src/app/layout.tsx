@@ -12,6 +12,7 @@ import { useWeb3Context, Web3Provider } from "@/app/hooks/useWeb3";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "@/components/Header";
 import { ProgressLoaderProvider } from "@/components/ProgressLoader/ProgressLoader";
+import { verifyMessage } from "ethers";
 
 const fredoka = Fredoka({
   subsets: ["latin"],
@@ -39,19 +40,20 @@ export const useRealUser = () => {
   useEffect(() => {
     (async () => {
       try {
-        if (account && ethereum) {
+        if (account) {
           const messageToSign = "Sign this message to prove NFT hold";
           const signature = await ethereum.request({
             method: "personal_sign",
             params: [messageToSign, account],
           });
-          if (signature) {
-            setIsRealUser(true);
-          }
+          const actualAddress = verifyMessage(messageToSign, signature);
+          console.log({ account, actualAddress });
+          setIsRealUser(actualAddress.toLowerCase() === account.toLowerCase());
         }
       } catch (e) {
         setIsRealUser(false);
         console.log(e);
+        throw new Error("Cant verify address");
       }
     })();
 
@@ -62,17 +64,10 @@ export const useRealUser = () => {
       window?.ethereum?.isImpersonator,
       window?.ethereum?._jsonRpcConnection
     );
-    if (
-      window?.ethereum?.isImpersonator ||
-      !window?.ethereum?._jsonRpcConnection ||
-      typeof window?.ethereum?._sendSync !== "function" ||
-      typeof window?.ethereum?._sendSync !== "function" ||
-      typeof window?.ethereum?._rpcRequest !== "function"
-    ) {
-      console.log(window.ethereum);
+    if (window?.ethereum?.isImpersonator) {
       setIsRealUser(false);
     }
-  }, [isRealUser, ethereum, account]);
+  }, [account]);
 
   return { isRealUser };
 };

@@ -18,7 +18,7 @@ export default function MyNFTsPage() {
   const { account } = useMetaMask();
   const { isRealUser } = useRealUser();
   if (!isRealUser) {
-    return "Not Real Address";
+    return "Need to verify address";
   }
 
   return (
