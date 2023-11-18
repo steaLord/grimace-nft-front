@@ -5,11 +5,11 @@ import { css } from "@emotion/css";
 import classNames from "classnames";
 import { usePathname } from "next/navigation";
 import { useMetaMask } from "metamask-react";
-import { useConnectMetamask } from "@/app/hooks/useConnectMetamask";
+import { useConnectMetamask } from "@/hooks/useConnectMetamask";
 import Container from "@/components/Container";
 import metamaskLogoIcon from "../../../public/matamask_logo.png";
 import Image from "next/image";
-import { media } from "@/app/utils";
+import { media } from "@/utils";
 import Hamburger from "hamburger-react";
 import { useWindowSize } from "@uidotdev/usehooks";
 
@@ -45,9 +45,7 @@ const OutlinedButton = styled.button`
     cursor: pointer;
   }
 
-  ${media["992px"](
-          `font-size: 1rem; margin-top: 12px`
-  )}
+  ${media["1199px"](`font-size: 1rem; margin-top: 12px`)}
 `;
 
 const AccountAddressWrapper = styled.div`
@@ -80,8 +78,8 @@ const navLinkActiveStyle = css``;
 export type NavLinkProps = React.ComponentProps<typeof Link>;
 
 const StyledNavLink = styled(Link)`
-  ${media["992px"](
-          `margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid gray; width: 100%;`
+  ${media["1199px"](
+    `margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid gray; width: 100%;`
   )}
 `;
 
@@ -103,7 +101,7 @@ function NavLink(props: NavLinkProps) {
 
 const StyledHamburgerWrapper = styled.div`
   display: none;
-  ${media["992px"](`
+  ${media["1199px"](`
     display: inline;
     font-size: 1.5rem;
     z-index: 99999999999999;
@@ -205,11 +203,12 @@ function Header() {
     <Root>
       <Wrapper>
         <ItemsLeft>
-          <Logo/>
+          <Logo />
         </ItemsLeft>
         <ItemsRight>
-          {size.width > 992 && (
+          {size.width > 1199 && (
             <>
+              <NavLink href="/peppers-nfts">Peppers NFTs</NavLink>
               <NavLink href="/my-nfts">My NFTs</NavLink>
               <NavLink href="/collection">Collection</NavLink>
               <ConnectMetamaskWrapper
@@ -219,16 +218,17 @@ function Header() {
             </>
           )}
           <StyledHamburgerWrapper>
-            <Hamburger toggled={isOpen} toggle={setOpen}/>
+            <Hamburger toggled={isOpen} toggle={setOpen} />
           </StyledHamburgerWrapper>
         </ItemsRight>
       </Wrapper>
-      {size.width <= 992 && (
+      {size.width <= 1199 && (
         <StyledMenuBackgroundDrop isOpen={isOpen} onClick={handleCloseMenu}>
           <StyledMenuWrapper
             isOpen={isOpen}
             onClick={(e) => e.stopPropagation()}
           >
+            <NavLink href="/peppers-nfts">Peppers NFTs</NavLink>
             <NavLink href="/my-nfts">My NFTs</NavLink>
             <NavLink href="/collection">Collection</NavLink>
             <ConnectMetamaskWrapper

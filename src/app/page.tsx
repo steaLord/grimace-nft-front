@@ -9,7 +9,7 @@ import grimaceNFTImage from "./grimace-nft-image.png";
 import Container from "@/components/Container";
 import Countdown from "@/components/Countdown";
 import Button from "@/components/Button";
-import useCheckConnection from "./hooks/useCheckConnection";
+import useCheckConnection from "../hooks/useCheckConnection";
 
 function getRemainingSeconds(startTime) {
   const secondsRemain = Math.floor((startTime - new Date().getTime()) / 1000);

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useMetaMask } from "metamask-react";
-import { useWeb3Context } from "@/app/hooks/useWeb3";
-import useBidsHistory, { IBid } from "@/app/hooks/useAuction/useBidsHistory";
+import { useWeb3Context } from "@/hooks/useWeb3";
+import useBidsHistory, { IBid } from "@/hooks/useAuction/useBidsHistory";
 import { useProgressLoader } from "@/components/ProgressLoader/ProgressLoader";
 import { formatBidAmountToDecimals } from "@/components/NFTDetails/NFTDetails";
 

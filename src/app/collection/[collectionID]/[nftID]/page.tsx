@@ -5,8 +5,8 @@ import Container from "@/components/Container";
 import React, { useEffect, useState } from "react";
 import nftsMetadata from "/public/NFTsMetadata.json";
 import styled from "@emotion/styled";
-import useAuction from "@/app/hooks/useAuction";
-import useCheckConnection from "@/app/hooks/useCheckConnection";
+import useAuction from "@/hooks/useAuction";
+import useCheckConnection from "@/hooks/useCheckConnection";
 import { useRealUser } from "@/app/layout";
 
 export default function NFTPage() {

@@ -11,7 +11,7 @@ import nft5 from "../../../public/golden-degen-dick.jpg";
 import nft6 from "../../../public/silver-soldier-of-the-odyssey.jpg";
 import Image from "next/image";
 import Link from "next/link";
-import useCheckConnection from "../hooks/useCheckConnection";
+import useCheckConnection from "../../hooks/useCheckConnection";
 import { useRealUser } from "@/app/layout";
 
 export const collectionPreviewItems = [

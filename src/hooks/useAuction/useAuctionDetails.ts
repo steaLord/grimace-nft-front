@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useWeb3Context } from "@/app/hooks/useWeb3";
-import { getAuctionDetails } from "@/app/hooks/useAuction/useAuctionPlaceBid";
+import { useWeb3Context } from "@/hooks/useWeb3";
+import { getAuctionDetails } from "@/hooks/useAuction/useAuctionPlaceBid";
 
 export interface IBlockchainAuctionData {
   nftID: number;

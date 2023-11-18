@@ -2,17 +2,17 @@ import React, { useState } from "react";
 import styled from "@emotion/styled";
 import Button from "@/components/Button";
 import Image from "next/image";
-import useTimeLeft from "@/app/hooks/useTimeLeft";
+import useTimeLeft from "@/hooks/useTimeLeft";
 import { useMetaMask } from "metamask-react";
 import { Spinner } from "@/app/collection/[collectionID]/[nftID]/page";
 import { keyframes } from "@emotion/css";
 import Countdown from "../Countdown/Countdown";
 import BidsHistory from "../BidsHistrory/BidsHistory";
-import { IBid } from "@/app/hooks/useAuction/useBidsHistory";
-import { IBlockchainAuctionData } from "@/app/hooks/useAuction/useAuctionDetails";
+import { IBid } from "@/hooks/useAuction/useBidsHistory";
+import { IBlockchainAuctionData } from "@/hooks/useAuction/useAuctionDetails";
 import ProgressLoader from "@/components/ProgressLoader";
 import { useRemainingTime } from "@/app/page";
-import { useWeb3Context } from "@/app/hooks/useWeb3";
+import { useWeb3Context } from "@/hooks/useWeb3";
 
 export type NFTDetailsProps = {
   isBidsLoading: boolean;

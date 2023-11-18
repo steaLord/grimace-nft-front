@@ -8,7 +8,7 @@ import styled from "@emotion/styled";
 import { MetaMaskProvider, useMetaMask } from "metamask-react";
 import Footer from "@/components/Footer";
 import { ToastContainer } from "react-toastify";
-import { useWeb3Context, Web3Provider } from "@/app/hooks/useWeb3";
+import { useWeb3Context, Web3Provider } from "@/hooks/useWeb3";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "@/components/Header";
 import { ProgressLoaderProvider } from "@/components/ProgressLoader/ProgressLoader";

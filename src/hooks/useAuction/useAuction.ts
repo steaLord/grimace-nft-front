@@ -1,5 +1,5 @@
-import useAuctionDetails from "@/app/hooks/useAuction/useAuctionDetails";
-import useAuctionPlaceBid from "@/app/hooks/useAuction/useAuctionPlaceBid";
+import useAuctionDetails from "@/hooks/useAuction/useAuctionDetails";
+import useAuctionPlaceBid from "@/hooks/useAuction/useAuctionPlaceBid";
 
 const useAuction = ({ nftID }: { nftID: number }) => {
   const { auctionDetails, isLoading, setAuctionDetails } = useAuctionDetails({

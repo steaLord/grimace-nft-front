@@ -1,10 +1,8 @@
 "use client";
 import { useParams } from "next/navigation";
-import ZoomableImageBox from "@/components/ZoomableImageBox";
 import styled from "@emotion/styled";
-import { useMetaMask } from "metamask-react";
-import { useNFTMetadata } from "@/hooks/useNFTMetadata";
-import { useRealUser } from "@/hooks/useRealUser";
+import { useFreeNfts } from "@/hooks/useFreeNfts";
+import ZoomableImageBoxFree from "@/components/ZoomableImageBoxFree";
 
 const StyledWrapper = styled.div`
   display: flex;
@@ -25,25 +23,14 @@ const StyledName = styled.div`
 const StyledZoomableImageWrapper = styled.div``;
 
 export default function MyNFTPage(props) {
+  // @ts-ignore
   const { nftName } = useParams();
-  const { account } = useMetaMask();
-  const { nftTokens, isLoading } = useNFTMetadata();
-  const { isRealUser } = useRealUser();
-  if (!isRealUser) {
-    return "Need to verify address";
-  }
+  const { nftTokens, isLoading } = useFreeNfts();
 
-  if (!account) {
-    return (
-      <StyledWrapper>
-        <title>NFT Preview</title>Please connect to metamask
-      </StyledWrapper>
-    );
-  }
   if (isLoading) {
     return (
       <StyledWrapper>
-        <title>NFT Preview</title>Checking ownership on blockchain
+        <title>Loading</title>
       </StyledWrapper>
     );
   }
@@ -58,7 +45,7 @@ export default function MyNFTPage(props) {
         <StyledName>
           {nftToken.collection} {nftToken.id}
         </StyledName>
-        <ZoomableImageBox width={800} height={600} nftID={nftToken.id} />
+        <ZoomableImageBoxFree width={800} height={600} nftID={nftToken.id} />
       </StyledWrapper>
     );
   }

@@ -9,28 +9,18 @@ import { keyframes } from "@emotion/css";
 import React from "react";
 import useCheckConnection from "../../hooks/useCheckConnection";
 import { useRealUser } from "@/hooks/useRealUser";
+import { useFreeNfts } from "@/hooks/useFreeNfts";
 
 export default function MyNFTsPage() {
-  useCheckConnection();
-  const { nftTokens, isLoading } = useNFTMetadata(
-    process.env.NEXT_PUBLIC_CONTRACT_ADDRESS
-  );
-  const { account } = useMetaMask();
-  const { isRealUser } = useRealUser();
-  if (!isRealUser) {
-    return "Need to verify address";
-  }
+  const { nftTokens, isLoading } = useFreeNfts();
 
   return (
     <>
-      <title>My NFT&apos;s</title>
-      <H1>My NFT&apos;s</H1>
-      {!account && <div>Please connect metamask to use this page</div>}
-      {account && !isLoading && nftTokens.length === 0 && (
-        <div>You don&apos;t own any Grimace NFT</div>
-      )}
+      <title>Peppers NFT&apos;s</title>
+      <H1>Peppers NFT&apos;s</H1>
+
       <CollectionGrid>
-        {account && isLoading && (
+        {isLoading && (
           <>
             <StyledNFTSkeleton />
             <StyledNFTSkeleton />
@@ -40,16 +30,17 @@ export default function MyNFTsPage() {
             <StyledNFTSkeleton />
           </>
         )}
-        {account &&
+        {!isLoading &&
           nftTokens.map(({ imageSrc, urlSlug, title, id }) => {
+            console.log(imageSrc);
             return (
               <div style={{ position: "relative" }} key={id}>
-                <Link key={urlSlug} href={`/my-nfts/${urlSlug}`}>
+                <Link key={urlSlug} href={`/peppers-nfts/${urlSlug}`}>
                   <StyledNFTImage
                     width={300}
                     height={300}
                     src={imageSrc}
-                    alt={title ?? "my-nft"}
+                    alt={title ?? "peppers-nft"}
                   />
                 </Link>
                 <div

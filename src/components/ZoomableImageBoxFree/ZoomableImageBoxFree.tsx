@@ -107,27 +107,21 @@ const ZoomableCanvas: React.FC<ZoomableCanvasProps> = ({
   const [svgWidth, setSvgWidth] = useState<number>(0);
   const [svgHeight, setSvgHeight] = useState<number>(0);
   const imageRef = useRef<HTMLImageElement>();
-  const { signature } = useWeb3Context();
-  const { account } = useMetaMask();
 
   useEffect(() => {
     (async () => {
       setIsLoadingSVG(true);
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/api/getSvgFile`,
+          `${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/api/getFreeSvgFile`,
           {
             method: "POST",
             headers: {
-              // "Content-Type": "image/svg+xml",
               "Content-Type": "application/json",
               "Access-Control-Allow-Origin":
                 process.env.NEXT_PUBLIC_BACKEND_ENDPOINT!, // Replace with your domain or specific origin
             },
             body: JSON.stringify({
-              signature,
-              account,
-              message: SIGNATURE_MESSAGE,
               nftID,
             }),
           }

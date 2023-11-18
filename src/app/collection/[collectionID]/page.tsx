@@ -9,8 +9,8 @@ import Image from "next/image";
 //@ts-ignore
 import nftsMetadata from "/public/NFTsMetadata.json";
 import { LoadingSpinner, Spinner } from "./[nftID]/page";
-import useHighestBids from "@/app/hooks/useHighestBids";
-import useCheckConnection from "@/app/hooks/useCheckConnection";
+import useHighestBids from "@/hooks/useHighestBids";
+import useCheckConnection from "@/hooks/useCheckConnection";
 import { useRealUser } from "@/app/layout";
 
 export default function NFTPage() {

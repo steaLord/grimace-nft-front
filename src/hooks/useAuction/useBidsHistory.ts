@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useWeb3Context } from "@/app/hooks/useWeb3";
+import { useWeb3Context } from "@/hooks/useWeb3";
 import { toast } from "react-toastify";
 
 export interface IBid {

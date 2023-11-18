@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
-import useTable from "@/app/hooks/useTable";
+import useTable from "@/hooks/useTable";
 import TableFooter from "../TableFooter/TableFooter";
 import { formatBidAmountToDecimals } from "@/components/NFTDetails/NFTDetails";
-import { IBid } from "@/app/hooks/useAuction/useBidsHistory";
+import { IBid } from "@/hooks/useAuction/useBidsHistory";
 
 const BidsHistory = ({ allBids }) => {
   const [page, setPage] = useState(1);

@@ -1,4 +1,4 @@
-import { useWeb3Context } from "@/app/hooks/useWeb3";
+import { useWeb3Context } from "@/hooks/useWeb3";
 import { useMetaMask } from "metamask-react";
 import { useEffect } from "react";
 import { verifyMessage } from "ethers";
