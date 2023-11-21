@@ -32,7 +32,6 @@ export default function MyNFTsPage() {
         )}
         {!isLoading &&
           nftTokens.map(({ imageSrc, urlSlug, title, id }) => {
-            console.log(imageSrc);
             return (
               <div style={{ position: "relative" }} key={id}>
                 <Link key={urlSlug} href={`/peppers-nfts/${urlSlug}`}>
