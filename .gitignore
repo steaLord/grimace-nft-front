@@ -60,3 +60,7 @@ amplifytools.xcconfig
 #amplify-do-not-edit-end
 
 /assets
+
+# amplify
+.amplify
+amplifyconfiguration*
