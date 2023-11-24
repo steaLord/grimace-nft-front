@@ -124,7 +124,7 @@ export default function Home() {
         )}
         <Button
           target="__blank"
-          href="https://www.mexc.com/exchange/GRIMACE_USDT"
+          href="https://www.bitget.com/en-GB/spot/GRIMACEUSDT"
           className={buttonStyles}
         >
           Buy Grimace
