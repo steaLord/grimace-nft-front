@@ -32,7 +32,7 @@ export const useFreeNfts = (): {
       // Retrieve the metadata URI for each token
       const tokens: ITokenMetadata[] = [];
       const fetchPromises: Promise<void>[] = [];
-      for (let i = 1; i <= 1; i++) {
+      for (let i = 1; i <= 2; i++) {
         fetchPromises.push(
           new Promise(async (resolve, rej) => {
             try {
